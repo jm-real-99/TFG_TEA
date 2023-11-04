@@ -1,3 +1,15 @@
+# Autor: Juan Manuel Real Domínguez
+
+# En este script de python he pretendido probar si es posible detectar emociones mediante una webcam.
+# Para ello hemos usado un modelo preentrenado que me he encontrado en internet. Pertenece a Guillermo Gallud Baños y
+# corresponde a un Trabajo de fin de grado.
+# Fuente: https://rua.ua.es/dspace/bitstream/10045/94752/1/Reconocimiento_de_emociones_humanas_y_su_aplicacion_a_Gallud_Banos_Guillermo.pdf
+# También hemos hecho uso de la librería dlib que nos proporciona los recursos necesario (otro modelo prentrenado)
+# para reconocer hasta 68 puntos faciales que nos servirán para tomar como referencia en la detección de emociones
+# Aunque en este caso únicamente nos sirve para dibujarlos en la vista de la webcam, pero en caso de que tengamos
+# que entrenar nuestro modelo, puede sernos de ayuda.
+# Para ver un ejemplo de funcionamiento, ver el siguiente vídeo:
+
 import cv2
 import dlib
 from tensorflow import keras

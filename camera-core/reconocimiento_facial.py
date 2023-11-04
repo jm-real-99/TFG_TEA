@@ -1,10 +1,11 @@
 import cv2
 import dlib
-import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 
+#Lista de las emociones que vamos a detectar y las que se evaluaron en el modelo
 emociones = ['angry','disgusted','fearful','happy','sad','surprised','neutral']
+
 # Cargar el modelo pre-entrenado de detección de caras de OpenCV
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 detector = dlib.get_frontal_face_detector()

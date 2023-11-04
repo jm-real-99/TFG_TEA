@@ -10,10 +10,10 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("modelos/shape_predictor_68_face_landmarks.dat")
 
-#Cargamos el modelo preentrenado, ver la referencia para saber de dónde lo he sacado (quizás tenga que entrenar yo mismo uno)
+# Cargamos el modelo preentrenado, ver la referencia para saber de dónde lo he sacado (quizás tenga que entrenar yo mismo uno)
 model = keras.models.load_model("modelos/model.h5")
 
-# Inicializar la cámara web
+# Inicializamos la cámara web
 cap = cv2.VideoCapture(0)
 
 while True:
@@ -24,14 +24,14 @@ while True:
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    # Detectar caras en el fotograma
+    # Detectamos caras en el fotograma
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
 
     for (x, y, w, h) in faces:
-        # Dibujar un rectángulo alrededor de la cara detectada
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        # Dibujamos un rectángulo alrededor de la cara detectada
+        #cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-        # Obtener los puntos de referencia faciales
+        # Obtenemos los puntos de referencia faciales
         landmarks = predictor(gray, dlib.rectangle(x, y, x+w, y+h))
 
         # Dibujamos los puntos recogidos en landmarks
@@ -39,18 +39,17 @@ while True:
             x, y = landmarks.part(i).x, landmarks.part(i).y
             cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)
 
-    # Extraer la región de interés (ROI) y redimensionarla
-    roi = gray[y:y + h, x:x + w]
-    resized = cv2.resize(roi, (48, 48))
+        # Extraemos la región de interés (ROI) y la redimensionamos
+        roi = gray[y:y + h, x:x + w]
+        resized = cv2.resize(roi, (48, 48))
 
-    # Realizar la predicción utilizando el modelo
-    prediction = model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
+        # Realizamos la predicción utilizando el modelo cargado
+        prediction = model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
 
-    # devuelve un vector con la probabilidad de que la imagen de entrada muestre cada una de las emociones anteriores
-    emocion = emociones[np.argmax(prediction)]
-    #print(emocion)
-    # Agregar el texto a la imagen
-    cv2.putText(frame, emocion,(10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        # Del vector con las probabilidades de emociones, cogemos el más probable.
+        emocion = emociones[np.argmax(prediction)]
+        # Agregamos el texto a la imagen
+        cv2.putText(frame, emocion,(10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
     cv2.imshow('Detección de Caras', frame)
 

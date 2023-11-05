@@ -12,7 +12,7 @@ Como se puede apreciar en la estructura de este módulo, tenemos distintas carpe
 
 Para información más detallada en cada fichero hay una breve explicación del script.
 
-La organización de este proyecto se está llevando mediante la herramienta de figma. Se puede consultar en el siguiente enlace: [Board Figma](h[ttps://pages.github.com/](https://www.figma.com/file/zuwWNhBL8BXATAkKylHJ8S/TFG-ROBOTICA?type=whiteboard&node-id=0-1&t=jODJ2miafOtQoKqD-0)https://www.figma.com/file/zuwWNhBL8BXATAkKylHJ8S/TFG-ROBOTICA?type=whiteboard&node-id=0-1&t=jODJ2miafOtQoKqD-0). 
+La organización de este proyecto se está llevando mediante la herramienta de figma. Se puede consultar en el siguiente enlace: [Board Figma](https://www.figma.com/file/zuwWNhBL8BXATAkKylHJ8S/TFG-ROBOTICA?type=whiteboard&t=pxDveDdwZCL8EPoZ-1). 
 
 ### VIDEO DEMOSTRACIÓN RECONOCIMIENTO DE EMOCIONES Y TRACKEO
 [Video demostración en YouTube](https://youtu.be/eU9cPTRtjs8). 

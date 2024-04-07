@@ -13,7 +13,7 @@ detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("modelos/shape_predictor_68_face_landmarks.dat")
 
 # Inicializamos la cámara web
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 while True:
     ret, frame = cap.read()

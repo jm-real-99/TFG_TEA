@@ -27,7 +27,7 @@ predictor = dlib.shape_predictor("modelos/shape_predictor_68_face_landmarks.dat"
 model = keras.models.load_model("modelos/model.h5")
 
 # Inicializamos la cámara web
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 while True:
     ret, frame = cap.read()
@@ -60,6 +60,8 @@ while True:
         prediction = model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
 
         # Del vector con las probabilidades de emociones, cogemos el más probable.
+        print(emociones)
+        print(prediction)
         emocion = emociones[np.argmax(prediction)]
         # Agregamos el texto a la imagen
         cv2.putText(frame, emocion,(10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)

@@ -1,5 +1,6 @@
 from Emociones import Emociones
 import numpy as np
+import cv2
 import dlib
 from tensorflow import keras
 
@@ -9,25 +10,25 @@ class GestorEmociones:
         MODELOS DE DATOS
         ******************"""
         # Cargar el modelo pre-entrenado de detección de caras de OpenCV
-        self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        self.predictor = dlib.shape_predictor("modelos/shape_predictor_68_face_landmarks.dat")
+        self._face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        self._predictor = dlib.shape_predictor("modelos/shape_predictor_68_face_landmarks.dat")
         # Cargamos el modelo preentrenado, ver la referencia para saber de dónde lo he sacado (quizás tenga que entrenar yo mismo uno)
-        self.model = keras.models.load_model("modelos/model.h5")
+        self._model = keras.models.load_model("modelos/model.h5")
         # Inicializamos la cámara web
 
         """*****************
         VARIABLES DE DATOS
         ******************"""
         #Mediante esta variable controlaremos cuál es la emoción actual y sabremos si esta ha cambiado
-        self.emocionActual = 0
+        self._emocionActual = 0
         #Mediante esta variable sabremos cuando hemos empezado a detectar una emoción.
-        self.t_inicioEmocion = 0
+        self._t_inicioEmocion = 0
         # Mediante esta variable sabremos el segundo en el que estamos. Esto nos permitirá que si en el mismo segundo detecta dos emociones distintas, entonces nos quedemos con la más importante.
-        self.tiempo = 0
+        self._tiempo = 0
         #Diccionario clave-valor donde se almacenará una dupla (Ti,Tf) donde Ti es el segundo inicial del intervalo dónde se ha mostrado la emoción y Tf el final. Esto se guardará en la emoción correspondiente.
-        self.intervalosEmociones = {emotion: [] for emotion in Emociones}
+        self._intervalosEmociones = {emotion: [] for emotion in Emociones}
         #Diccionario clave-valor donde almacenaremos el tiempo total quie se expresa la emoción a lo largo de la terapia, esto nos permitirá ahorrar tiempo de cómputo a la hora de calcular las estadísticas.
-        self.tiempoTotalEmocion = {emotion: [] for emotion in Emociones}
+        self._tiempoTotalEmocion = {emotion: [] for emotion in Emociones}
 
     """
         Detectamos las emociones en el frame indicado
@@ -68,7 +69,7 @@ class GestorEmociones:
             # Del vector con las probabilidades de emociones, cogemos el más probable.
             emocionmax=emociones[np.argmax(prediction)]
             self.registrar_emocion(emocionmax,tiempo)
-            return Emociones(emocionmax).name
+            return self.emocionActual
 
     """
         Funcion desde la que gestionamos la emoción actual del frame
@@ -125,3 +126,10 @@ class GestorEmociones:
     def exportar_datos(self):
         #TODO: implementar funcionalidad
         pass
+
+    """
+        Obtenemos la emoción actual
+        Return: Emocion
+    """
+    def get_emocionActual(self):
+        return self.emocionActual

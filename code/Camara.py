@@ -7,11 +7,17 @@ import GestorEmociones
 
 class Camara:
     def __init__(self, camera):
-        self.cap = cv2.VideoCapture(camera)
-        self.tiempoInicio = time.time()
-        self.gestorEmociones = GestorEmociones()
+        self._cap = cv2.VideoCapture(camera)
+        self._tiempoInicio = time.time()
+        self._gestorEmociones = GestorEmociones()
 
-    def readFrame(self):
+    """
+        Leemos el frame de la cámara.
+        Return: boolean
+            True si continuamos con la lectura
+            False si no continuamos con la lectura, es decir, hemos detectado una interrupción
+    """
+    def read_frame(self):
         ret, frame = self.cap.read()
 
         if not ret:
@@ -20,7 +26,7 @@ class Camara:
 
         # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
         # TODO: Llamar mediante un hilo aparte
-        emocion = self.gestorEmociones.detectar_emocion(frame, self.segundo_actual())
+        emocion = self.gestorEmociones.detectar_emocion(gray, self.segundo_actual())
 
         # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
         # TODO: Llamar mediante un hilo aparte
@@ -31,10 +37,27 @@ class Camara:
 
         cv2.imshow('Detección de Caras', frame)
 
-    """"
-    Calculamos el tiempo que lleva la cámara encendida.
-        return: Int.
-    """
+        #Terminamos el proceso si se ha interrumpido
+        if self.terminar_proceso():
+            self.cap.release()
+            cv2.destroyAllWindows()
+            return False
+        else:
+            return True
 
-    def segundo_actual(self):
+    """"
+        Calculamos el tiempo que lleva la cámara encendida.
+            return: int
+                
+    """
+    def __segundo_actual(self):
         return int(time.time() - self.tiempoInicio)
+
+    """
+        Evaluamos si el usuario ha terminado el proceso
+        Return: boolean
+            True si se ha terminado
+            False si no
+    """
+    def __terminar_proceso(self):
+        return cv2.waitKey(1) & 0xFF == ord('q')

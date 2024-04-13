@@ -20,3 +20,10 @@ Como se puede ver está dividido en distintos módulos:
 Para información más detallada, consultar los README.md de cada proyecto. 
 
 La organización de este proyecto se está llevando mediante la herramienta de figma. Se puede consultar en el siguiente enlace: [Board Figma](https://www.figma.com/file/zuwWNhBL8BXATAkKylHJ8S/TFG-ROBOTICA?type=whiteboard&t=pxDveDdwZCL8EPoZ-1). 
+
+## INTALACION
+Hay que instalar python 3.9
+Y las siguientes librerías:
+-opencv-python mediante el comando: pip install opencv-python
+- cmake mediante el comando: pip install cmake
+- dlib mediante el comando: pip install dlib

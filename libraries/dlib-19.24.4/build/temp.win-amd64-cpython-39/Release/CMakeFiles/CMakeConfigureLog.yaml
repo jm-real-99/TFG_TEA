@@ -1,0 +1,974 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      The system is: Windows - 10.0.19045 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+      Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+      
+      Compilación iniciada a las 01/05/2024 16:28:09.
+      Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\3.29.2\\CompilerIdC\\CompilerIdC.vcxproj" en nodo 1 (destinos predeterminados).
+      PrepareForBuild:
+        Creando directorio "Debug\\".
+        Creando directorio "Debug\\CompilerIdC.tlog\\".
+      InitializeBuildStatus:
+        Se creará "Debug\\CompilerIdC.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\3.29.2\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Se eliminará el archivo "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+        Aplicando tarea Touch a "Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate".
+      Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\3.29.2\\CompilerIdC\\CompilerIdC.vcxproj" (destinos predeterminados).
+      
+      Compilación correcta.
+          0 Advertencia(s)
+          0 Errores
+      
+      Tiempo transcurrido 00:00:01.49
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/3.29.2/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+      Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+      
+      Compilación iniciada a las 01/05/2024 16:28:11.
+      Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\3.29.2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" en nodo 1 (destinos predeterminados).
+      PrepareForBuild:
+        Creando directorio "Debug\\".
+        Creando directorio "Debug\\CompilerIdCXX.tlog\\".
+      InitializeBuildStatus:
+        Se creará "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\3.29.2\\CompilerIdCXX\\CompilerIdCXX.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Se eliminará el archivo "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+        Aplicando tarea Touch a "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate".
+      Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\3.29.2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" (destinos predeterminados).
+      
+      Compilación correcta.
+          0 Advertencia(s)
+          0 Errores
+      
+      Tiempo transcurrido 00:00:00.97
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+      
+      The CXX compiler identification is MSVC, found in:
+        C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/3.29.2/CompilerIdCXX/CompilerIdCXX.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:64 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-1snp1p"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-1snp1p"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-1snp1p'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1ebb4.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:12.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-1snp1p\\cmTC_1ebb4.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_1ebb4.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-1snp1p\\Debug\\".
+          Creando directorio "cmTC_1ebb4.dir\\Debug\\cmTC_1ebb4.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_1ebb4.dir\\Debug\\cmTC_1ebb4.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1ebb4.dir\\Debug\\\\" /Fd"cmTC_1ebb4.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\venv\\Lib\\site-packages\\cmake\\data\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          CMakeCCompilerABI.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1ebb4.dir\\Debug\\\\" /Fd"cmTC_1ebb4.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\venv\\Lib\\site-packages\\cmake\\data\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-1snp1p\\Debug\\cmTC_1ebb4.exe" /INCREMENTAL /ILK:"cmTC_1ebb4.dir\\Debug\\cmTC_1ebb4.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-1snp1p/Debug/cmTC_1ebb4.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-1snp1p/Debug/cmTC_1ebb4.lib" /MACHINE:X64  /machine:x64 cmTC_1ebb4.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_1ebb4.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-1snp1p\\Debug\\cmTC_1ebb4.exe
+        FinalizeBuildStatus:
+          Se eliminará el archivo "cmTC_1ebb4.dir\\Debug\\cmTC_1ebb4.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_1ebb4.dir\\Debug\\cmTC_1ebb4.tlog\\cmTC_1ebb4.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-1snp1p\\cmTC_1ebb4.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.79
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:170 (message)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.30.30705/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Running the C compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.30.30705/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.30.30709.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:64 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-sfznei"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-sfznei"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-sfznei'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ff15a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:13.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-sfznei\\cmTC_ff15a.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_ff15a.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-sfznei\\Debug\\".
+          Creando directorio "cmTC_ff15a.dir\\Debug\\cmTC_ff15a.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_ff15a.dir\\Debug\\cmTC_ff15a.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_ff15a.dir\\Debug\\\\" /Fd"cmTC_ff15a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\venv\\Lib\\site-packages\\cmake\\data\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          CMakeCXXCompilerABI.cpp
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_ff15a.dir\\Debug\\\\" /Fd"cmTC_ff15a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\venv\\Lib\\site-packages\\cmake\\data\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-sfznei\\Debug\\cmTC_ff15a.exe" /INCREMENTAL /ILK:"cmTC_ff15a.dir\\Debug\\cmTC_ff15a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-sfznei/Debug/cmTC_ff15a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-sfznei/Debug/cmTC_ff15a.lib" /MACHINE:X64  /machine:x64 cmTC_ff15a.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_ff15a.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-sfznei\\Debug\\cmTC_ff15a.exe
+        FinalizeBuildStatus:
+          Se eliminará el archivo "cmTC_ff15a.dir\\Debug\\cmTC_ff15a.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_ff15a.dir\\Debug\\cmTC_ff15a.tlog\\cmTC_ff15a.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-sfznei\\cmTC_ff15a.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.78
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:170 (message)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.30.30705/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.30.30705/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.30.30709.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckCXXCompilerFlag.cmake:34 (cmake_check_compiler_flag)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/external/pybind11/tools/pybind11Common.cmake:268 (check_cxx_compiler_flag)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/external/pybind11/tools/pybind11Common.cmake:322 (_pybind11_return_if_cxx_and_linker_flags_work)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/external/pybind11/tools/pybind11Common.cmake:366 (_pybind11_generate_lto)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/external/pybind11/CMakeLists.txt:200 (include)"
+    checks:
+      - "Performing Test HAS_MSVC_GL_LTCG"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-n2g21g"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-n2g21g"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/MTd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: ""
+    buildResult:
+      variable: "HAS_MSVC_GL_LTCG"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-n2g21g'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_d71ea.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:15.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\cmTC_d71ea.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_d71ea.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\Debug\\".
+          Creando directorio "cmTC_d71ea.dir\\Debug\\cmTC_d71ea.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_d71ea.dir\\Debug\\cmTC_d71ea.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D HAS_MSVC_GL_LTCG /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_d71ea.dir\\Debug\\\\" /Fd"cmTC_d71ea.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\src.cxx"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          src.cxx
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D HAS_MSVC_GL_LTCG /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_d71ea.dir\\Debug\\\\" /Fd"cmTC_d71ea.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\src.cxx"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\Debug\\cmTC_d71ea.exe" /INCREMENTAL /ILK:"cmTC_d71ea.dir\\Debug\\cmTC_d71ea.ilk" /NOLOGO "-LTCG" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-n2g21g/Debug/cmTC_d71ea.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-n2g21g/Debug/cmTC_d71ea.lib" /MACHINE:X64  /machine:x64 cmTC_d71ea.dir\\Debug\\src.obj
+        LINK : warning LNK4075: se omite '/INCREMENTAL' debido a la especificación '/LTCG' [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\cmTC_d71ea.vcxproj]
+          Generando código
+          Generación de código finalizada
+          cmTC_d71ea.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\Debug\\cmTC_d71ea.exe
+        FinalizeBuildStatus:
+          Se eliminará el archivo "cmTC_d71ea.dir\\Debug\\cmTC_d71ea.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_d71ea.dir\\Debug\\cmTC_d71ea.tlog\\cmTC_d71ea.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\cmTC_d71ea.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+        
+        "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\cmTC_d71ea.vcxproj" (destino predeterminado) (1) ->
+        (Link destino) -> 
+          LINK : warning LNK4075: se omite '/INCREMENTAL' debido a la especificación '/LTCG' [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-n2g21g\\cmTC_d71ea.vcxproj]
+        
+            1 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:01.23
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/check_if_sse4_instructions_executable_on_host.cmake:13 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/set_compiler_specific_options.cmake:8 (include)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:30 (include)"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/test_for_sse4"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/dlib_build/sse4_test_build"
+    buildResult:
+      variable: "test_for_sse4_worked"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/dlib_build/sse4_test_build'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:28.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\sse4_test_build\\ALL_BUILD.vcxproj" en nodo 1 (destinos predeterminados).
+        El proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\sse4_test_build\\ALL_BUILD.vcxproj" (1) está compilando "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\sse4_test_build\\ZERO_CHECK.vcxproj" (2) en el nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "x64\\Debug\\ZERO_CHECK\\".
+          Creando directorio "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\".
+        InitializeBuildStatus:
+          Se creará "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        CustomBuild:
+          1>Checking Build System
+        FinalizeBuildStatus:
+          Se eliminará el archivo "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\ZERO_CHECK.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\sse4_test_build\\ZERO_CHECK.vcxproj" (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "x64\\Debug\\ALL_BUILD\\".
+          Creando directorio "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\".
+        InitializeBuildStatus:
+          Se creará "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        CustomBuild:
+          Building Custom Rule C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/test_for_sse4/CMakeLists.txt
+        FinalizeBuildStatus:
+          Se eliminará el archivo "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\ALL_BUILD.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\sse4_test_build\\ALL_BUILD.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.69
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/check_if_avx_instructions_executable_on_host.cmake:13 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/set_compiler_specific_options.cmake:12 (include)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:30 (include)"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/test_for_avx"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/dlib_build/avx_test_build"
+    buildResult:
+      variable: "test_for_avx_worked"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/dlib_build/avx_test_build'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:37.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\avx_test_build\\ALL_BUILD.vcxproj" en nodo 1 (destinos predeterminados).
+        El proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\avx_test_build\\ALL_BUILD.vcxproj" (1) está compilando "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\avx_test_build\\ZERO_CHECK.vcxproj" (2) en el nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "x64\\Debug\\ZERO_CHECK\\".
+          Creando directorio "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\".
+        InitializeBuildStatus:
+          Se creará "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        CustomBuild:
+          1>Checking Build System
+        FinalizeBuildStatus:
+          Se eliminará el archivo "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\ZERO_CHECK.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\avx_test_build\\ZERO_CHECK.vcxproj" (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "x64\\Debug\\ALL_BUILD\\".
+          Creando directorio "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\".
+        InitializeBuildStatus:
+          Se creará "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        CustomBuild:
+          Building Custom Rule C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/test_for_avx/CMakeLists.txt
+        FinalizeBuildStatus:
+          Se eliminará el archivo "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\ALL_BUILD.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\avx_test_build\\ALL_BUILD.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.64
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/check_if_neon_available.cmake:14 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/set_compiler_specific_options.cmake:16 (include)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:30 (include)"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/test_for_neon"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/dlib_build/neon_test_build"
+    buildResult:
+      variable: "test_for_neon_worked"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/dlib_build/neon_test_build'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:38.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\ALL_BUILD.vcxproj" en nodo 1 (destinos predeterminados).
+        El proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\ALL_BUILD.vcxproj" (1) está compilando "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\ZERO_CHECK.vcxproj" (2) en el nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "x64\\Debug\\ZERO_CHECK\\".
+          Creando directorio "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\".
+        InitializeBuildStatus:
+          Se creará "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        CustomBuild:
+          1>Checking Build System
+        FinalizeBuildStatus:
+          Se eliminará el archivo "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\ZERO_CHECK.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\ZERO_CHECK.vcxproj" (destinos predeterminados).
+        El proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\ALL_BUILD.vcxproj" (1) está compilando "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\neon_test.vcxproj" (3) en el nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "neon_test.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\Debug\\".
+          Creando directorio "neon_test.dir\\Debug\\neon_test.tlog\\".
+        InitializeBuildStatus:
+          Se creará "neon_test.dir\\Debug\\neon_test.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        CustomBuild:
+          Building Custom Rule C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/test_for_neon/CMakeLists.txt
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"neon_test.dir\\Debug\\\\" /Fd"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\Debug\\neon_test.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\dlib\\cmake_utils\\test_for_neon\\neon_test.cpp"
+          neon_test.cpp
+        C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\dlib\\cmake_utils\\test_for_neon\\neon_test.cpp(3,1): fatal error C1189: #error:  "No NEON" [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\neon_test.vcxproj]
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\neon_test.vcxproj" (destinos predeterminados) -- ERROR.
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\ALL_BUILD.vcxproj" (destinos predeterminados) -- ERROR.
+        
+        ERROR al compilar.
+        
+        "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\ALL_BUILD.vcxproj" (destino predeterminado) (1) ->
+        "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\neon_test.vcxproj" (destino predeterminado) (3) ->
+        (ClCompile destino) -> 
+          C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\dlib\\cmake_utils\\test_for_neon\\neon_test.cpp(3,1): fatal error C1189: #error:  "No NEON" [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\dlib_build\\neon_test_build\\neon_test.vcxproj]
+        
+            0 Advertencia(s)
+            1 Errores
+        
+        Tiempo transcurrido 00:00:00.88
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckTypeSize.cmake:250 (check_include_file)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/set_compiler_specific_options.cmake:52 (check_type_size)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:30 (include)"
+    checks:
+      - "Looking for sys/types.h"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-0y135i"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-0y135i"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-0y135i'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_68061.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:39.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-0y135i\\cmTC_68061.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_68061.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-0y135i\\Debug\\".
+          Creando directorio "cmTC_68061.dir\\Debug\\cmTC_68061.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_68061.dir\\Debug\\cmTC_68061.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_68061.dir\\Debug\\\\" /Fd"cmTC_68061.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-0y135i\\CheckIncludeFile.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          CheckIncludeFile.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_68061.dir\\Debug\\\\" /Fd"cmTC_68061.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-0y135i\\CheckIncludeFile.c"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-0y135i\\Debug\\cmTC_68061.exe" /INCREMENTAL /ILK:"cmTC_68061.dir\\Debug\\cmTC_68061.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-0y135i/Debug/cmTC_68061.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-0y135i/Debug/cmTC_68061.lib" /MACHINE:X64  /machine:x64 cmTC_68061.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_68061.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-0y135i\\Debug\\cmTC_68061.exe
+        FinalizeBuildStatus:
+          Se eliminará el archivo "cmTC_68061.dir\\Debug\\cmTC_68061.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_68061.dir\\Debug\\cmTC_68061.tlog\\cmTC_68061.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-0y135i\\cmTC_68061.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.74
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckTypeSize.cmake:251 (check_include_file)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/set_compiler_specific_options.cmake:52 (check_type_size)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:30 (include)"
+    checks:
+      - "Looking for stdint.h"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-3eupwx"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-3eupwx"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-3eupwx'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ee214.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:40.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-3eupwx\\cmTC_ee214.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_ee214.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-3eupwx\\Debug\\".
+          Creando directorio "cmTC_ee214.dir\\Debug\\cmTC_ee214.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_ee214.dir\\Debug\\cmTC_ee214.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ee214.dir\\Debug\\\\" /Fd"cmTC_ee214.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-3eupwx\\CheckIncludeFile.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          CheckIncludeFile.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ee214.dir\\Debug\\\\" /Fd"cmTC_ee214.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-3eupwx\\CheckIncludeFile.c"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-3eupwx\\Debug\\cmTC_ee214.exe" /INCREMENTAL /ILK:"cmTC_ee214.dir\\Debug\\cmTC_ee214.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-3eupwx/Debug/cmTC_ee214.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-3eupwx/Debug/cmTC_ee214.lib" /MACHINE:X64  /machine:x64 cmTC_ee214.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_ee214.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-3eupwx\\Debug\\cmTC_ee214.exe
+        FinalizeBuildStatus:
+          Se eliminará el archivo "cmTC_ee214.dir\\Debug\\cmTC_ee214.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_ee214.dir\\Debug\\cmTC_ee214.tlog\\cmTC_ee214.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-3eupwx\\cmTC_ee214.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.76
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckTypeSize.cmake:252 (check_include_file)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/set_compiler_specific_options.cmake:52 (check_type_size)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:30 (include)"
+    checks:
+      - "Looking for stddef.h"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-834mvt"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-834mvt"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_STDDEF_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-834mvt'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_f89dd.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:41.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-834mvt\\cmTC_f89dd.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_f89dd.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-834mvt\\Debug\\".
+          Creando directorio "cmTC_f89dd.dir\\Debug\\cmTC_f89dd.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_f89dd.dir\\Debug\\cmTC_f89dd.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f89dd.dir\\Debug\\\\" /Fd"cmTC_f89dd.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-834mvt\\CheckIncludeFile.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          CheckIncludeFile.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f89dd.dir\\Debug\\\\" /Fd"cmTC_f89dd.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-834mvt\\CheckIncludeFile.c"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-834mvt\\Debug\\cmTC_f89dd.exe" /INCREMENTAL /ILK:"cmTC_f89dd.dir\\Debug\\cmTC_f89dd.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-834mvt/Debug/cmTC_f89dd.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-834mvt/Debug/cmTC_f89dd.lib" /MACHINE:X64  /machine:x64 cmTC_f89dd.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_f89dd.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-834mvt\\Debug\\cmTC_f89dd.exe
+        FinalizeBuildStatus:
+          Se eliminará el archivo "cmTC_f89dd.dir\\Debug\\cmTC_f89dd.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_f89dd.dir\\Debug\\cmTC_f89dd.tlog\\cmTC_f89dd.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-834mvt\\cmTC_f89dd.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.74
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckTypeSize.cmake:146 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckTypeSize.cmake:271 (__check_type_size_impl)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/set_compiler_specific_options.cmake:52 (check_type_size)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:30 (include)"
+    checks:
+      - "Check size of void*"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-xs16ym"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-xs16ym"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_SIZE_OF_VOID_PTR"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-xs16ym'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_cddf7.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:42.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-xs16ym\\cmTC_cddf7.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_cddf7.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-xs16ym\\Debug\\".
+          Creando directorio "cmTC_cddf7.dir\\Debug\\cmTC_cddf7.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_cddf7.dir\\Debug\\cmTC_cddf7.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_cddf7.dir\\Debug\\\\" /Fd"cmTC_cddf7.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-xs16ym\\SIZE_OF_VOID_PTR.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          SIZE_OF_VOID_PTR.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_cddf7.dir\\Debug\\\\" /Fd"cmTC_cddf7.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-xs16ym\\SIZE_OF_VOID_PTR.c"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-xs16ym\\Debug\\cmTC_cddf7.exe" /INCREMENTAL /ILK:"cmTC_cddf7.dir\\Debug\\cmTC_cddf7.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-xs16ym/Debug/cmTC_cddf7.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-xs16ym/Debug/cmTC_cddf7.lib" /MACHINE:X64  /machine:x64 cmTC_cddf7.dir\\Debug\\SIZE_OF_VOID_PTR.obj
+          cmTC_cddf7.vcxproj -> C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-xs16ym\\Debug\\cmTC_cddf7.exe
+        FinalizeBuildStatus:
+          Se eliminará el archivo "cmTC_cddf7.dir\\Debug\\cmTC_cddf7.tlog\\unsuccessfulbuild".
+          Aplicando tarea Touch a "cmTC_cddf7.dir\\Debug\\cmTC_cddf7.tlog\\cmTC_cddf7.lastbuildstate".
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-xs16ym\\cmTC_cddf7.vcxproj" (destinos predeterminados).
+        
+        Compilación correcta.
+            0 Advertencia(s)
+            0 Errores
+        
+        Tiempo transcurrido 00:00:00.75
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindBLAS.cmake:372 (check_function_exists)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindBLAS.cmake:416 (check_blas_libraries)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/find_blas.cmake:433 (find_package)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:612 (include)"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-gbqev5"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-gbqev5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "True"
+    buildResult:
+      variable: "BLAS_WORKS"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-gbqev5'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_83f0b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:43.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\cmTC_83f0b.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_83f0b.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\Debug\\".
+          Creando directorio "cmTC_83f0b.dir\\Debug\\cmTC_83f0b.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_83f0b.dir\\Debug\\cmTC_83f0b.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=sgemm_ /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_83f0b.dir\\Debug\\\\" /Fd"cmTC_83f0b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\CheckFunctionExists.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          CheckFunctionExists.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=sgemm_ /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_83f0b.dir\\Debug\\\\" /Fd"cmTC_83f0b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\CheckFunctionExists.c"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\Debug\\cmTC_83f0b.exe" /INCREMENTAL /ILK:"cmTC_83f0b.dir\\Debug\\cmTC_83f0b.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-gbqev5/Debug/cmTC_83f0b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-gbqev5/Debug/cmTC_83f0b.lib" /MACHINE:X64  /machine:x64 cmTC_83f0b.dir\\Debug\\CheckFunctionExists.obj
+        CheckFunctionExists.obj : error LNK2019: símbolo externo sgemm_ sin resolver al que se hace referencia en la función main [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\cmTC_83f0b.vcxproj]
+        C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\Debug\\cmTC_83f0b.exe : fatal error LNK1120: 1 externos sin resolver [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\cmTC_83f0b.vcxproj]
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\cmTC_83f0b.vcxproj" (destinos predeterminados) -- ERROR.
+        
+        ERROR al compilar.
+        
+        "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\cmTC_83f0b.vcxproj" (destino predeterminado) (1) ->
+        (Link destino) -> 
+          CheckFunctionExists.obj : error LNK2019: símbolo externo sgemm_ sin resolver al que se hace referencia en la función main [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\cmTC_83f0b.vcxproj]
+          C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\Debug\\cmTC_83f0b.exe : fatal error LNK1120: 1 externos sin resolver [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-gbqev5\\cmTC_83f0b.vcxproj]
+        
+            0 Advertencia(s)
+            2 Errores
+        
+        Tiempo transcurrido 00:00:00.72
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindBLAS.cmake:468 (find_package)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/find_blas.cmake:433 (find_package)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:612 (include)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-k3tx73"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-k3tx73"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "True"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-k3tx73'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_91bb8.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:44.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\cmTC_91bb8.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_91bb8.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\Debug\\".
+          Creando directorio "cmTC_91bb8.dir\\Debug\\cmTC_91bb8.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_91bb8.dir\\Debug\\cmTC_91bb8.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_91bb8.dir\\Debug\\\\" /Fd"cmTC_91bb8.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\src.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          src.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_91bb8.dir\\Debug\\\\" /Fd"cmTC_91bb8.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\src.c"
+        C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\src.c(1,10): fatal error C1083: No se puede abrir el archivo incluir: 'pthread.h': No such file or directory [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\cmTC_91bb8.vcxproj]
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\cmTC_91bb8.vcxproj" (destinos predeterminados) -- ERROR.
+        
+        ERROR al compilar.
+        
+        "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\cmTC_91bb8.vcxproj" (destino predeterminado) (1) ->
+        (ClCompile destino) -> 
+          C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\src.c(1,10): fatal error C1083: No se puede abrir el archivo incluir: 'pthread.h': No such file or directory [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-k3tx73\\cmTC_91bb8.vcxproj]
+        
+            0 Advertencia(s)
+            1 Errores
+        
+        Tiempo transcurrido 00:00:00.52
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindBLAS.cmake:468 (find_package)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/find_blas.cmake:433 (find_package)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:612 (include)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ognseu"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ognseu"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "True"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ognseu'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ba88e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:45.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\cmTC_ba88e.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_ba88e.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\Debug\\".
+          Creando directorio "cmTC_ba88e.dir\\Debug\\cmTC_ba88e.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_ba88e.dir\\Debug\\cmTC_ba88e.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ba88e.dir\\Debug\\\\" /Fd"cmTC_ba88e.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\CheckFunctionExists.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          CheckFunctionExists.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ba88e.dir\\Debug\\\\" /Fd"cmTC_ba88e.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\CheckFunctionExists.c"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\Debug\\cmTC_ba88e.exe" /INCREMENTAL /ILK:"cmTC_ba88e.dir\\Debug\\cmTC_ba88e.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ognseu/Debug/cmTC_ba88e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ognseu/Debug/cmTC_ba88e.lib" /MACHINE:X64  /machine:x64 cmTC_ba88e.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: no se puede abrir el archivo 'pthreads.lib' [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\cmTC_ba88e.vcxproj]
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\cmTC_ba88e.vcxproj" (destinos predeterminados) -- ERROR.
+        
+        ERROR al compilar.
+        
+        "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\cmTC_ba88e.vcxproj" (destino predeterminado) (1) ->
+        (Link destino) -> 
+          LINK : fatal error LNK1104: no se puede abrir el archivo 'pthreads.lib' [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ognseu\\cmTC_ba88e.vcxproj]
+        
+            0 Advertencia(s)
+            1 Errores
+        
+        Tiempo transcurrido 00:00:00.58
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindBLAS.cmake:468 (find_package)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/cmake_utils/find_blas.cmake:433 (find_package)"
+      - "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/CMakeLists.txt:612 (include)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ybrt3a"
+      binary: "C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ybrt3a"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_POSITION_INDEPENDENT_CODE: "True"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ybrt3a'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_fd091.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Microsoft (R) Build Engine versión 17.0.0+c9eb9dd64 para .NET Framework
+        Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+        
+        Compilación iniciada a las 01/05/2024 16:28:46.
+        Proyecto "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\cmTC_fd091.vcxproj" en nodo 1 (destinos predeterminados).
+        PrepareForBuild:
+          Creando directorio "cmTC_fd091.dir\\Debug\\".
+          Creando directorio "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\Debug\\".
+          Creando directorio "cmTC_fd091.dir\\Debug\\cmTC_fd091.tlog\\".
+        InitializeBuildStatus:
+          Se creará "cmTC_fd091.dir\\Debug\\cmTC_fd091.tlog\\unsuccessfulbuild" porque se especificó "AlwaysCreate".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fd091.dir\\Debug\\\\" /Fd"cmTC_fd091.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\CheckFunctionExists.c"
+          Compilador de optimización de C/C++ de Microsoft (R) versión 19.30.30709 para x64
+          CheckFunctionExists.c
+          (C) Microsoft Corporation. Todos los derechos reservados.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fd091.dir\\Debug\\\\" /Fd"cmTC_fd091.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\CheckFunctionExists.c"
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\Debug\\cmTC_fd091.exe" /INCREMENTAL /ILK:"cmTC_fd091.dir\\Debug\\cmTC_fd091.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ybrt3a/Debug/cmTC_fd091.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/build/temp.win-amd64-cpython-39/Release/CMakeFiles/CMakeScratch/TryCompile-ybrt3a/Debug/cmTC_fd091.lib" /MACHINE:X64  /machine:x64 cmTC_fd091.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: no se puede abrir el archivo 'pthread.lib' [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\cmTC_fd091.vcxproj]
+        Compilación del proyecto terminada "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\cmTC_fd091.vcxproj" (destinos predeterminados) -- ERROR.
+        
+        ERROR al compilar.
+        
+        "C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\cmTC_fd091.vcxproj" (destino predeterminado) (1) ->
+        (Link destino) -> 
+          LINK : fatal error LNK1104: no se puede abrir el archivo 'pthread.lib' [C:\\Users\\usuario\\Documents\\GitHub\\TFG_TEA\\libraries\\dlib-19.24.4\\build\\temp.win-amd64-cpython-39\\Release\\CMakeFiles\\CMakeScratch\\TryCompile-ybrt3a\\cmTC_fd091.vcxproj]
+        
+            0 Advertencia(s)
+            1 Errores
+        
+        Tiempo transcurrido 00:00:00.58
+        
+      exitCode: 1
+...

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\usuario\Documents\GitHub\TFG_TEA\libraries\dlib-19.24.4\build\temp.win-amd64-cpython-39\Release\CMakeFiles\e97966a421275cc08301c7ece1835cf8\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{BAD534EC-309B-3C4B-8A6D-FD0460299D71}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

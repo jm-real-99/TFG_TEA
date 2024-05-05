@@ -1,0 +1,19 @@
+# CMake generation dependency list for this directory.
+C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/external/pybind11/CMakeLists.txt
+C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/external/pybind11/tools/FindPythonLibsNew.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/external/pybind11/tools/pybind11Common.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/libraries/dlib-19.24.4/dlib/external/pybind11/tools/pybind11Tools.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeDependentOption.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakePackageConfigHelpers.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CMakeParseArguments.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckCXXCompilerFlag.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/CheckCXXSourceCompiles.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindPackageHandleStandardArgs.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindPackageMessage.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/FindPythonInterp.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/GNUInstallDirs.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/Internal/CheckCompilerFlag.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/Internal/CheckFlagCommonConfig.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake
+C:/Users/usuario/Documents/GitHub/TFG_TEA/venv/Lib/site-packages/cmake/data/share/cmake-3.29/Modules/WriteBasicConfigVersionFile.cmake

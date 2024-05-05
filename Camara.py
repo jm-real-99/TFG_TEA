@@ -2,14 +2,14 @@ import cv2
 from Emociones import Emociones
 import numpy as np
 import time
-import GestorEmociones
-
+from GestorEmociones import GestorEmociones
 
 class Camara:
     def __init__(self, camera):
         self._cap = cv2.VideoCapture(camera)
         self._tiempoInicio = time.time()
         self._gestorEmociones = GestorEmociones()
+
 
     """
         Leemos el frame de la cámara.

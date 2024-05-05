@@ -40,16 +40,16 @@ class GestorEmociones:
     """
     def detectar_emocion(self,frame,tiempo):
         # Vemos si deberíamos de actualizar el tiempo actual
-        self.actualizar_tiempo(tiempo)
+        self.__actualizar_tiempo(tiempo)
 
         # Detectamos caras en el fotograma
-        faces = self.face_cascade.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
+        faces = self._face_cascade.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
         for (x, y, w, h) in faces:
             # Dibujamos un rectángulo alrededor de la cara detectada
             # cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
             # Obtenemos los puntos de referencia faciales
-            landmarks = self.predictor(gray, dlib.rectangle(x, y, x + w, y + h))
+            landmarks = self._predictor(frame, dlib.rectangle(x, y, x + w, y + h))
 
             # Dibujamos los puntos recogidos en landmarks
             for i in range(68):  # 68 puntos de referencia faciales
@@ -57,18 +57,18 @@ class GestorEmociones:
                 cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)
 
             # Extraemos la región de interés (ROI) y la redimensionamos
-            roi = gray[y:y + h, x:x + w]
+            roi = frame[y:y + h, x:x + w]
             resized = cv2.resize(roi, (48, 48))
 
             # Realizamos la predicción utilizando el modelo cargado
-            prediction = self.model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
+            prediction = self._model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
 
             print(Emociones.name)
             print(prediction)
 
             # Del vector con las probabilidades de emociones, cogemos el más probable.
-            emocionmax=emociones[np.argmax(prediction)]
-            self.registrar_emocion(emocionmax,tiempo)
+            emocionmax=Emociones[np.argmax(prediction)]
+            self.__registrar_emocion(emocionmax,tiempo)
             return self.emocionActual
 
     """
@@ -80,13 +80,13 @@ class GestorEmociones:
     def __registrar_emocion(self,emocion,tiempo):
         # Para el caso de que el segundo actual sea el mismo, entonces solo cambiaremos de emocion si ha aparecido una prioritaria.
         if(tiempo==self.tiempo and emocion<self.emocionActual):
-            self.cambiar_emocion(tiempo, emocion)
+            self.__cambiar_emocion(tiempo, emocion)
         # Si hemos cambiado de tiempo y la emoción es distinta,entonces cambiamos la emocion actual
         if (tiempo!=self.tiempo and emocion != self.emocionActual):
-            self.cambiar_emocion(tiempo, emocion)
+            self.__cambiar_emocion(tiempo, emocion)
         # Si no hemos cambiado de tiemo, pero la emoción es la misma, le sumamos un segundo a la emoción actual
         elif(tiempo!=self.tiempo and emocion != self.emocionActual):
-            self.tiempoTotalEmocion[emocion] += 1
+            self._tiempoTotalEmocion[emocion] += 1
         #Para cualquier otro caso no hacemos nada.
 
     """

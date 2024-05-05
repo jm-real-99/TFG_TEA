@@ -20,9 +20,9 @@ def listar_camaras():
     return int(input("Introduce camara: "))
 
 
-camara = Camara(listar_camaras())
+camara = Camara(2)
 
-while (True):
+while True:
     end = camara.read_frame()
-    if not (end):
+    if not end:
         break

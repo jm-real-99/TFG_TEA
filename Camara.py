@@ -4,12 +4,12 @@ import numpy as np
 import time
 from GestorEmociones import GestorEmociones
 
+
 class Camara:
     def __init__(self, camera):
         self._cap = cv2.VideoCapture(camera)
         self._tiempoInicio = time.time()
         self._gestorEmociones = GestorEmociones()
-
 
     """
         Leemos el frame de la cámara.
@@ -17,8 +17,9 @@ class Camara:
             True si continuamos con la lectura
             False si no continuamos con la lectura, es decir, hemos detectado una interrupción
     """
+
     def read_frame(self):
-        ret, frame = self.cap.read()
+        ret, frame = self._cap.read()
 
         if not ret:
             return
@@ -26,20 +27,22 @@ class Camara:
 
         # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
         # TODO: Llamar mediante un hilo aparte
-        emocion = self.gestorEmociones.detectar_emocion(gray, self.segundo_actual())
+        emocion = self._gestorEmociones.detectar_emocion(gray, self.__segundo_actual())
 
         # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
         # TODO: Llamar mediante un hilo aparte
-        
+
         # TODO: Incluir un semaforo que controle que ambas cosas se han hecho
         # Agregamos el texto a la imagen
-        cv2.putText(frame, emocion, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        print(emocion)
+        print(type(emocion))
+        cv2.putText(frame, emocion.name, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
         cv2.imshow('Detección de Caras', frame)
 
-        #Terminamos el proceso si se ha interrumpido
-        if self.terminar_proceso():
-            self.cap.release()
+        # Terminamos el proceso si se ha interrumpido
+        if self.__terminar_proceso():
+            self._cap.release()
             cv2.destroyAllWindows()
             return False
         else:
@@ -50,8 +53,9 @@ class Camara:
             return: int
                 
     """
+
     def __segundo_actual(self):
-        return int(time.time() - self.tiempoInicio)
+        return int(time.time() - self._tiempoInicio)
 
     """
         Evaluamos si el usuario ha terminado el proceso
@@ -59,5 +63,6 @@ class Camara:
             True si se ha terminado
             False si no
     """
+
     def __terminar_proceso(self):
         return cv2.waitKey(1) & 0xFF == ord('q')

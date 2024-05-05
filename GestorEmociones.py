@@ -12,22 +12,26 @@ class GestorEmociones:
         # Cargar el modelo pre-entrenado de detección de caras de OpenCV
         self._face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         self._predictor = dlib.shape_predictor("modelos/shape_predictor_68_face_landmarks.dat")
-        # Cargamos el modelo preentrenado, ver la referencia para saber de dónde lo he sacado (quizás tenga que entrenar yo mismo uno)
+        # Cargamos el modelo preentrenado, ver la referencia para saber de dónde lo he sacado
+        # (quizás tenga que entrenar yo mismo uno)
         self._model = keras.models.load_model("modelos/model.h5")
         # Inicializamos la cámara web
 
         """*****************
         VARIABLES DE DATOS
         ******************"""
-        #Mediante esta variable controlaremos cuál es la emoción actual y sabremos si esta ha cambiado
-        self._emocionActual = 0
-        #Mediante esta variable sabremos cuando hemos empezado a detectar una emoción.
+        # Mediante esta variable controlaremos cuál es la emoción actual y sabremos si esta ha cambiado
+        self._emocionActual = Emociones.NEUTRO
+        # Mediante esta variable sabremos cuando hemos empezado a detectar una emoción.
         self._t_inicioEmocion = 0
-        # Mediante esta variable sabremos el segundo en el que estamos. Esto nos permitirá que si en el mismo segundo detecta dos emociones distintas, entonces nos quedemos con la más importante.
+        # Mediante esta variable sabremos el segundo en el que estamos. Esto nos permitirá que si en el mismo segundo
+        # detecta dos emociones distintas, entonces nos quedemos con la más importante.
         self._tiempo = 0
-        #Diccionario clave-valor donde se almacenará una dupla (Ti,Tf) donde Ti es el segundo inicial del intervalo dónde se ha mostrado la emoción y Tf el final. Esto se guardará en la emoción correspondiente.
+        # Diccionario clave-valor donde se almacenará una dupla (Ti,Tf) donde Ti es el segundo inicial del intervalo
+        # dónde se ha mostrado la emoción y Tf el final. Esto se guardará en la emoción correspondiente.
         self._intervalosEmociones = {emotion: [] for emotion in Emociones}
-        #Diccionario clave-valor donde almacenaremos el tiempo total quie se expresa la emoción a lo largo de la terapia, esto nos permitirá ahorrar tiempo de cómputo a la hora de calcular las estadísticas.
+        # Diccionario clave-valor donde almacenaremos el tiempo total quie se expresa la emoción a lo largo de la
+        # terapia, esto nos permitirá ahorrar tiempo de cómputo a la hora de calcular las estadísticas.
         self._tiempoTotalEmocion = {emotion: [] for emotion in Emociones}
 
     """
@@ -38,7 +42,9 @@ class GestorEmociones:
         :return
             String. Emocion
     """
+
     def detectar_emocion(self,frame,tiempo):
+        print("Entramos en detectar_emocion")
         # Vemos si deberíamos de actualizar el tiempo actual
         self.__actualizar_tiempo(tiempo)
 
@@ -63,13 +69,15 @@ class GestorEmociones:
             # Realizamos la predicción utilizando el modelo cargado
             prediction = self._model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
 
-            print(Emociones.name)
-            print(prediction)
-
             # Del vector con las probabilidades de emociones, cogemos el más probable.
-            emocionmax=Emociones[np.argmax(prediction)]
+            print(prediction)
+            print(np.argmax(prediction))
+            emocionmax = list(Emociones)[np.argmax(prediction)]
+            print(emocionmax)
+            print(emocionmax.name)
             self.__registrar_emocion(emocionmax,tiempo)
-            return self.emocionActual
+            print("Vamos a devolver: "+self._emocionActual.name)
+            return self._emocionActual
 
     """
         Funcion desde la que gestionamos la emoción actual del frame
@@ -78,14 +86,15 @@ class GestorEmociones:
             emocion (int): Emoción detectada del enum Emociones
         """
     def __registrar_emocion(self,emocion,tiempo):
-        # Para el caso de que el segundo actual sea el mismo, entonces solo cambiaremos de emocion si ha aparecido una prioritaria.
-        if(tiempo==self.tiempo and emocion<self.emocionActual):
+        # Para el caso de que el segundo actual sea el mismo, entonces solo cambiaremos de emocion si ha aparecido una
+        # emocion distinta y esta no es prioritaria (no es NEUTRO).
+        if tiempo == self._tiempo and emocion != self._emocionActual and emocion != Emociones.NEUTRO:
             self.__cambiar_emocion(tiempo, emocion)
         # Si hemos cambiado de tiempo y la emoción es distinta,entonces cambiamos la emocion actual
-        if (tiempo!=self.tiempo and emocion != self.emocionActual):
+        if tiempo != self._tiempo and emocion != self._emocionActual:
             self.__cambiar_emocion(tiempo, emocion)
-        # Si no hemos cambiado de tiemo, pero la emoción es la misma, le sumamos un segundo a la emoción actual
-        elif(tiempo!=self.tiempo and emocion != self.emocionActual):
+        # Si no hemos cambiado de tiempo, pero la emoción es la misma, le sumamos un segundo a la emoción actual
+        elif tiempo != self._tiempo and emocion != self._emocionActual:
             self._tiempoTotalEmocion[emocion] += 1
         #Para cualquier otro caso no hacemos nada.
 
@@ -97,9 +106,9 @@ class GestorEmociones:
         """
 
     def __cambiar_emocion(self, tiempo, emocion):
-        self.add_emotion_interval(tiempo)
-        self.t_inicioEmocion = tiempo
-        self.emocionActual = emocion
+        self.__add_emotion_interval(tiempo)
+        self._t_inicioEmocion = tiempo
+        self._emocionActual = emocion
 
     """
         Agregamos un intervalo con la emoción específica
@@ -109,16 +118,17 @@ class GestorEmociones:
             emocion (int): Emoción detectada del enum Emociones
     """
     def __add_emotion_interval(self,fin):
-        self.intervalosEmociones[self.emocionActual].append((self.t_inicioEmocion, fin))
+        print("Añadimos emocion "+self._emocionActual.name+": ("+str(self._t_inicioEmocion)+","+str(fin)+")")
+        self._intervalosEmociones[self._emocionActual].append((self._t_inicioEmocion, fin))
 
     """
         Actualizamos el segundo si es que ya ha pasado el actual
         Args:
             tiempo(int): Tiempo actual
     """
-    def __actualizar_tiempo(self,tiempo):
-        if(tiempo>self.tiempo):
-            self.tiempo=tiempo
+    def __actualizar_tiempo(self, tiempo):
+        if tiempo > self._tiempo:
+            self._tiempo = tiempo
 
     """
         Hemos terminado la terapia así que exportaremos los datos de recabados a la base de datos
@@ -131,5 +141,5 @@ class GestorEmociones:
         Obtenemos la emoción actual
         Return: Emocion
     """
-    def get_emocionActual(self):
-        return self.emocionActual
+    def get_emocionactual(self):
+        return self._emocionActual

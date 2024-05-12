@@ -36,10 +36,19 @@ class Camara:
         # Agregamos el texto a la imagen
         print(emocion)
         print(type(emocion))
-        cv2.putText(frame, emocion.name, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        if emocion != None:
+            textoimg = emocion.name
+            textocolor = (0, 255, 0)
+        else:
+            textoimg = "No se detecta la cara"
+            textocolor = (255, 0, 0)
+
+        cv2.putText(frame, textoimg, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, textocolor, 2)
 
         cv2.imshow('Detección de Caras', frame)
-
+        print("*********************************")
+        print("*********************************")
+        print("*********************************")
         # Terminamos el proceso si se ha interrumpido
         if self.__terminar_proceso():
             self._cap.release()

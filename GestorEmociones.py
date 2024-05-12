@@ -50,6 +50,8 @@ class GestorEmociones:
 
         # Detectamos caras en el fotograma
         faces = self._face_cascade.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
+        print("Ya tenemos faces")
+        print(faces)
         for (x, y, w, h) in faces:
             # Dibujamos un rectángulo alrededor de la cara detectada
             # cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
@@ -70,13 +72,18 @@ class GestorEmociones:
             prediction = self._model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
 
             # Del vector con las probabilidades de emociones, cogemos el más probable.
+            print("--Prediction:")
             print(prediction)
+            print("--ArgMax:")
             print(np.argmax(prediction))
-            emocionmax = list(Emociones)[np.argmax(prediction)]
+            emocionmax = list(Emociones)[np.argmax(prediction)-1]
+            print("--EmocionMax")
             print(emocionmax)
+            print("--EmocionMax.name")
             print(emocionmax.name)
             self.__registrar_emocion(emocionmax,tiempo)
-            print("Vamos a devolver: "+self._emocionActual.name)
+
+            print("\t\t\t\tVamos a devolver: "+self._emocionActual.name)
             return self._emocionActual
 
     """

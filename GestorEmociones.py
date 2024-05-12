@@ -53,38 +53,43 @@ class GestorEmociones:
         print("Ya tenemos faces")
         print(faces)
         for (x, y, w, h) in faces:
-            # Dibujamos un rectángulo alrededor de la cara detectada
-            # cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            try:
+                # Dibujamos un rectángulo alrededor de la cara detectada
+                # cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-            # Obtenemos los puntos de referencia faciales
-            landmarks = self._predictor(frame, dlib.rectangle(x, y, x + w, y + h))
+                # Obtenemos los puntos de referencia faciales
+                landmarks = self._predictor(frame, dlib.rectangle(x, y, x + w, y + h))
 
-            # Dibujamos los puntos recogidos en landmarks
-            for i in range(68):  # 68 puntos de referencia faciales
-                x, y = landmarks.part(i).x, landmarks.part(i).y
-                cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)
+                # Dibujamos los puntos recogidos en landmarks
+                for i in range(68):  # 68 puntos de referencia faciales
+                    x, y = landmarks.part(i).x, landmarks.part(i).y
+                    cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)
 
-            # Extraemos la región de interés (ROI) y la redimensionamos
-            roi = frame[y:y + h, x:x + w]
-            resized = cv2.resize(roi, (48, 48))
+                # Extraemos la región de interés (ROI) y la redimensionamos
+                roi = frame[y:y + h, x:x + w]
+                resized = cv2.resize(roi, (48, 48))
 
-            # Realizamos la predicción utilizando el modelo cargado
-            prediction = self._model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
+                # Realizamos la predicción utilizando el modelo cargado
+                prediction = self._model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
 
-            # Del vector con las probabilidades de emociones, cogemos el más probable.
-            print("--Prediction:")
-            print(prediction)
-            print("--ArgMax:")
-            print(np.argmax(prediction))
-            emocionmax = list(Emociones)[np.argmax(prediction)-1]
-            print("--EmocionMax")
-            print(emocionmax)
-            print("--EmocionMax.name")
-            print(emocionmax.name)
-            self.__registrar_emocion(emocionmax,tiempo)
+                # Del vector con las probabilidades de emociones, cogemos el más probable.
+                print("--Prediction:")
+                print(prediction)
+                print("--ArgMax:")
+                print(np.argmax(prediction))
+                emocionmax = list(Emociones)[np.argmax(prediction)-1]
+                print("--EmocionMax")
+                print(emocionmax)
+                print("--EmocionMax.name")
+                print(emocionmax.name)
+                self.__registrar_emocion(emocionmax,tiempo)
 
-            print("\t\t\t\tVamos a devolver: "+self._emocionActual.name)
-            return self._emocionActual
+                print("\t\t\t\tVamos a devolver: "+self._emocionActual.name)
+                return self._emocionActual
+            except FileNotFoundError:
+                print("ERROR: El archivo no se encontró")
+                input("Presione cualquier tecla para continuar")
+                return self._emocionActual
 
     """
         Funcion desde la que gestionamos la emoción actual del frame

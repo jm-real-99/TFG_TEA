@@ -2,6 +2,8 @@ import cv2
 from Emociones import Emociones
 import numpy as np
 import time
+
+from GestorAtencion import GestorAtencion
 from GestorEmociones import GestorEmociones
 
 
@@ -10,6 +12,7 @@ class Camara:
         self._cap = cv2.VideoCapture(camera)
         self._tiempoInicio = time.time()
         self._gestorEmociones = GestorEmociones()
+        self._gestorAtencion = GestorAtencion()
 
     """
         Leemos el frame de la cámara.
@@ -31,28 +34,36 @@ class Camara:
 
         # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
         # TODO: Llamar mediante un hilo aparte
+        atencion, text_atencion = self._gestorAtencion.detectar_atencion(frame, self.__segundo_actual())
 
         # TODO: Incluir un semaforo que controle que ambas cosas se han hecho
         # Agregamos el texto a la imagen
         print(emocion)
         print(type(emocion))
         if emocion != None:
-            textoimg = emocion.name
-            textocolor = (0, 255, 0)
+            texto_emocion = emocion.name
+            color_emocion = (0, 255, 0)
         else:
-            textoimg = "No se detecta la cara"
-            textocolor = (255, 0, 0)
+            texto_emocion = "No se detecta la cara"
+            color_emocion = (0, 0, 255)
 
-        cv2.putText(frame, textoimg, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, textocolor, 2)
+        if atencion:
+            color_atencion = (0, 255, 0)
+        else:
+            color_atencion = (0, 0, 255)
+
+        cv2.putText(frame, texto_emocion, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_emocion, 2)
+        cv2.putText(frame, text_atencion, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, color_atencion, 2)
+        cv2.putText(frame, str(self.__segundo_actual()), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
         cv2.imshow('Detección de Caras', frame)
-        print("*********************************")
-        print("*********************************")
-        print("*********************************")
         # Terminamos el proceso si se ha interrumpido
         if self.__terminar_proceso():
             self._cap.release()
             cv2.destroyAllWindows()
+            self._gestorAtencion.terminar_escaneo(self.__segundo_actual())
+            self._gestorEmociones.terminar_escaneo(self.__segundo_actual())
+            self.pintar_datos()
             return False
         else:
             return True
@@ -62,7 +73,6 @@ class Camara:
             return: int
                 
     """
-
     def __segundo_actual(self):
         return int(time.time() - self._tiempoInicio)
 
@@ -75,3 +85,51 @@ class Camara:
 
     def __terminar_proceso(self):
         return cv2.waitKey(1) & 0xFF == ord('q')
+
+    """ELIMINAAAAARRR
+        """
+
+    def pintar_datos(self):
+        self.cabecera_end()
+        self.imprimir_estadisticas_emociones()
+        self.imprimir_estadisticas_atencion()
+
+    def imprimir_estadisticas_emociones(self):
+        print("\n" * 2)
+        print("EMOCIONES:")
+        intervalos_emociones = self._gestorEmociones.get_intervalosemociones()
+        tiempototal_emocion = self._gestorEmociones.get_tiempototalemocion()
+        for emotion in Emociones:
+            print("\t-" + emotion.name, end="")
+            print(intervalos_emociones[emotion])
+            print("\tTiempo total: ", end="")
+            print(tiempototal_emocion[emotion])
+
+    def imprimir_estadisticas_atencion(self):
+        print("\n" * 2)
+        print("ATENCION:")
+        intervalos_atencion = self._gestorAtencion.get_intervalosatencion()
+        tiempototal_atencion = self._gestorAtencion.get_tiempototalatencion()
+        print("\tIntervalos: ", end="")
+        print(intervalos_atencion)
+        print("\tTiempo total: ", end="")
+        print(tiempototal_atencion)
+
+    def cabecera_end(self):
+        end = [
+            "****** ***      ** *****",
+            "**     ** **    ** **   **",
+            "****** **   **  ** **    **",
+            "**     **    ** ** **   **",
+            "****** **     **** *****"
+        ]
+
+        print("\n" * 5)
+
+        for linea in end:
+            print(linea)
+
+        print("\n" * 2)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("~~~~~~~~~~~~~~~~~~~~RESULTADOS~~~~~~~~~~~~~~~~~~~~")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")

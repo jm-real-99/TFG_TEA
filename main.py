@@ -26,3 +26,12 @@ while True:
     end = camara.read_frame()
     if not end:
         break
+
+
+
+"""
+TODO:
+- EXPORTAR DATOS
+- INTERFAZ GRÁFICA
+
+"""

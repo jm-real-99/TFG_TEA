@@ -33,5 +33,4 @@ while True:
 TODO:
 - EXPORTAR DATOS
 - INTERFAZ GRÁFICA
-
 """

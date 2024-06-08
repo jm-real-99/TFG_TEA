@@ -3,6 +3,8 @@ import cv2
 import tkinter as tk
 
 from Paciente import Paciente
+from Terapeuta import Terapeuta
+from Database import DataBase
 
 
 class VentanaInicioSesion:
@@ -13,11 +15,10 @@ class VentanaInicioSesion:
     CAMPO_INPUT = (14, 40)
 
     def __init__(self):
+        self.database = DataBase()
         self.root = tk.Tk()
+        self.terapeuta = None
 
-        # Variables de instancia para usuario y contraseña
-        self.usuario = tk.StringVar()
-        self.contrasena = tk.StringVar()
 
     """
         Método mediante el que establecemos que la ventana va a estar abierta en todo momento.
@@ -35,17 +36,20 @@ class VentanaInicioSesion:
 
     def iniciar_sesion(self):
         self.root.title("Inicio de Sesión")
-
+        # Variables de instancia para usuario y contraseña
+        usuario = tk.StringVar()
+        contrasena = tk.StringVar()
         # Cuadros de texto para usuario y contraseña
         tk.Label(self.root, text="Usuario:").pack(pady=2)
-        (tk.Entry(self.root, font=("Arial", self.CAMPO_INPUT[0]), textvariable=self.usuario, width=self.CAMPO_INPUT[1])
+        (tk.Entry(self.root, font=("Arial", self.CAMPO_INPUT[0]), textvariable=usuario, width=self.CAMPO_INPUT[1])
          .pack(pady=10))
         tk.Label(self.root, text="Contraseña:").pack(pady=2)
-        tk.Entry(self.root, show="*", font=("Arial", self.CAMPO_INPUT[0]), textvariable=self.contrasena,
+        tk.Entry(self.root, show="*", font=("Arial", self.CAMPO_INPUT[0]), textvariable=contrasena,
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
 
         # Botón para iniciar sesión
-        boton_iniciar_sesion = tk.Button(self.root, text="Iniciar Sesión", command=self.comprobar_inicio_sesion)
+        boton_iniciar_sesion = tk.Button(self.root, text="Iniciar Sesión",
+                                         command=lambda: self.comprobar_inicio_sesion(usuario, contrasena))
 
         boton_iniciar_sesion.pack()
 
@@ -53,20 +57,16 @@ class VentanaInicioSesion:
         Vamos a evaluar si los datos introducidos en el inicio de sesión son correctos
     """
 
-    def comprobar_inicio_sesion(self):
-        # TODO: CONSULTAR CONTRA BASES DE DATOS SI EL INICIO ES CORRECTO
-        # Obtener los valores de los cuadros de texto
-        usuario = self.usuario.get()
-        contrasena = self.contrasena.get()
-
-        print("Usuario ", end=" ")
-        print(usuario)
-        print("Contraseña ", end=" ")
-        print(contrasena)
-
+    def comprobar_inicio_sesion(self, usuario, contrasena):
+        self.terapeuta = self.database.obtener_rerapeuta_by_usuario_y_contrasena(usuario.get(), contrasena.get())
         self.reset_page()
-        self.mostrar_mensaje_exito("¡Inicio de sesión correcto!")
-        self.mostrar_main()
+
+        if self.terapeuta is None:
+            self.mostrar_mensaje_exito("¡Error! Creenciales incorrectas")
+            self.iniciar_sesion()
+        else:
+            self.mostrar_mensaje_exito("¡Inicio de sesión correcto!")
+            self.mostrar_main()
 
     """
         Mostramos las opciones disponibles una vez que hayamos inciado sesión correctamente. En este caso serán:
@@ -206,8 +206,18 @@ if __name__ == "__main__":
 
 """
 TODO:
-- Arreglar flujo de alta pacientes, actualmente cuando das de alta uno, nos quedamos ahí. Para solventar esto tendremos 
-que llamar a la función de mostrar_inicio_correcto y en cada vista permitir un mensaje superior con información.
-- Poder seleccionar un paciente para el inicio de terapia
-- Incluir base de datos.
+- Realizar TODOs:
+
+    # formulario_crear_paciente : TODO: Hacer que el terapeuta se obtenga desde una lista de terapeutas
+    # crear_paciente: TODO: Realizar comprobaciones de que todo está correcto
+    # crear_paciente: TODO: Dar de alta al paciente en la base de datos.
+    
+- Crear Tabla y lógica para guardar los datos de las estadísticas de las terapias
+- Ver como mostrar en la interfaz gráfica los resultados de las estadísticas de los pacientes: 
+    - Añadir botón para ir a de vista estadísticas
+    - Añadir vista de lista de todos los pacientes
+    - Añadir vista concreta de cada  paciente donde veremos las estadísticas a lo largo del tiempo y por terapia
+     
+Menos importantes:
+- Hacer menú de terapeuta admin para que puedas crear desde la aplicación otros usuarios de terpeutas
 """

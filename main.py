@@ -6,6 +6,11 @@ from Paciente import Paciente
 
 
 class VentanaInicioSesion:
+    # Variables globales
+    VENTANA = (400, 300)
+    VENTANA_NOTI = (100, 50)
+    BOTON = (4, 2)
+    CAMPO_INPUT = (14, 40)
 
     def __init__(self):
         self.root = tk.Tk()
@@ -18,43 +23,38 @@ class VentanaInicioSesion:
         Método mediante el que establecemos que la ventana va a estar abierta en todo momento.
         Comenzamos iniciando la sesión del terapeuta
     """
+
     def comenzar_programa(self):
+        self.root.minsize(width=self.VENTANA[0], height=self.VENTANA[1])
         self.iniciar_sesion()
         self.root.mainloop()
 
     """
         Iniciamos sesión con el terapeuta
     """
+
     def iniciar_sesion(self):
         self.root.title("Inicio de Sesión")
+
         # Cuadros de texto para usuario y contraseña
-        tk.Label(self.root, text="Usuario:").pack(pady=10)
-        entry_usuario = tk.Entry(self.root, font=("Arial", 14), textvariable=self.usuario)
-        tk.Label(self.root, text="Contraseña:").pack(pady=10)
-        entry_contrasena = tk.Entry(self.root, show="*", font=("Arial", 14), textvariable=self.contrasena)
+        tk.Label(self.root, text="Usuario:").pack(pady=2)
+        (tk.Entry(self.root, font=("Arial", self.CAMPO_INPUT[0]), textvariable=self.usuario, width=self.CAMPO_INPUT[1])
+         .pack(pady=10))
+        tk.Label(self.root, text="Contraseña:").pack(pady=2)
+        tk.Entry(self.root, show="*", font=("Arial", self.CAMPO_INPUT[0]), textvariable=self.contrasena,
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
 
         # Botón para iniciar sesión
-        boton_iniciar_sesion = tk.Button(self.root, text="Iniciar Sesión", command=self.mostrar_inicio_correcto)
+        boton_iniciar_sesion = tk.Button(self.root, text="Iniciar Sesión", command=self.comprobar_inicio_sesion)
 
-        # Posicionamiento de widgets
-        entry_usuario.pack(pady=10)
-        entry_contrasena.pack(pady=10)
         boton_iniciar_sesion.pack()
 
     """
         Vamos a evaluar si los datos introducidos en el inicio de sesión son correctos
     """
+
     def comprobar_inicio_sesion(self):
         # TODO: CONSULTAR CONTRA BASES DE DATOS SI EL INICIO ES CORRECTO
-        return None
-
-    """
-        Mostramos las opciones disponibles una vez que hayamos inciado sesión correctamente. En este caso serán:
-            -Crear paciente
-            -Iniciar terapia
-    """
-    def mostrar_inicio_correcto(self):
-
         # Obtener los valores de los cuadros de texto
         usuario = self.usuario.get()
         contrasena = self.contrasena.get()
@@ -65,12 +65,19 @@ class VentanaInicioSesion:
         print(contrasena)
 
         self.reset_page()
+        self.mostrar_mensaje_exito("¡Inicio de sesión correcto!")
+        self.mostrar_main()
 
-        # Crea un Label en la ventana principal para mostrar el mensaje
-        tk.Label(self.root, text="¡Inicio de sesión correcto!").pack()
+    """
+        Mostramos las opciones disponibles una vez que hayamos inciado sesión correctamente. En este caso serán:
+            -Crear paciente
+            -Iniciar terapia
+    """
 
-        tk.Button(self.root, text="Dar de alta paciente", command=self.formulario_crear_paciente).pack()
-        tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack()
+    def mostrar_main(self):
+
+        tk.Button(self.root, text="Dar de alta paciente", command=self.formulario_crear_paciente).pack(pady=10)
+        tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack(pady=10)
 
         # Actualiza la ventana principal
         self.root.update_idletasks()
@@ -78,6 +85,7 @@ class VentanaInicioSesion:
     """
         Gestionamos la ventana donde daremos de alta los pacientes
     """
+
     def formulario_crear_paciente(self):
         self.reset_page()
 
@@ -89,21 +97,28 @@ class VentanaInicioSesion:
         observaciones_var = tk.StringVar()
         telf_contacto_var = tk.StringVar()
 
-        tk.Label(self.root, text="Nombre:").pack(pady=10)
-        tk.Entry(self.root, textvariable=nombre_var, font=("Arial", 14)).pack(pady=10)
-        tk.Label(self.root, text="Apellido:").pack(pady=10)
-        tk.Entry(self.root, textvariable=apellido_var, font=("Arial", 14)).pack(pady=10)
-        tk.Label(self.root, text="Edad:").pack(pady=10)
-        tk.Entry(self.root, textvariable=edad_var, font=("Arial", 14)).pack(pady=10)
-        tk.Label(self.root, text="Telefono contacto:").pack(pady=10)
-        tk.Entry(self.root, textvariable=telf_contacto_var, font=("Arial", 14)).pack(pady=10)
-        tk.Label(self.root, text="Numero Expediente:").pack(pady=10)
-        tk.Entry(self.root, textvariable=num_expediente_var, font=("Arial", 14)).pack(pady=10)
+        tk.Label(self.root, text="Nombre:").pack(pady=2)
+        (tk.Entry(self.root, textvariable=nombre_var, font=("Arial", self.CAMPO_INPUT[0]), width=self.CAMPO_INPUT[1])
+         .pack(pady=10))
+        tk.Label(self.root, text="Apellido:").pack(pady=2)
+        (tk.Entry(self.root, textvariable=apellido_var, font=("Arial", self.CAMPO_INPUT[0]), width=self.CAMPO_INPUT[1])
+         .pack(pady=10))
+        tk.Label(self.root, text="Edad:").pack(pady=2)
+        (tk.Entry(self.root, textvariable=edad_var, font=("Arial", self.CAMPO_INPUT[0]), width=self.CAMPO_INPUT[1])
+         .pack(pady=10))
+        tk.Label(self.root, text="Telefono contacto:").pack(pady=2)
+        tk.Entry(self.root, textvariable=telf_contacto_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
+        tk.Label(self.root, text="Numero Expediente:").pack(pady=2)
+        tk.Entry(self.root, textvariable=num_expediente_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
         # TODO: Hacer que el terapeuta se obtenga desde una lista de terapeutas
-        tk.Label(self.root, text="Terapeuta Asignado:").pack(pady=10)
-        tk.Entry(self.root, textvariable=terapeuta_asignado_var, font=("Arial", 14)).pack(pady=10)
-        tk.Label(self.root, text="Observaciones:").pack(pady=10)
-        tk.Entry(self.root, textvariable=observaciones_var, font=("Arial", 14)).pack(pady=10)
+        tk.Label(self.root, text="Terapeuta Asignado:").pack(pady=2)
+        tk.Entry(self.root, textvariable=terapeuta_asignado_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
+        tk.Label(self.root, text="Observaciones:").pack(pady=2)
+        tk.Entry(self.root, textvariable=observaciones_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
 
         # Botón para crear el objeto Paciente
         # tk.Button(self.root, text="Crear Paciente", command=self.crear_paciente).pack()
@@ -118,6 +133,7 @@ class VentanaInicioSesion:
         Gestionamos que el formulario se ha rellenado correctamente y si es así damos de alta el paciente en la base de 
         datos.
     """
+
     def crear_paciente(self, nombre_var, apellido_var, edad_var, num_expediente_var, terapeuta_asignado_var
                        , observaciones_var, telf_contacto_var):
         self.reset_page()
@@ -127,17 +143,15 @@ class VentanaInicioSesion:
         paciente = Paciente(0, nombre_var, apellido_var, edad_var, num_expediente_var, terapeuta_asignado_var
                             , observaciones_var, telf_contacto_var)
 
-        # Crea un Label en la ventana principal para mostrar el mensaje
-        tk.Label(self.root, text="Paciente " + paciente.get_nombre() + " creado con éxito").pack()
+        # TODO: Dar de alta al paciente en la base de datos.
 
-        #TODO: Dar de alta al paciente en la base de datos.
-
-        # Actualiza la ventana principal
-        self.root.update_idletasks()
+        self.mostrar_mensaje_exito("Paciente " + paciente.get_nombre() + " creado con éxito")
+        self.mostrar_main()
 
     """
         Enumera las cámaras disponibles y muestra información sobre cada una.
     """
+
     def listar_camaras(self):
         num_camara = 0
         while True:
@@ -154,6 +168,7 @@ class VentanaInicioSesion:
     """
         Comenzamos la terapia y activamos la cámara.
     """
+
     def comenzar_terapia(self):
         camara = Camara(2)
 
@@ -166,17 +181,28 @@ class VentanaInicioSesion:
         Método auxiliar mediante el que vamos a eliminar todo el contenido que haya en la vista. Esto nos permite 
         refrescar el contenido correctamente
     """
+
     def reset_page(self):
         for componente in self.root.winfo_children():
             componente.destroy()
-            print("elmininado ", end=" ")
-            print(componente)
+
+    def mostrar_mensaje_exito(self, notificacion):
+        # Crear una nueva ventana emergente (Toplevel)
+        ventana_exito = tk.Toplevel(self.root)
+        ventana_exito.minsize(width=self.VENTANA_NOTI[0], height=self.VENTANA_NOTI[1])
+        ventana_exito.title("Notificación")
+        tk.Label(ventana_exito, text=notificacion).pack()
+
+        # Agregar un botón "Cerrar" para cerrar la ventana emergente
+        tk.Button(ventana_exito, text="Cerrar", command=ventana_exito.destroy).pack()
+
+        # Actualizar la ventana principal antes de mostrar la ventana emergente
+        self.root.update()
 
 
 if __name__ == "__main__":
     interfaz = VentanaInicioSesion()
     interfaz.comenzar_programa()
-
 
 """
 TODO:

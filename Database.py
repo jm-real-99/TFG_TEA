@@ -66,8 +66,8 @@ class DataBase:
     """
 
     def crear_paciente(self, nombre, apellido, edad, num_expediente, terapeuta_asignado, observaciones, telf_contacto):
-        if ((nombre is None) or (apellido is None) or (edad is None) or (num_expediente is None) or
-                (terapeuta_asignado is None) or (telf_contacto is None)):
+        if ((nombre is None) or (apellido is None) or (num_expediente is None) or
+                (terapeuta_asignado is None)):
             print("Error al introducir paciente en la base de datos, uno de los datos es None")
             return False
         try:
@@ -80,6 +80,9 @@ class DataBase:
             self.connection.commit()
         except mysql.connector.Error as err:
             print(f"Error al obtener datos de la tabla Paciente: {err}")
+            return False
+        except ValueError:
+            print("Error, el formato de la edad no es el correcto")
             return False
 
         return True
@@ -136,6 +139,8 @@ class DataBase:
 
         except mysql.connector.Error as err:
             print(f"Error al obtener datos de la tabla Paciente: {err}")
+            return None
+        except IndexError:
             return None
 
     """

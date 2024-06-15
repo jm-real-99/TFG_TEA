@@ -51,3 +51,7 @@ class Terapeuta:
 
     def set_admin(self, admin):
         self._admin = admin
+
+    def __str__(self):
+        return self._nombre+" "+self._apellido
+

@@ -19,7 +19,6 @@ class VentanaInicioSesion:
         self.root = tk.Tk()
         self.terapeuta = None
 
-
     """
         Método mediante el que establecemos que la ventana va a estar abierta en todo momento.
         Comenzamos iniciando la sesión del terapeuta
@@ -47,26 +46,25 @@ class VentanaInicioSesion:
         tk.Entry(self.root, show="*", font=("Arial", self.CAMPO_INPUT[0]), textvariable=contrasena,
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
 
-        # Botón para iniciar sesión
-        boton_iniciar_sesion = tk.Button(self.root, text="Iniciar Sesión",
-                                         command=lambda: self.comprobar_inicio_sesion(usuario, contrasena))
-
-        boton_iniciar_sesion.pack()
+        tk.Button(self.root, text="Iniciar Sesión",
+                  command=lambda: self.comprobar_inicio_sesion(usuario, contrasena)).pack()
 
     """
         Vamos a evaluar si los datos introducidos en el inicio de sesión son correctos
     """
 
     def comprobar_inicio_sesion(self, usuario, contrasena):
-        self.terapeuta = self.database.obtener_rerapeuta_by_usuario_y_contrasena(usuario.get(), contrasena.get())
-        self.reset_page()
+        if usuario.get() != "" or contrasena.get() != "":
+            self.terapeuta = self.database.obtener_terapeuta_by_usuario_y_contrasena(usuario.get(), contrasena.get())
 
-        if self.terapeuta is None:
-            self.mostrar_mensaje_exito("¡Error! Creenciales incorrectas")
-            self.iniciar_sesion()
-        else:
-            self.mostrar_mensaje_exito("¡Inicio de sesión correcto!")
-            self.mostrar_main()
+            if self.terapeuta is not None:
+                ventana = self.mostrar_mensaje_exito("¡Inicio de sesión correcto!")
+                self.reset_page(ventana)
+                self.mostrar_main()
+            else:
+                ventana = self.mostrar_mensaje_exito("¡Error! Creenciales incorrectas")
+                self.reset_page(ventana)
+                self.iniciar_sesion()
 
     """
         Mostramos las opciones disponibles una vez que hayamos inciado sesión correctamente. En este caso serán:
@@ -75,8 +73,8 @@ class VentanaInicioSesion:
     """
 
     def mostrar_main(self):
-
-        tk.Button(self.root, text="Dar de alta paciente", command=self.formulario_crear_paciente).pack(pady=10)
+        tk.Button(self.root, text="Dar de alta paciente", command=lambda: self.formulario_crear_paciente(True)).pack(
+            pady=10)
         tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack(pady=10)
 
         # Actualiza la ventana principal
@@ -86,8 +84,11 @@ class VentanaInicioSesion:
         Gestionamos la ventana donde daremos de alta los pacientes
     """
 
-    def formulario_crear_paciente(self):
-        self.reset_page()
+    def formulario_crear_paciente(self, refrescar):
+        if refrescar:
+            self.reset_page(None)
+
+        tk.Button(self.root, text="Volver", command=self.mostrar_main).pack(pady=10)
 
         nombre_var = tk.StringVar()
         apellido_var = tk.StringVar()
@@ -112,16 +113,15 @@ class VentanaInicioSesion:
         tk.Label(self.root, text="Numero Expediente:").pack(pady=2)
         tk.Entry(self.root, textvariable=num_expediente_var, font=("Arial", self.CAMPO_INPUT[0]),
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
-        # TODO: Hacer que el terapeuta se obtenga desde una lista de terapeutas
+        # Cargamos todos los terapeutas activos
         tk.Label(self.root, text="Terapeuta Asignado:").pack(pady=2)
-        tk.Entry(self.root, textvariable=terapeuta_asignado_var, font=("Arial", self.CAMPO_INPUT[0]),
-                 width=self.CAMPO_INPUT[1]).pack(pady=10)
+        tk.OptionMenu(self.root, terapeuta_asignado_var, *self.database.obtener_all_terapeutas()).pack(pady=10)
+        print(terapeuta_asignado_var.get())
         tk.Label(self.root, text="Observaciones:").pack(pady=2)
         tk.Entry(self.root, textvariable=observaciones_var, font=("Arial", self.CAMPO_INPUT[0]),
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
 
         # Botón para crear el objeto Paciente
-        # tk.Button(self.root, text="Crear Paciente", command=self.crear_paciente).pack()
         tk.Button(self.root, text="Crear Paciente",
                   command=lambda: self.crear_paciente(nombre_var.get(), apellido_var.get(), edad_var.get(),
                                                       num_expediente_var.get(), terapeuta_asignado_var.get(),
@@ -136,17 +136,17 @@ class VentanaInicioSesion:
 
     def crear_paciente(self, nombre_var, apellido_var, edad_var, num_expediente_var, terapeuta_asignado_var
                        , observaciones_var, telf_contacto_var):
-        self.reset_page()
 
-        # TODO: Realizar comprobaciones de que todo está correcto
-
-        paciente = Paciente(0, nombre_var, apellido_var, edad_var, num_expediente_var, terapeuta_asignado_var
-                            , observaciones_var, telf_contacto_var)
-
-        # TODO: Dar de alta al paciente en la base de datos.
-
-        self.mostrar_mensaje_exito("Paciente " + paciente.get_nombre() + " creado con éxito")
-        self.mostrar_main()
+        terpeuta_id = self.__obtener_id_terpeuta(terapeuta_asignado_var)
+        if self.database.crear_paciente(nombre_var, apellido_var, edad_var, num_expediente_var, terpeuta_id
+                , observaciones_var, telf_contacto_var):
+            ventana = self.mostrar_mensaje_exito("Paciente " + nombre_var + " creado con éxito")
+            self.reset_page(ventana)
+            self.mostrar_main()
+        else:
+            ventana = self.mostrar_mensaje_exito("ERROR: Por favor, introduzca todos los datos")
+            self.reset_page(ventana)
+            self.formulario_crear_paciente(False)
 
     """
         Enumera las cámaras disponibles y muestra información sobre cada una.
@@ -182,9 +182,10 @@ class VentanaInicioSesion:
         refrescar el contenido correctamente
     """
 
-    def reset_page(self):
+    def reset_page(self, no_eliminar):
         for componente in self.root.winfo_children():
-            componente.destroy()
+            if componente != no_eliminar:
+                componente.destroy()
 
     def mostrar_mensaje_exito(self, notificacion):
         # Crear una nueva ventana emergente (Toplevel)
@@ -198,6 +199,22 @@ class VentanaInicioSesion:
 
         # Actualizar la ventana principal antes de mostrar la ventana emergente
         self.root.update()
+        return ventana_exito
+
+    """
+     Como para crear el paciente necesitamos el id y no su nombre y apellido, además de que tampoco podemos buscar 
+     por nombre y apellido ya juntado, vamos a emplear este método para obtener el id del terpeuta asignado.
+    """
+
+    def __obtener_id_terpeuta(self, nombre_y_apellidos):
+        # Primero vamos a ahorrarnos la búsqueda en la bd si este terpaueta somos nosotros
+        if (self.terapeuta.get_nombre() + " " + self.terapeuta.get_apellido()) == nombre_y_apellidos:
+            return self.terapeuta.get_terapeuta_id()
+        # Si no lo somos entonces realizamos una búsqueda en BD
+        terapeutas = self.database.obtener_all_terapeutas()
+        for terpeuta in terapeutas:
+            if (terpeuta.get_nombre() + " " + terpeuta.get_apellido()) == nombre_y_apellidos:
+                return terpeuta.get_terapeuta_id()
 
 
 if __name__ == "__main__":
@@ -206,11 +223,6 @@ if __name__ == "__main__":
 
 """
 TODO:
-- Realizar TODOs:
-
-    # formulario_crear_paciente : TODO: Hacer que el terapeuta se obtenga desde una lista de terapeutas
-    # crear_paciente: TODO: Realizar comprobaciones de que todo está correcto
-    # crear_paciente: TODO: Dar de alta al paciente en la base de datos.
     
 - Crear Tabla y lógica para guardar los datos de las estadísticas de las terapias
 - Ver como mostrar en la interfaz gráfica los resultados de las estadísticas de los pacientes: 

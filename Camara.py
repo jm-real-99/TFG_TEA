@@ -5,15 +5,16 @@ import time
 
 from GestorAtencion import GestorAtencion
 from GestorEmociones import GestorEmociones
+from Estadistica import Estadistica
 
 
 class Camara:
-    def __init__(self, camera):
+    def __init__(self, camera, estadistica):
         self._cap = cv2.VideoCapture(camera)
         self._tiempoInicio = time.time()
         self._gestorEmociones = GestorEmociones()
         self._gestorAtencion = GestorAtencion()
-
+        self._estadisticas = estadistica
     """
         Leemos el frame de la cámara.
         Return: boolean
@@ -40,7 +41,7 @@ class Camara:
         # Agregamos el texto a la imagen
         print(emocion)
         print(type(emocion))
-        if emocion != None:
+        if emocion is not None:
             texto_emocion = emocion.name
             color_emocion = (0, 255, 0)
         else:
@@ -61,8 +62,11 @@ class Camara:
         if self.__terminar_proceso():
             self._cap.release()
             cv2.destroyAllWindows()
+            self.__recabar_estadisticas()
             self._gestorAtencion.terminar_escaneo(self.__segundo_actual())
             self._gestorEmociones.terminar_escaneo(self.__segundo_actual())
+
+            # ELIMINAR
             self.pintar_datos()
             return False
         else:
@@ -77,6 +81,29 @@ class Camara:
         return int(time.time() - self._tiempoInicio)
 
     """
+        Cargamos los datos recabados en la clase de estadisticas
+    """
+    def __recabar_estadisticas(self):
+
+        self._estadisticas.set_tiempototal(self.__segundo_actual())
+        self._estadisticas.set_fechahorafin()
+        total_emociones = self._gestorEmociones.get_tiempototalemocion()
+        self._estadisticas.convertir_JSON_emociones(self._gestorEmociones.get_intervalosemociones())
+        self._estadisticas.set_enfadadototal(total_emociones[Emociones.ENFADO])
+        self._estadisticas.set_disgustadototal(total_emociones[Emociones.DISGUSTADO])
+        self._estadisticas.set_miedosototal(total_emociones[Emociones.MIEDOSO])
+        self._estadisticas.set_contentototal(total_emociones[Emociones.CONTENTO])
+        self._estadisticas.set_tristetotal(total_emociones[Emociones.TRISTE])
+        self._estadisticas.set_sorprendidototal(total_emociones[Emociones.SORPRENDIDO])
+        self._estadisticas.set_neutrototal(total_emociones[Emociones.NEUTRO])
+
+        self._estadisticas.convertir_JSON_atencion(self._gestorAtencion.get_intervalosatencion())
+        self._estadisticas.set_atenciontotal(self._gestorAtencion.get_tiempototalatencion())
+
+
+
+
+    """
         Evaluamos si el usuario ha terminado el proceso
         Return: boolean
             True si se ha terminado
@@ -87,7 +114,7 @@ class Camara:
         return cv2.waitKey(1) & 0xFF == ord('q')
 
     """ELIMINAAAAARRR
-        """
+    """
 
     def pintar_datos(self):
         self.cabecera_end()

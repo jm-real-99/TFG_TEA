@@ -9,12 +9,12 @@ CREATE TABLE Terapeutas (
 );
 
 CREATE TABLE Pacientes (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     apellido VARCHAR(255) NOT NULL,
     edad INT,
     num_expediente VARCHAR(255) NOT NULL UNIQUE,
-    terapeuta_asignado INT ,
+    terapeuta_asignado INT NOT NULL ,
     observaciones TEXT,
     telf_contacto VARCHAR(20),
     FOREIGN KEY (terapeuta_asignado) REFERENCES Terapeutas(terapeuta_id)
@@ -39,4 +39,33 @@ VALUES ('Pedro', 'Ramírez', 45, 'EXP002', 1, 'Trastorno del sueño', '661000000
 -- Paciente 3
 INSERT INTO Pacientes (nombre, apellido, edad, num_expediente, terapeuta_asignado, observaciones, telf_contacto)
 VALUES ('Laura', 'González', 28, 'EXP003PacientePaciente', 2, 'Depresión posparto', '661000000');
+
+
+CREATE TABLE EstadisticasTerapias (
+    id_terapia INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT NOT NULL,
+    terapeuta_id INT NOT NULL,
+    enfadado JSON,
+    enfadadototal INT,
+    disgustado JSON,
+    disgustadototal INT,
+    miedoso JSON,
+    miedosototal INT,
+    contento JSON,
+    contentototal INT,
+    triste JSON,
+    tristetotal INT,
+    sorprendido JSON,
+    sorprendidototal INT,
+    neutro JSON,
+    neturototal INT,
+    atencion JSON,
+    atenciontotal INT,
+    fechahoracomienzo TIME NOT NULL,
+    fechahorafin TIME NOT NULL,
+    tiempototal INT NOT NULL,
+    observaciones TEXT,
+    FOREIGN KEY (paciente_id) REFERENCES Pacientes(paciente_id),
+    FOREIGN KEY (terapeuta_id) REFERENCES Terapeutas(terapeuta_id)
+)
 

@@ -1,10 +1,11 @@
 from Camara import Camara
 import cv2
 import tkinter as tk
-
+from datetime import datetime
 from Paciente import Paciente
 from Terapeuta import Terapeuta
 from Database import DataBase
+from Estadistica import Estadistica
 
 
 class VentanaInicioSesion:
@@ -77,6 +78,8 @@ class VentanaInicioSesion:
 
         tk.Button(self.root, text="Dar de alta paciente", command=lambda: self.formulario_crear_paciente(None)).pack(
             pady=10)
+        # TODO:
+        # tk.Button(self.root, text="Iniciar terapia", command=self.seleccionar_paciente_terapia).pack(pady=10)
         tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack(pady=10)
 
         # Actualiza la ventana principal
@@ -122,7 +125,7 @@ class VentanaInicioSesion:
         tk.Label(self.root, text="Observaciones:").pack(pady=2)
         tk.Entry(self.root, textvariable=observaciones_var, font=("Arial", self.CAMPO_INPUT[0]),
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
-        
+
         tk.Label(self.root, text="Terapeuta Asignado*:", font=("Arial",4)).pack(pady=2)
         # Botón para crear el objeto Paciente
         tk.Button(self.root, text="Crear Paciente",
@@ -166,17 +169,24 @@ class VentanaInicioSesion:
             num_camara += 1
         return int(input("Introduce camara: "))
 
+    def seleccionar_paciente_terapia(self):
+        # TODO: Implementar ventana para seleccionar y llamar a comenzar_terapia con ese usuario
+        return None
     """
         Comenzamos la terapia y activamos la cámara.
     """
-
-    def comenzar_terapia(self):
+    def comenzar_terapia(self, paciente):
+        #TODO: Obtener paciente al que vamos a hacer terapia
+        # estadisticas = Estadistica.init_minimo(paciente, self.terapeuta.get_terapeuta_id(), datetime.now())
+        # camara = Camara(2, estadisticas)
         camara = Camara(2)
 
         while True:
             end = camara.read_frame()
             if not end:
                 break
+
+        # TODO: Revisar que los datos de la variable estadísticas se están recogiendo bien
 
     """
         Método auxiliar mediante el que vamos a eliminar todo el contenido que haya en la vista. Esto nos permite 
@@ -224,8 +234,17 @@ if __name__ == "__main__":
 
 """
 TODO:
+
+- Añadir ventana previa a iniciar terapia para seleccionar el paciente al que le vamos a realizar la terapia:
+    - (mostrar_main) # TODO: 
+    - (seleccionar_paciente_terapia) # TODO: Implementar ventana para seleccionar y llamar a comenzar_terapia con ese 
+    usuario
+    - (comenzar_terapia) #TODO: Obtener paciente al que vamos a hacer terapia
+- Comprobar que los datos se guardan bien en la variable estadísticas
+    -(comenzar_terapia) # TODO: Revisar que los datos de la variable estadísticas se están recogiendo bien
+- Crear método en DataBase para guardar las estadísticas
+    - (incluir_estadistica_terapia) # TODO: Realizar consulta
     
-- Crear Tabla y lógica para guardar los datos de las estadísticas de las terapias
 - Ver como mostrar en la interfaz gráfica los resultados de las estadísticas de los pacientes: 
     - Añadir botón para ir a de vista estadísticas
     - Añadir vista de lista de todos los pacientes

@@ -1,6 +1,6 @@
 class Paciente:
-    def __init__(self, user_id, nombre, apellido, edad, num_expediente, terapeuta_asignado, observaciones, telf_contacto):
-        self._user_id = user_id
+    def __init__(self, paciente_id, nombre, apellido, edad, num_expediente, terapeuta_asignado, observaciones, telf_contacto):
+        self._paciente_id = paciente_id
         self._nombre = nombre
         self._apellido = apellido
         self._edad = edad
@@ -10,8 +10,8 @@ class Paciente:
         self._telf_contacto = telf_contacto
 
     # Métodos getter
-    def get_user_id(self):
-        return self._user_id
+    def get_paciente_id(self):
+        return self._paciente_id
 
     def get_nombre(self):
         return self._nombre
@@ -35,8 +35,8 @@ class Paciente:
         return self._telf_contacto
 
     # Métodos setter
-    def set_user_id(self, user_id):
-        self._user_id = user_id
+    def set_paciente_id(self, paciente_id):
+        self._paciente_id = paciente_id
 
     def set_nombre(self, nombre):
         self._nombre = nombre

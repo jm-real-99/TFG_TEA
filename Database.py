@@ -166,6 +166,11 @@ class DataBase:
             print(f"Error al obtener datos de la tabla Paciente: {err}")
             return None
 
+    # ********* METODOS RELACIONADOS CON LAS ESTADÍSTICAS ************
+    def incluir_estadistica_terapia(self, estadistica):
+        # TODO: Realizar consulta
+        return None
+
     """
         Cerramos la conexión
     """

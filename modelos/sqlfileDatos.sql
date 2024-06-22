@@ -38,7 +38,7 @@ VALUES ('Pedro', 'Ramírez', 45, 'EXP002', 1, 'Trastorno del sueño', '661000000
 
 -- Paciente 3
 INSERT INTO Pacientes (nombre, apellido, edad, num_expediente, terapeuta_asignado, observaciones, telf_contacto)
-VALUES ('Laura', 'González', 28, 'EXP003PacientePaciente', 2, 'Depresión posparto', '661000000');
+VALUES ('Laura', 'González', 28, 'EXP003', 2, 'Depresión posparto', '661000000');
 
 
 CREATE TABLE EstadisticasTerapias (

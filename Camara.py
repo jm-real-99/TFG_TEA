@@ -2,6 +2,7 @@ import cv2
 from Emociones import Emociones
 import numpy as np
 import time
+from datetime import datetime
 
 from GestorAtencion import GestorAtencion
 from GestorEmociones import GestorEmociones
@@ -86,7 +87,7 @@ class Camara:
     def __recabar_estadisticas(self):
 
         self._estadisticas.set_tiempototal(self.__segundo_actual())
-        self._estadisticas.set_fechahorafin()
+        self._estadisticas.set_fechahorafin(datetime.now())
         total_emociones = self._gestorEmociones.get_tiempototalemocion()
         self._estadisticas.convertir_JSON_emociones(self._gestorEmociones.get_intervalosemociones())
         self._estadisticas.set_enfadadototal(total_emociones[Emociones.ENFADO])

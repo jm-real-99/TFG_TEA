@@ -71,7 +71,9 @@ class DataBase:
             print("Error al introducir paciente en la base de datos, uno de los datos es None")
             return False
         try:
-            edad = int(edad)
+            print("Edad: "+edad)
+            if edad is not "":
+                edad = int(edad)
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("INSERT INTO Pacientes (nombre, apellido, edad, num_expediente, "
                                 "terapeuta_asignado, observaciones, telf_contacto) values (%s, %s, %s, %s, %s, %s, %s);"
@@ -95,6 +97,27 @@ class DataBase:
         return self.crear_paciente(paciente.get_nombre(), paciente.get_apellido(), paciente.get_edad(),
                                    paciente.get_num_expediente(), paciente.get_terapeuta_asignado(),
                                    paciente.get_observaciones(), paciente.get_telf_contacto())
+
+    def obtener_paciente_by_num_expediente(self, num_expediente):
+        try:
+            # Ejecuta la consulta para obtener datos de la tabla Paciente
+            self.cursor.execute("SELECT * FROM Pacientes WHERE num_expediente  = %s",
+                                [num_expediente])
+            pacientes_data = self.cursor.fetchall()  # Obtiene todos los registros
+
+            if pacientes_data:
+                print("Paciente obtenido con éxito")
+                return Paciente(*pacientes_data[0])
+            else:
+                print("Error en la consulta del paciente")
+                return None
+
+        except mysql.connector.Error as err:
+            print(f"Error al obtener datos de la tabla Paciente: {err}")
+            return None
+        except IndexError as err:
+            print(f"Index error: {err}")
+            return None
 
     # ********* METODOS RELACIONADOS CON LOS PACIENTES ************
     """

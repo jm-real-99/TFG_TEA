@@ -58,3 +58,6 @@ class Paciente:
 
     def set_telf_contacto(self, telf_contacto):
         self._telf_contacto = telf_contacto
+
+    def __str__(self):
+        return self._nombre+" "+self._apellido

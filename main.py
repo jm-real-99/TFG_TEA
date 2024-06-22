@@ -1,3 +1,5 @@
+import time
+
 from Camara import Camara
 import cv2
 import tkinter as tk
@@ -19,6 +21,10 @@ class VentanaInicioSesion:
         self.database = DataBase()
         self.root = tk.Tk()
         self.terapeuta = None
+        self.paciente_mapa = self.__obtener_mapa_pacientes()
+        self.terapeuta_mapa = self.__obtener_mapa_terapeuta()
+        self.estadisticas = None
+        self.end = False
 
     """
         Método mediante el que establecemos que la ventana va a estar abierta en todo momento.
@@ -79,8 +85,8 @@ class VentanaInicioSesion:
         tk.Button(self.root, text="Dar de alta paciente", command=lambda: self.formulario_crear_paciente(None)).pack(
             pady=10)
         # TODO:
-        # tk.Button(self.root, text="Iniciar terapia", command=self.seleccionar_paciente_terapia).pack(pady=10)
-        tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack(pady=10)
+        tk.Button(self.root, text="Iniciar terapia", command=self.seleccionar_paciente_terapia).pack(pady=10)
+        # tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack(pady=10)
 
         # Actualiza la ventana principal
         self.root.update_idletasks()
@@ -103,10 +109,10 @@ class VentanaInicioSesion:
         observaciones_var = tk.StringVar()
         telf_contacto_var = tk.StringVar()
 
-        tk.Label(self.root, text="Nombre*:").pack(pady=2)
+        tk.Label(self.root, text="Nombre *:").pack(pady=2)
         (tk.Entry(self.root, textvariable=nombre_var, font=("Arial", self.CAMPO_INPUT[0]), width=self.CAMPO_INPUT[1])
          .pack(pady=10))
-        tk.Label(self.root, text="Apellido*:").pack(pady=2)
+        tk.Label(self.root, text="Apellido *:").pack(pady=2)
         (tk.Entry(self.root, textvariable=apellido_var, font=("Arial", self.CAMPO_INPUT[0]), width=self.CAMPO_INPUT[1])
          .pack(pady=10))
         tk.Label(self.root, text="Edad:").pack(pady=2)
@@ -115,18 +121,18 @@ class VentanaInicioSesion:
         tk.Label(self.root, text="Telefono contacto:").pack(pady=2)
         tk.Entry(self.root, textvariable=telf_contacto_var, font=("Arial", self.CAMPO_INPUT[0]),
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
-        tk.Label(self.root, text="Numero Expediente*:").pack(pady=2)
+        tk.Label(self.root, text="Numero Expediente *:").pack(pady=2)
         tk.Entry(self.root, textvariable=num_expediente_var, font=("Arial", self.CAMPO_INPUT[0]),
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
         # Cargamos todos los terapeutas activos
-        tk.Label(self.root, text="Terapeuta Asignado*:").pack(pady=2)
-        tk.OptionMenu(self.root, terapeuta_asignado_var, *self.database.obtener_all_terapeutas()).pack(pady=10)
+        tk.Label(self.root, text="Terapeuta Asignado *:").pack(pady=2)
+        tk.OptionMenu(self.root, terapeuta_asignado_var, *list(self.terapeuta_mapa.values())).pack(pady=10)
         print(terapeuta_asignado_var.get())
         tk.Label(self.root, text="Observaciones:").pack(pady=2)
         tk.Entry(self.root, textvariable=observaciones_var, font=("Arial", self.CAMPO_INPUT[0]),
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
 
-        tk.Label(self.root, text="Terapeuta Asignado*:", font=("Arial",4)).pack(pady=2)
+        tk.Label(self.root, text="* Campos obligatorios", font=("Arial", 8)).pack(pady=2)
         # Botón para crear el objeto Paciente
         tk.Button(self.root, text="Crear Paciente",
                   command=lambda: self.crear_paciente(nombre_var.get(), apellido_var.get(), edad_var.get(),
@@ -143,9 +149,17 @@ class VentanaInicioSesion:
     def crear_paciente(self, nombre_var, apellido_var, edad_var, num_expediente_var, terapeuta_asignado_var
                        , observaciones_var, telf_contacto_var):
 
-        terpeuta_id = self.__obtener_id_terpeuta(terapeuta_asignado_var)
+        print("Terapeuta asignado: " + terapeuta_asignado_var)
+        print(" Num_Exp: "+num_expediente_var)
+        terpeuta_id = self.terapeuta_mapa[terapeuta_asignado_var].get_terapeuta_id()
+
         if self.database.crear_paciente(nombre_var, apellido_var, edad_var, num_expediente_var, terpeuta_id
-                ,observaciones_var, telf_contacto_var):
+                , observaciones_var, telf_contacto_var):
+
+            # No hay que olvidarnos de mantener la sincronía del mapa de pacientes con la base de datos
+            paciente = self.database.obtener_paciente_by_num_expediente(num_expediente_var)
+            self.paciente_mapa[f"{paciente.get_nombre()} {paciente.get_apellido()}"] = paciente
+
             notificacion = self.mostrar_mensaje_exito("Paciente " + nombre_var + " creado con éxito")
             self.mostrar_main(notificacion)
         else:
@@ -170,20 +184,57 @@ class VentanaInicioSesion:
         return int(input("Introduce camara: "))
 
     def seleccionar_paciente_terapia(self):
-        # TODO: Implementar ventana para seleccionar y llamar a comenzar_terapia con ese usuario
+        # Cargamos todos los terapeutas activos
+        paciente_var = tk.StringVar()
+        tk.Label(self.root, text="Seleccione paciente para terapia:").pack(pady=2)
+        tk.OptionMenu(self.root, paciente_var, *list(self.paciente_mapa.values())).pack(pady=10)
+        # Botón para crear el objeto Paciente
+        tk.Button(self.root, text="Comenzar",
+                  command=lambda: self.comenzar_terapia(paciente_var.get())).pack()
+        # Actualiza la ventana principal
+        self.root.update_idletasks()
         return None
+
     """
         Comenzamos la terapia y activamos la cámara.
     """
+
     def comenzar_terapia(self, paciente):
-        #TODO: Obtener paciente al que vamos a hacer terapia
-        # estadisticas = Estadistica.init_minimo(paciente, self.terapeuta.get_terapeuta_id(), datetime.now())
-        # camara = Camara(2, estadisticas)
-        camara = Camara(2)
+        # Nos aseguramos que la variable con la que vamos a terminar la terapia este a false
+        self.end = False
+
+        # Lineas de depuración
+        print("\n" * 2)
+        print("*" * 20)
+        print("Comenzamos terapia")
+        print("*" * 20)
+        print("[OK] Seleccionado paciente: "+paciente)
+
+        paciente = self.paciente_mapa[paciente]
+        pacienteid = paciente.get_paciente_id()
+        self.estadisticas = Estadistica.init_minimo(pacienteid,
+                                               self.terapeuta.get_terapeuta_id(), datetime.now())
+        print("[OK] Estadísticas iniciales: ")
+
+        # Creamos la vista que vamos a tener
+        self.reset_page(None)
+        self.root.update_idletasks()
+        time.sleep(0.5)
+        tk.Label(self.root, text="Terapia en curso").pack(pady=2)
+        # Botón para crear el objeto Paciente
+        tk.Button(self.root, text="Terminar", command=self.terminarTerapia).pack()
+        self.root.update_idletasks()
+        time.sleep(0.5)
+        self.camara_terapia()
+
+    def camara_terapia(self):
+        camara = Camara(2, self.estadisticas)
+        print("[OK] Creada camara")
 
         while True:
             end = camara.read_frame()
-            if not end:
+            print("[OK] frame")
+            if not end or self.end:
                 break
 
         # TODO: Revisar que los datos de la variable estadísticas se están recogiendo bien
@@ -227,6 +278,32 @@ class VentanaInicioSesion:
             if (terpeuta.get_nombre() + " " + terpeuta.get_apellido()) == nombre_y_apellidos:
                 return terpeuta.get_terapeuta_id()
 
+    """
+        Creamos un mapa clave-valor de los pacientes donde la clave va a ser la concatenación del nombre y apellidos.
+    """
+
+    def __obtener_mapa_pacientes(self):
+        paciente_mapa = {}
+        pacientes = self.database.obtener_all_pacientes()
+        # Si queremos aumentar la seguridad no cargaremos las contraseñas
+        for paciente in pacientes:
+            paciente_mapa[f"{paciente.get_nombre()} {paciente.get_apellido()}"] = paciente
+        return paciente_mapa
+
+    """
+            Creamos un mapa clave-valor de los pacientes donde la clave va a ser la concatenación del nombre y apellidos.
+        """
+
+    def __obtener_mapa_terapeuta(self):
+        terapeuta_mapa = {}
+        terapeutas = self.database.obtener_all_terapeutas()
+        for terapeuta in terapeutas:
+            terapeuta_mapa[f"{terapeuta.get_nombre()} {terapeuta.get_apellido()}"] = terapeuta
+        return terapeuta_mapa
+
+    def terminarTerapia(self):
+        self.end = True
+
 
 if __name__ == "__main__":
     interfaz = VentanaInicioSesion()
@@ -234,14 +311,7 @@ if __name__ == "__main__":
 
 """
 TODO:
-
-- Añadir ventana previa a iniciar terapia para seleccionar el paciente al que le vamos a realizar la terapia:
-    - (mostrar_main) # TODO: 
-    - (seleccionar_paciente_terapia) # TODO: Implementar ventana para seleccionar y llamar a comenzar_terapia con ese 
-    usuario
-    - (comenzar_terapia) #TODO: Obtener paciente al que vamos a hacer terapia
-- Comprobar que los datos se guardan bien en la variable estadísticas
-    -(comenzar_terapia) # TODO: Revisar que los datos de la variable estadísticas se están recogiendo bien
+- Implementar boton para terminar la terapia (Actualmente no refresca bien la ventana) 
 - Crear método en DataBase para guardar las estadísticas
     - (incluir_estadistica_terapia) # TODO: Realizar consulta
     

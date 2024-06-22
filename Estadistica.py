@@ -38,6 +38,7 @@ class Estadistica:
 
     @classmethod
     def init_minimo(cls, paciente_id, terapeuta_id, fechahoracomienzo):
+        print("[ESTADISTICA] Creamos estadística minima")
         return cls(None, paciente_id, terapeuta_id, None, 'None',
                    None, 0, None, 0, None, 0,
                    None, 0, None, 0, None, 0, None, 0,
@@ -192,7 +193,7 @@ class Estadistica:
             texto = ''
             for intervalo in intervalos_emociones[emocion]:
                 inicio, final = intervalo
-                texto += '{"inicio":' + inicio + ' "fin":' + final + ' }, '
+                texto += '{"inicio":' + str(inicio) + ' "fin":' + str(final) + ' }, '
             # Eliminamos los dos últimos carácteres porque serán una coma y un espacio
             texto = texto[:-2]
             if emocion == Emociones.ENFADO:
@@ -218,7 +219,7 @@ class Estadistica:
         texto = ''
         for intervalo in intervalos_atencion:
             inicio, final = intervalo
-            texto += '{"inicio":' + inicio + ' "fin":' + final + ' }, '
+            texto += '{"inicio":' + str(inicio) + ' "fin":' + str(final) + ' }, '
         # Eliminamos los dos últimos carácteres porque serán una coma y un espacio
         texto = texto[:-2]
         self._atencion = "[" + texto + "]"

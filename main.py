@@ -216,15 +216,6 @@ class VentanaInicioSesion:
                                                self.terapeuta.get_terapeuta_id(), datetime.now())
         print("[OK] Estadísticas iniciales: ")
 
-        # Creamos la vista que vamos a tener
-        self.reset_page(None)
-        self.root.update_idletasks()
-        time.sleep(0.5)
-        tk.Label(self.root, text="Terapia en curso").pack(pady=2)
-        # Botón para crear el objeto Paciente
-        tk.Button(self.root, text="Terminar", command=self.terminarTerapia).pack()
-        self.root.update_idletasks()
-        time.sleep(0.5)
         self.camara_terapia()
 
     def camara_terapia(self):
@@ -237,7 +228,11 @@ class VentanaInicioSesion:
             if not end or self.end:
                 break
 
-        # TODO: Revisar que los datos de la variable estadísticas se están recogiendo bien
+        self.pintar_datos()
+        self.database.incluir_estadistica_terapia(self.estadisticas)
+
+        notificacion = self.mostrar_mensaje_exito("Terapia finalizada")
+        self.mostrar_main(notificacion)
 
     """
         Método auxiliar mediante el que vamos a eliminar todo el contenido que haya en la vista. Esto nos permite 
@@ -305,6 +300,51 @@ class VentanaInicioSesion:
         self.end = True
 
 
+    def pintar_datos(self):
+        self.cabecera_end()
+        print("Paciente ID:", self.estadisticas.get_paciente_id())
+        print("Terapeuta ID:", self.estadisticas.get_terapeuta_id())
+        print("Enfadado:", self.estadisticas.get_enfadado())
+        print("Enfadado Total:", self.estadisticas.get_enfadado_total())
+        print("Disgustado:", self.estadisticas.get_disgustado())
+        print("Disgustado Total:", self.estadisticas.get_disgustadototal())
+        print("Miedoso:", self.estadisticas.get_miedoso())
+        print("Miedoso Total:", self.estadisticas.get_miedosototal())
+        print("Contento:", self.estadisticas.get_contento())
+        print("Contento Total:", self.estadisticas.get_contentototal())
+        print("Triste:", self.estadisticas.get_triste())
+        print("Triste Total:", self.estadisticas.get_tristetotal())
+        print("Sorprendido:", self.estadisticas.get_sorprendido())
+        print("Sorprendido Total:", self.estadisticas.get_sorprendidototal())
+        print("Neutro:", self.estadisticas.get_neutro())
+        print("Neutro Total:", self.estadisticas.get_neutrototal())
+        print("Atención:", self.estadisticas.get_atencion())
+        print("Atención Total:", self.estadisticas.get_atenciontotal())
+        print("Fecha y Hora Comienzo:", self.estadisticas.get_fechahoracomienzo())
+        print("Fecha y Hora Fin:", self.estadisticas.get_fechahorafin())
+        print("Tiempo Total:", self.estadisticas.get_tiempototal())
+        print("Observaciones:", self.estadisticas.get_observaciones())
+
+    def cabecera_end(self):
+        end = [
+            "****** ***      ** *****",
+            "**     ** **    ** **   **",
+            "****** **   **  ** **    **",
+            "**     **    ** ** **   **",
+            "****** **     **** *****"
+        ]
+
+        print("\n" * 5)
+
+        for linea in end:
+            print(linea)
+
+        print("\n" * 2)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("~~~~~~~~~~~~~~~~~~~~RESULTADOS 2~~~~~~~~~~~~~~~~~~~~")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+
 if __name__ == "__main__":
     interfaz = VentanaInicioSesion()
     interfaz.comenzar_programa()
@@ -312,8 +352,6 @@ if __name__ == "__main__":
 """
 TODO:
 - Implementar boton para terminar la terapia (Actualmente no refresca bien la ventana) 
-- Crear método en DataBase para guardar las estadísticas
-    - (incluir_estadistica_terapia) # TODO: Realizar consulta
     
 - Ver como mostrar en la interfaz gráfica los resultados de las estadísticas de los pacientes: 
     - Añadir botón para ir a de vista estadísticas

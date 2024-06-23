@@ -1,6 +1,7 @@
 from Emociones import Emociones
 import numpy as np
 import time
+import json
 
 
 class Estadistica:
@@ -39,7 +40,7 @@ class Estadistica:
     @classmethod
     def init_minimo(cls, paciente_id, terapeuta_id, fechahoracomienzo):
         print("[ESTADISTICA] Creamos estadística minima")
-        return cls(None, paciente_id, terapeuta_id, None, 'None',
+        return cls(None, paciente_id, terapeuta_id, None, 0,
                    None, 0, None, 0, None, 0,
                    None, 0, None, 0, None, 0, None, 0,
                    fechahoracomienzo, None, 0, "")
@@ -57,6 +58,9 @@ class Estadistica:
 
     def get_enfadado(self):
         return self._enfadado
+
+    def get_enfadado_total(self):
+        return self._enfadadototal
 
     def get_disgustado(self):
         return self._disgustado
@@ -187,7 +191,6 @@ class Estadistica:
     """
         Como nosotros recogemos los datos como una matriz, ahora tenemos que convertirlos a JSON
     """
-
     def convertir_JSON_emociones(self, intervalos_emociones):
         for emocion in Emociones:
             texto = ''
@@ -210,11 +213,9 @@ class Estadistica:
                 self._sorprendido = "[" + texto + "]"
             elif emocion == Emociones.NEUTRO:
                 self._neutro = "[" + texto + "]"
-
     """
             Como nosotros recogemos los datos como una matriz, ahora tenemos que convertirlos a JSON
-        """
-
+    """
     def convertir_JSON_atencion(self, intervalos_atencion):
         texto = ''
         for intervalo in intervalos_atencion:

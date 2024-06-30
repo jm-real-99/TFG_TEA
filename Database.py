@@ -1,5 +1,7 @@
 import mysql.connector
 import configparser
+
+from Estadistica import Estadistica
 from Paciente import Paciente
 from Terapeuta import Terapeuta
 
@@ -224,6 +226,27 @@ class DataBase:
         print("[DB] Estadístia añadida con éxito")
         return True
 
+    def obtener_estadisticas_by_paciente(self, idpaciente):
+        try:
+            # Ejecuta la consulta para obtener datos de la tabla Paciente
+            self.cursor.execute("SELECT * FROM EstadisticasTerapias WHERE paciente_id  = %s",
+                                [idpaciente])
+            estadisticas_data = self.cursor.fetchall()  # Obtiene todos los registros
+
+            # Crea instancias de Paciente y almacénalas en una lista
+            estadisticas = []
+            for estadistica_data in estadisticas_data:
+                estadistica = Estadistica(*estadisticas)
+                estadisticas.append(estadisticas)
+
+            return estadisticas
+
+        except mysql.connector.Error as err:
+            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            return None
+        except IndexError as err:
+            print(f"[DB] Index error: {err}")
+            return None
     """
         Cerramos la conexión
     """

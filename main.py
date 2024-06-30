@@ -1,5 +1,9 @@
 import time
 
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+from Emociones import Emociones
+from Calculo_estadisticas import Calculo_estadisticas
 from Camara import Camara
 import cv2
 import tkinter as tk
@@ -343,6 +347,37 @@ class VentanaInicioSesion:
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("~~~~~~~~~~~~~~~~~~~~RESULTADOS 2~~~~~~~~~~~~~~~~~~~~")
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    """ *******************************************
+           MÉTODOS RELACIONADOS CON LAS ESTADÍSTICAS
+           ******************************************* """
+
+    def consultar_estadisticas(self):
+        # Cargamos todos los terapeutas activos
+        paciente_var = tk.StringVar()
+        tk.Label(self.root, text="Seleccione paciente para ver las estadísticas:").pack(pady=2)
+        tk.OptionMenu(self.root, paciente_var, *list(self.paciente_mapa.values())).pack(pady=10)
+        # Botón para crear el objeto Paciente
+        tk.Button(self.root, text="Comenzar",
+                  command=lambda: self.consultas_estadisticas_paciente(paciente_var.get())).pack()
+        # Actualiza la ventana principal
+        self.root.update_idletasks()
+        return None
+
+    def consultas_estadisticas_paciente(self, paciente):
+        self.reset_page(None)
+        paciente = self.paciente_mapa[paciente]
+        estadisticas = self.database.obtener_estadisticas_by_paciente(paciente.get_paciente_id)
+        calculo_estadisticas = Calculo_estadisticas(estadisticas)
+        calculo_estadisticas.inicializarDatos()
+
+        # figura = Figure(figsize=(10, 9), dpi=80)
+        valores = [calculo_estadisticas.porcentaje_enfadado, calculo_estadisticas.porcentaje_disgustado,
+                    calculo_estadisticas.porcentaje_miedoso, calculo_estadisticas.porcentaje_contento,
+                    calculo_estadisticas.porcentaje_triste, calculo_estadisticas.porcentaje_sorprendido,
+                    calculo_estadisticas.porcentaje_neutro]
+        etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name, Emociones.CONTENTO.name,
+                     Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
 
 
 if __name__ == "__main__":

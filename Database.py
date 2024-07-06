@@ -236,8 +236,8 @@ class DataBase:
             # Crea instancias de Paciente y almacénalas en una lista
             estadisticas = []
             for estadistica_data in estadisticas_data:
-                estadistica = Estadistica(*estadisticas)
-                estadisticas.append(estadisticas)
+                estadistica = Estadistica(*estadistica_data)
+                estadisticas.append(estadistica)
 
             return estadisticas
 

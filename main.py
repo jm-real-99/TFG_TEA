@@ -1,7 +1,4 @@
 import time
-
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
 from Emociones import Emociones
 from Calculo_estadisticas import Calculo_estadisticas
 from Camara import Camara
@@ -12,6 +9,10 @@ from Paciente import Paciente
 from Terapeuta import Terapeuta
 from Database import DataBase
 from Estadistica import Estadistica
+
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import numpy as np
 
 
 class VentanaInicioSesion:
@@ -88,7 +89,8 @@ class VentanaInicioSesion:
 
         tk.Button(self.root, text="Dar de alta paciente", command=lambda: self.formulario_crear_paciente(None)).pack(
             pady=10)
-        # TODO:
+        tk.Button(self.root, text="Consultar estadísticas", command=self.consultar_estadisticas).pack(
+            pady=10)
         tk.Button(self.root, text="Iniciar terapia", command=self.seleccionar_paciente_terapia).pack(pady=10)
         # tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack(pady=10)
 
@@ -366,8 +368,11 @@ class VentanaInicioSesion:
 
     def consultas_estadisticas_paciente(self, paciente):
         self.reset_page(None)
+
+        tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
+
         paciente = self.paciente_mapa[paciente]
-        estadisticas = self.database.obtener_estadisticas_by_paciente(paciente.get_paciente_id)
+        estadisticas = self.database.obtener_estadisticas_by_paciente(paciente.get_paciente_id())
         calculo_estadisticas = Calculo_estadisticas(estadisticas)
         calculo_estadisticas.inicializarDatos()
 
@@ -379,6 +384,28 @@ class VentanaInicioSesion:
         etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name, Emociones.CONTENTO.name,
                      Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
 
+        # Crear una figura y un conjunto de subtramas
+        figura = Figure(figsize=(10, 9), dpi=80)
+        ax1 = figura.add_subplot(121)  # Gráfico de tarta
+        ax2 = figura.add_subplot(122)  # Gráfico de barras
+
+        # Crear gráfico de tarta
+        ax1.pie(valores, labels=etiquetas, autopct='%1.1f%%')
+        ax1.set_title('Gráfico de tarta')
+
+        # Crear gráfico de barras
+        y_pos = np.arange(len(etiquetas))
+        ax2.bar(y_pos, valores, align='center', alpha=0.5)
+        ax2.set_xticks(y_pos)
+        ax2.set_xticklabels(etiquetas)
+        ax2.set_title('Gráfico de barras')
+
+        # Crear el lienzo de Tkinter con la figura
+        canvas = FigureCanvasTkAgg(figura, master=self.root)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+
 
 if __name__ == "__main__":
     interfaz = VentanaInicioSesion()
@@ -386,12 +413,16 @@ if __name__ == "__main__":
 
 """
 TODO:
+- ¡¡¡ ARREGLAR Y VER POR QUÉ AHORA NO DEJA INICIALIZAR LA CÁMARA Y DA ERROR AL INICIAR TERAPIAS !!!
+    Seguro sea un error con las librerías y haya que reinstalar todo.
 - Implementar boton para terminar la terapia (Actualmente no refresca bien la ventana) 
     
 - Ver como mostrar en la interfaz gráfica los resultados de las estadísticas de los pacientes: 
-    - Añadir botón para ir a de vista estadísticas
-    - Añadir vista de lista de todos los pacientes
-    - Añadir vista concreta de cada  paciente donde veremos las estadísticas a lo largo del tiempo y por terapia
+    - Ajustar los componentes de gráficas para que se vea mejor y no se pisen los textos
+    - Añadir en texto información como los minutos totales, nº de terapias, apariciones totales, etc
+    - Incluir vista para ver información por terapia
+    - Mostrar los datos para solo esa terapia.
+
      
 Menos importantes:
 - Hacer menú de terapeuta admin para que puedas crear desde la aplicación otros usuarios de terpeutas

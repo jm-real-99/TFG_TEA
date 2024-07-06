@@ -47,7 +47,7 @@ class Calculo_estadisticas():
         self.emocion_mas_expresada = None
 
     def inicializarDatos(self):
-        self.num_terapias = self.estadisticas.size()
+        self.num_terapias = len(self.estadisticas)
         tiempo_total_terapias = 0
         mejora_atencion = []
         mejora_emociones = []
@@ -102,25 +102,25 @@ class Calculo_estadisticas():
 
             # Calculamos el % de emociones detectadas a través de todas las terapias, es decir, que no hayan sido
             # neutras
-            emociones_expr = 100 - ((self.totalneutro * estadistica.get_tiempototal)/100 )
+            emociones_expr = 100 - ((self.totalneutro / estadistica.get_tiempototal())*100)
             mejora_emociones.append(emociones_expr)
 
             # Calculamos el % de atención prestada a través de todas las terapias
-            atencion_expr = (self.totalatencion * estadistica.get_tiempototal) / 100
+            atencion_expr = (self.totalatencion / estadistica.get_tiempototal()) * 100
             mejora_atencion.append(atencion_expr)
 
         self.mins_total_atencion = self.totalatencion / 60
 
         total_emociones = (self.totalenfadado + self.totaldisgustado + self.totalmiedoso + self.totalcontento +
                            self.totaltriste + self.totalsorprendido + self.totalneutro + self.totalatencion)
-        self.porcentaje_enfadado = (self.totalenfadado * total_emociones) / 100
-        self.porcentaje_disgustado = (self.porcentaje_disgustado * total_emociones) / 100
-        self.porcentaje_miedoso = (self.porcentaje_miedoso * total_emociones) / 100
-        self.porcentaje_contento = (self.porcentaje_contento * total_emociones) / 100
-        self.porcentaje_triste = (self.porcentaje_triste * total_emociones) / 100
-        self.porcentaje_sorprendido = (self.porcentaje_sorprendido * total_emociones) / 100
-        self.porcentaje_neutro = (self.porcentaje_neutro * total_emociones) / 100
-        self.porcentaje_atencion = (self.porcentaje_atencion * tiempo_total_terapias) / 100
+        self.porcentaje_enfadado = (self.totalenfadado / total_emociones) * 100
+        self.porcentaje_disgustado = (self.totaldisgustado / total_emociones) * 100
+        self.porcentaje_miedoso = (self.totalmiedoso / total_emociones) * 100
+        self.porcentaje_contento = (self.totalcontento / total_emociones) * 100
+        self.porcentaje_triste = (self.totaltriste / total_emociones) * 100
+        self.porcentaje_sorprendido = (self.totalsorprendido / total_emociones) * 100
+        self.porcentaje_neutro = (self.totalneutro / total_emociones) * 100
+        self.porcentaje_atencion = (self.totalatencion / tiempo_total_terapias) * 100
 
         # Obtenemos la emoción más expresada según el porcentaje total
         cuentamax = 0

@@ -11,7 +11,7 @@ from Estadistica import Estadistica
 
 class Camara:
     def __init__(self, camera, estadistica):
-        self._cap = cv2.VideoCapture(camera)
+        self._cap = cv2.VideoCapture(camera, cv2.CAP_DSHOW)
         self._tiempoInicio = time.time()
         self._gestorEmociones = GestorEmociones()
         self._gestorAtencion = GestorAtencion()

@@ -2,7 +2,7 @@ from Emociones import Emociones
 import numpy as np
 import cv2
 import dlib
-from tensorflow import keras
+import keras
 
 
 class GestorEmociones:
@@ -15,7 +15,12 @@ class GestorEmociones:
         self._predictor = dlib.shape_predictor("modelos/shape_predictor_68_face_landmarks.dat")
         # Cargamos el modelo preentrenado, ver la referencia para saber de dónde lo he sacado
         # (quizás tenga que entrenar yo mismo uno)
-        self._model = keras.models.load_model("modelos/model.h5")
+        self._model = keras.models.load_model("modelos/model.h5", compile=False)
+        # Definir el optimizador con el argumento actualizado
+        optimizer = keras.optimizers.SGD(learning_rate=0.01)  # Ajusta el learning_rate según tus necesidades
+        # Compilar el modelo con el optimizador actualizado
+        self._model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
+
         # Inicializamos la cámara web
 
         """*****************

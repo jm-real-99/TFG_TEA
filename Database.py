@@ -74,7 +74,7 @@ class DataBase:
             return False
         try:
             print("Edad: " + edad)
-            if edad is not "":
+            if edad:
                 edad = int(edad)
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("INSERT INTO Pacientes (nombre, apellido, edad, num_expediente, "

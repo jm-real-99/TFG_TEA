@@ -15,7 +15,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 
 
-class VentanaInicioSesion:
+class InterfazGrafica:
     # Variables globales
     VENTANA = (400, 300)
     VENTANA_NOTI = (100, 50)
@@ -225,7 +225,7 @@ class VentanaInicioSesion:
         self.camara_terapia()
 
     def camara_terapia(self):
-        camara = Camara(2, self.estadisticas)
+        camara = Camara(0, self.estadisticas)
         print("[OK] Creada camara")
 
         while True:
@@ -408,7 +408,7 @@ class VentanaInicioSesion:
 
 
 if __name__ == "__main__":
-    interfaz = VentanaInicioSesion()
+    interfaz = InterfazGrafica()
     interfaz.comenzar_programa()
 
 """

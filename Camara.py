@@ -24,18 +24,22 @@ class Camara:
     """
 
     def read_frame(self):
+        print("[CAMARA]Leemos frame")
         ret, frame = self._cap.read()
 
         if not ret:
+            print("[DETECTAR EMOCION]Terminamoos")
             return
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
         # TODO: Llamar mediante un hilo aparte
-        emocion = self._gestorEmociones.detectar_emocion(gray, self.__segundo_actual())
+        print("Detectamos emocion")
+        emocion = self._gestorEmociones.detectar_emocion(frame, self.__segundo_actual())
 
         # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
         # TODO: Llamar mediante un hilo aparte
+        print("Detectamos atencion")
         atencion, text_atencion = self._gestorAtencion.detectar_atencion(frame, self.__segundo_actual())
 
         # TODO: Incluir un semaforo que controle que ambas cosas se han hecho

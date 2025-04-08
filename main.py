@@ -225,7 +225,7 @@ class VentanaInicioSesion:
         self.camara_terapia()
 
     def camara_terapia(self):
-        camara = Camara(2, self.estadisticas)
+        camara = Camara(0, self.estadisticas)
         print("[OK] Creada camara")
 
         while True:

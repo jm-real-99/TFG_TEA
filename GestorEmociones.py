@@ -1,23 +1,12 @@
 from Emociones import Emociones
 import numpy as np
 import cv2
-import dlib
-from tensorflow import keras
+from deepface import DeepFace
 
+# TODO: CAMBIAR LA IMPLEMENTACIÓN DE LECTURA DE EMOCIONES PARA USAR DeepFace
 
 class GestorEmociones:
     def __init__(self):
-        """*****************
-        MODELOS DE DATOS
-        ******************"""
-        # Cargar el modelo pre-entrenado de detección de caras de OpenCV
-        self._face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        self._predictor = dlib.shape_predictor("modelos/shape_predictor_68_face_landmarks.dat")
-        # Cargamos el modelo preentrenado, ver la referencia para saber de dónde lo he sacado
-        # (quizás tenga que entrenar yo mismo uno)
-        self._model = keras.models.load_model("modelos/model.h5")
-        # Inicializamos la cámara web
-
         """*****************
         VARIABLES DE DATOS
         ******************"""
@@ -30,10 +19,10 @@ class GestorEmociones:
         self._tiempo = 0
         # Diccionario clave-valor donde se almacenará una dupla (Ti,Tf) donde Ti es el segundo inicial del intervalo
         # dónde se ha mostrado la emoción y Tf el final. Esto se guardará en la emoción correspondiente.
-        self._intervalosEmociones = {emotion: [] for emotion in Emociones}
+        self._intervalosEmociones = {emotion.value: [] for emotion in Emociones}
         # Diccionario clave-valor donde almacenaremos el tiempo total quie se expresa la emoción a lo largo de la
         # terapia, esto nos permitirá ahorrar tiempo de cómputo a la hora de calcular las estadísticas.
-        self._tiempoTotalEmocion = {emotion: 0 for emotion in Emociones}
+        self._tiempoTotalEmocion = {emotion.value: 0 for emotion in Emociones}
 
     """
         Detectamos las emociones en el frame indicado
@@ -47,43 +36,39 @@ class GestorEmociones:
     def detectar_emocion(self, frame, tiempo):
         print("Entramos en detectar_emocion")
         # Vemos si deberíamos de actualizar el tiempo actual
+        print("[DETECTAR EMOCION] Actualizamos tiempo")
         self.__actualizar_tiempo(tiempo)
 
         # Detectamos caras en el fotograma
-        faces = self._face_cascade.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
-        print("Ya tenemos faces")
+        print("[DETECTAR EMOCION] Detectamos cara")
+        faces = DeepFace.extract_faces(frame, detector_backend='opencv')
+        print("[DETECTAR EMOCION] Ya tenemos faces")
         print(faces)
-        for (x, y, w, h) in faces:
+        #TODO: ¿Qué hacemos si detecta más de una cara?
+        if faces:
             try:
-                # Dibujamos un rectángulo alrededor de la cara detectada
-                # cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                face = faces[0]
+                # Obtiene las coordenadas del área facial detectada
+                facial_area = face['facial_area']
+                x = facial_area['x']
+                y = facial_area['y']
+                w = facial_area['w']
+                h = facial_area['h']
 
-                # Obtenemos los puntos de referencia faciales
-                landmarks = self._predictor(frame, dlib.rectangle(x, y, x + w, y + h))
+                # Analiza las emociones del rostro detectado
+                print("[DETECTAR EMOCION]Analizamos emocion")
+                analysis = DeepFace.analyze(frame[y:y + h, x:x + w], actions=['emotion'], enforce_detection=False)
 
-                # Dibujamos los puntos recogidos en landmarks
-                for i in range(68):  # 68 puntos de referencia faciales
-                    x, y = landmarks.part(i).x, landmarks.part(i).y
-                    cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)
+                # Obtiene la emoción principal detectada
+                print("[DETECTAR EMOCION]Obtenemos emocion dominante")
+                dominant_emotion = analysis[0]['dominant_emotion']
 
-                # Extraemos la región de interés (ROI) y la redimensionamos
-                roi = frame[y:y + h, x:x + w]
-                resized = cv2.resize(roi, (48, 48))
+                print("--Dominant emotion:")
+                print(dominant_emotion)
 
-                # Realizamos la predicción utilizando el modelo cargado
-                prediction = self._model.predict(np.array([resized]).reshape(1, 48, 48, 1))[0]
-
-                # Del vector con las probabilidades de emociones, cogemos el más probable.
-                print("--Prediction:")
-                print(prediction)
-                print("--ArgMax:")
-                print(np.argmax(prediction))
-                emocionmax = list(Emociones)[np.argmax(prediction) - 1]
-                print("--EmocionMax")
-                print(emocionmax)
-                print("--EmocionMax.name")
-                print(emocionmax.name)
-                self.__registrar_emocion(emocionmax, tiempo)
+                print("EMOCIOOOOOON: ")
+                print(Emociones[dominant_emotion.value]) # TODO: ERROR!!!!!!!! AttributeError: 'str' object has no attribute 'value'
+                #self.__registrar_emocion(dominant_emotion, tiempo)
 
                 print("\t\t\t\tVamos a devolver: " + self._emocionActual.name)
                 return self._emocionActual

@@ -47,7 +47,7 @@ class Camara:
         print(emocion)
         print(type(emocion))
         if emocion is not None:
-            texto_emocion = emocion.name
+            texto_emocion = emocion
             color_emocion = (0, 255, 0)
         else:
             texto_emocion = "No se detecta la cara"
@@ -94,13 +94,13 @@ class Camara:
         self._estadisticas.set_fechahorafin(datetime.now())
         total_emociones = self._gestorEmociones.get_tiempototalemocion()
         self._estadisticas.convertir_JSON_emociones(self._gestorEmociones.get_intervalosemociones())
-        self._estadisticas.set_enfadadototal(total_emociones[Emociones.ENFADO])
-        self._estadisticas.set_disgustadototal(total_emociones[Emociones.DISGUSTADO])
-        self._estadisticas.set_miedosototal(total_emociones[Emociones.MIEDOSO])
-        self._estadisticas.set_contentototal(total_emociones[Emociones.CONTENTO])
-        self._estadisticas.set_tristetotal(total_emociones[Emociones.TRISTE])
-        self._estadisticas.set_sorprendidototal(total_emociones[Emociones.SORPRENDIDO])
-        self._estadisticas.set_neutrototal(total_emociones[Emociones.NEUTRO])
+        self._estadisticas.set_enfadadototal(total_emociones[Emociones.ENFADO.value])
+        self._estadisticas.set_disgustadototal(total_emociones[Emociones.DISGUSTADO.value])
+        self._estadisticas.set_miedosototal(total_emociones[Emociones.MIEDOSO.value])
+        self._estadisticas.set_contentototal(total_emociones[Emociones.CONTENTO.value])
+        self._estadisticas.set_tristetotal(total_emociones[Emociones.TRISTE.value])
+        self._estadisticas.set_sorprendidototal(total_emociones[Emociones.SORPRENDIDO.value])
+        self._estadisticas.set_neutrototal(total_emociones[Emociones.NEUTRO.value])
 
         self._estadisticas.convertir_JSON_atencion(self._gestorAtencion.get_intervalosatencion())
         self._estadisticas.set_atenciontotal(self._gestorAtencion.get_tiempototalatencion())
@@ -133,9 +133,9 @@ class Camara:
         tiempototal_emocion = self._gestorEmociones.get_tiempototalemocion()
         for emotion in Emociones:
             print("\t-" + emotion.name, end="")
-            print(intervalos_emociones[emotion])
+            print(intervalos_emociones[emotion.value])
             print("\tTiempo total: ", end="")
-            print(tiempototal_emocion[emotion])
+            print(tiempototal_emocion[emotion.value])
 
     def imprimir_estadisticas_atencion(self):
         print("\n" * 2)

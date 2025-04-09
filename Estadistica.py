@@ -192,7 +192,8 @@ class Estadistica:
         Como nosotros recogemos los datos como una matriz, ahora tenemos que convertirlos a JSON
     """
     def convertir_JSON_emociones(self, intervalos_emociones):
-        for emocion in Emociones:
+        for emo in Emociones:
+            emocion = emo.value
             texto = ''
             for intervalo in intervalos_emociones[emocion]:
                 inicio, final = intervalo
@@ -213,6 +214,7 @@ class Estadistica:
                 self._sorprendido = "[" + texto + "]"
             elif emocion == Emociones.NEUTRO:
                 self._neutro = "[" + texto + "]"
+            # Ignoramos si el valor es NONE
     """
             Como nosotros recogemos los datos como un a matriz, ahora tenemos que convertirlos a JSON
     """

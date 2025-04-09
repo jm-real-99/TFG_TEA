@@ -11,7 +11,7 @@ class GestorEmociones:
         VARIABLES DE DATOS
         ******************"""
         # Mediante esta variable controlaremos cuál es la emoción actual y sabremos si esta ha cambiado
-        self._emocionActual = Emociones.NEUTRO
+        self._emocionActual = Emociones.NONE.value
         # Mediante esta variable sabremos cuando hemos empezado a detectar una emoción.
         self._t_inicioEmocion = 0
         # Mediante esta variable sabremos el segundo en el que estamos. Esto nos permitirá que si en el mismo segundo
@@ -41,7 +41,7 @@ class GestorEmociones:
 
         # Detectamos caras en el fotograma
         print("[DETECTAR EMOCION] Detectamos cara")
-        faces = DeepFace.extract_faces(frame, detector_backend='opencv')
+        faces = DeepFace.extract_faces(frame, detector_backend='opencv', enforce_detection=False)
         print("[DETECTAR EMOCION] Ya tenemos faces")
         print(faces)
         #TODO: ¿Qué hacemos si detecta más de una cara?
@@ -66,16 +66,20 @@ class GestorEmociones:
                 print("--Dominant emotion:")
                 print(dominant_emotion)
 
-                print("EMOCIOOOOOON: ")
-                print(Emociones[dominant_emotion.value]) # TODO: ERROR!!!!!!!! AttributeError: 'str' object has no attribute 'value'
-                #self.__registrar_emocion(dominant_emotion, tiempo)
+                self.__registrar_emocion(dominant_emotion, tiempo)
 
-                print("\t\t\t\tVamos a devolver: " + self._emocionActual.name)
+                print("\t\t\t\tVamos a devolver: " + self._emocionActual)
                 return self._emocionActual
             except FileNotFoundError:
                 print("ERROR: El archivo no se encontró")
                 input("Presione cualquier tecla para continuar")
                 return self._emocionActual
+            except ValueError as e:
+                print(f"[ADVERTENCIA] No se detectó ningún rostro: {e}")
+                return self._emocionActual
+        else:
+            #Si no detectamos una cara entonces marcamos vacío
+            self.__cambiar_emocion(Emociones.NONE.value, tiempo)
 
     """
         Funcion desde la que gestionamos la emoción actual del frame
@@ -86,8 +90,8 @@ class GestorEmociones:
 
     def __registrar_emocion(self, emocion, tiempo):
         # Para el caso de que el segundo actual sea el mismo, entonces solo cambiaremos de emocion si ha aparecido una
-        # emocion distinta y esta no es prioritaria (no es NEUTRO).
-        if tiempo == self._tiempo and emocion != self._emocionActual and emocion != Emociones.NEUTRO:
+        # emocion distinta y esta no es prioritaria (no es NONE).
+        if tiempo == self._tiempo and emocion != self._emocionActual and emocion != Emociones.NONE:
             self.__cambiar_emocion(tiempo, emocion)
         # Si hemos cambiado de tiempo y la emoción es distinta,entonces cambiamos la emocion actual
         if tiempo != self._tiempo and emocion != self._emocionActual:
@@ -116,7 +120,7 @@ class GestorEmociones:
 
     def __add_emotion_interval(self, fin):
         print(
-            "Añadimos emocion " + self._emocionActual.name + ": (" + str(self._t_inicioEmocion) + "," + str(fin) + ")")
+            "Añadimos emocion " + self._emocionActual + ": (" + str(self._t_inicioEmocion) + "," + str(fin) + ")")
         self._intervalosEmociones[self._emocionActual].append((self._t_inicioEmocion, fin))
         self._tiempoTotalEmocion[self._emocionActual] += (fin - self._t_inicioEmocion) + 1
 

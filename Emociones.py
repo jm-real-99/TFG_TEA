@@ -9,10 +9,11 @@ para facilitar los cálculos.
 
 
 class Emociones(Enum):
-    ENOJADO = 'angry'
+    ENFADO = 'angry'
     DISGUSTADO = 'disgust'
-    MIEDO = 'fear'
-    FELIZ = 'happy'
+    MIEDOSO = 'fear'
+    CONTENTO = 'happy'
     TRISTE = 'sad'
     SORPRENDIDO = 'surprise'
     NEUTRO = 'neutral'
+    NONE = 'none'

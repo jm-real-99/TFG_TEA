@@ -63,14 +63,14 @@ class Calculo_estadisticas():
             self.totalneutro += estadistica.get_neutrototal()
             self.totalatencion += estadistica.get_atenciontotal()
 
-            apariciones_enfadado = estadistica.get_enfadado().count("inicio")
-            apariciones_disgustado = estadistica.get_disgustado().count("inicio")
-            apariciones_miedoso = estadistica.get_miedoso().count("inicio")
-            apariciones_contento = estadistica.get_contento().count("inicio")
-            apariciones_triste = estadistica.get_triste().count("inicio")
-            apariciones_sorprendido = estadistica.get_sorprendido().count("inicio")
-            apariciones_neutro = estadistica.get_neutro().count("inicio")
-            apariciones_atencion = estadistica.get_atencion().count("inicio")
+            apariciones_enfadado = self.__count_inicio(estadistica.get_enfadado())
+            apariciones_disgustado = self.__count_inicio(estadistica.get_disgustado())
+            apariciones_miedoso = self.__count_inicio(estadistica.get_miedoso())
+            apariciones_contento = self.__count_inicio(estadistica.get_contento())
+            apariciones_triste = self.__count_inicio(estadistica.get_triste())
+            apariciones_sorprendido = self.__count_inicio(estadistica.get_sorprendido())
+            apariciones_neutro = self.__count_inicio(estadistica.get_neutro())
+            apariciones_atencion = self.__count_inicio(estadistica.get_atencion())
 
             self.apariciones_enfadado += apariciones_enfadado
             self.apariciones_disgustado += apariciones_disgustado
@@ -113,14 +113,15 @@ class Calculo_estadisticas():
 
         total_emociones = (self.totalenfadado + self.totaldisgustado + self.totalmiedoso + self.totalcontento +
                            self.totaltriste + self.totalsorprendido + self.totalneutro + self.totalatencion)
-        self.porcentaje_enfadado = (self.totalenfadado / total_emociones) * 100
-        self.porcentaje_disgustado = (self.totaldisgustado / total_emociones) * 100
-        self.porcentaje_miedoso = (self.totalmiedoso / total_emociones) * 100
-        self.porcentaje_contento = (self.totalcontento / total_emociones) * 100
-        self.porcentaje_triste = (self.totaltriste / total_emociones) * 100
-        self.porcentaje_sorprendido = (self.totalsorprendido / total_emociones) * 100
-        self.porcentaje_neutro = (self.totalneutro / total_emociones) * 100
-        self.porcentaje_atencion = (self.totalatencion / tiempo_total_terapias) * 100
+
+        self.porcentaje_enfadado = self.__calcular_porcentaje(self.totalenfadado, total_emociones)
+        self.porcentaje_disgustado = self.__calcular_porcentaje(self.totaldisgustado, total_emociones)
+        self.porcentaje_miedoso = self.__calcular_porcentaje(self.totalmiedoso, total_emociones)
+        self.porcentaje_contento = self.__calcular_porcentaje(self.totalcontento, total_emociones)
+        self.porcentaje_triste = self.__calcular_porcentaje(self.totaltriste, total_emociones)
+        self.porcentaje_sorprendido = self.__calcular_porcentaje(self.totalsorprendido, total_emociones)
+        self.porcentaje_neutro = self.__calcular_porcentaje(self.totalneutro, total_emociones)
+        self.porcentaje_atencion = self.__calcular_porcentaje(self.totalatencion, tiempo_total_terapias)
 
         # Obtenemos la emoción más expresada según el porcentaje total
         cuentamax = 0
@@ -173,4 +174,11 @@ class Calculo_estadisticas():
             incremento.append(mejora_atencion[i] - mejora_atencion[i - 1])
 
         self.mejora_tendencia_atencion = sum(incremento) / len(incremento)
+
+    def __calcular_porcentaje(self, numero, total, default=0.0):
+        return (numero / total * 100) if total != 0 else default
+
+    def __count_inicio(self,emocion,default=0):
+        return emocion.count("inicio") if emocion else default
+
 

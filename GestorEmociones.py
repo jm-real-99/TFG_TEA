@@ -7,6 +7,13 @@ from deepface import DeepFace
 
 class GestorEmociones:
     def __init__(self):
+        """
+
+        """
+        # Inicializar el clasificador en cascada de Haar para detección facial
+        self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        if self.face_cascade.empty():
+            raise RuntimeError("Error: No se pudo cargar el clasificador en cascada de Haar")
         """*****************
         VARIABLES DE DATOS
         ******************"""
@@ -38,26 +45,35 @@ class GestorEmociones:
         # Vemos si deberíamos de actualizar el tiempo actual
         print("[DETECTAR EMOCION] Actualizamos tiempo")
         self.__actualizar_tiempo(tiempo)
-
+        """
         # Detectamos caras en el fotograma
         print("[DETECTAR EMOCION] Detectamos cara")
         faces = DeepFace.extract_faces(frame, detector_backend='opencv', enforce_detection=False)
         print("[DETECTAR EMOCION] Ya tenemos faces")
         print(faces)
+        """
+        """ PRUEBAAA """
+        # Convertir el frame a escala de grises para la detección facial
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        print("[DETECTAR EMOCION] Detectamos cara con OpenCV")
+        # Detectar caras usando el clasificador en cascada
+        faces = self.face_cascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30)
+        )
+        """ """
         #TODO: ¿Qué hacemos si detecta más de una cara?
-        if faces:
+        if len(faces) > 0:
             try:
-                face = faces[0]
+                x, y, w, h = faces[0]
                 # Obtiene las coordenadas del área facial detectada
-                facial_area = face['facial_area']
-                x = facial_area['x']
-                y = facial_area['y']
-                w = facial_area['w']
-                h = facial_area['h']
+                face_region = frame[y:y + h, x:x + w]
 
                 # Analiza las emociones del rostro detectado
                 print("[DETECTAR EMOCION]Analizamos emocion")
-                analysis = DeepFace.analyze(frame[y:y + h, x:x + w], actions=['emotion'], enforce_detection=False)
+                analysis = DeepFace.analyze(frame[y:y + h, x:x + w], actions=['emotion'], detector_backend='skip',  enforce_detection=False)
 
                 # Obtiene la emoción principal detectada
                 print("[DETECTAR EMOCION]Obtenemos emocion dominante")
@@ -79,7 +95,7 @@ class GestorEmociones:
                 return self._emocionActual
         else:
             #Si no detectamos una cara entonces marcamos vacío
-            self.__cambiar_emocion(Emociones.NONE.value, tiempo)
+            self.__cambiar_emocion(tiempo,Emociones.NONE.value)
 
     """
         Funcion desde la que gestionamos la emoción actual del frame
@@ -106,6 +122,8 @@ class GestorEmociones:
         """
 
     def __cambiar_emocion(self, tiempo, emocion):
+        print("tiempo: " + str(tiempo))
+        print("Emocion: "+str(emocion))
         self.__add_emotion_interval(tiempo)
         self._t_inicioEmocion = tiempo
         self._emocionActual = emocion

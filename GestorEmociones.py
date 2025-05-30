@@ -21,7 +21,7 @@ class GestorEmociones:
         self._t_inicioEmocion = 0
         # Mediante esta variable sabremos el segundo en el que estamos. Esto nos permitirá que si en el mismo segundo
         # detecta dos emociones distintas, entonces nos quedemos con la más importante.
-        self._tiempo =
+        self._tiempo = 0
         # Diccionario clave-valor donde se almacenará una dupla (Ti,Tf) donde Ti es el segundo inicial del intervalo
         # dónde se ha mostrado la emoción y Tf el final. Esto se guardará en la emoción correspondiente.
         self._intervalosEmociones = {emotion.value: [] for emotion in Emociones}

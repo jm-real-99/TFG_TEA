@@ -151,7 +151,7 @@ class Calculo_estadisticas():
         if self.num_terapias < 1:
             return None
 
-        # Obtenemos la mejora total de la expresión de emoiones, con la diferencia de la primera terapia y la última
+        # Obtenemos la mejora total de la expresión de emociones, con la diferencia de la primera terapia y la última
         self.mejora_inicio_expresion_emociones = mejora_emociones[len(mejora_emociones)-1] - mejora_emociones[0]
         # Obtenemos la mejora total de la atención, con la diferencia de la primera terapia y la última
         self.mejora_inicio_atencion = mejora_atencion[len(mejora_atencion) - 1] - mejora_atencion[0]
@@ -163,15 +163,15 @@ class Calculo_estadisticas():
 
         # Obtenemos el incremento medio de expresión de emociones a través de todas las terapias
         incremento = []
-        for i in (1, len(mejora_emociones)):
-            incremento.append(mejora_emociones[i]-mejora_emociones[i-1])
+        for i in range(len(mejora_emociones) - 1):
+            incremento.append(mejora_emociones[i+1]-mejora_emociones[i])
 
         self.mejora_inicio_expresion_emociones = sum(incremento) / len(incremento)
 
         # Obtenemos el incremento medio de la atención a través de todas las terapias
         incremento = []
-        for i in (1, len(mejora_atencion)):
-            incremento.append(mejora_atencion[i] - mejora_atencion[i - 1])
+        for i in range(len(mejora_atencion) - 1):
+            incremento.append(mejora_atencion[i+1]-mejora_atencion[i])
 
         self.mejora_tendencia_atencion = sum(incremento) / len(incremento)
 

@@ -3,14 +3,12 @@ import numpy as np
 import cv2
 from deepface import DeepFace
 
-# TODO: CAMBIAR LA IMPLEMENTACIÓN DE LECTURA DE EMOCIONES PARA USAR DeepFace
-
 class GestorEmociones:
     def __init__(self):
-        """
-
-        """
-        # Inicializar el clasificador en cascada de Haar para detección facial
+        """*****************
+        VARIABLES DE RECONOCIMIENTO FACIAL
+        ******************"""
+        # Inicializamos el clasificador en cascada de Haar para detección facial
         self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         if self.face_cascade.empty():
             raise RuntimeError("Error: No se pudo cargar el clasificador en cascada de Haar")
@@ -23,7 +21,7 @@ class GestorEmociones:
         self._t_inicioEmocion = 0
         # Mediante esta variable sabremos el segundo en el que estamos. Esto nos permitirá que si en el mismo segundo
         # detecta dos emociones distintas, entonces nos quedemos con la más importante.
-        self._tiempo = 0
+        self._tiempo =
         # Diccionario clave-valor donde se almacenará una dupla (Ti,Tf) donde Ti es el segundo inicial del intervalo
         # dónde se ha mostrado la emoción y Tf el final. Esto se guardará en la emoción correspondiente.
         self._intervalosEmociones = {emotion.value: [] for emotion in Emociones}
@@ -45,31 +43,18 @@ class GestorEmociones:
         # Vemos si deberíamos de actualizar el tiempo actual
         print("[DETECTAR EMOCION] Actualizamos tiempo")
         self.__actualizar_tiempo(tiempo)
-        """
-        # Detectamos caras en el fotograma
-        print("[DETECTAR EMOCION] Detectamos cara")
-        faces = DeepFace.extract_faces(frame, detector_backend='opencv', enforce_detection=False)
-        print("[DETECTAR EMOCION] Ya tenemos faces")
-        print(faces)
-        """
-        """ PRUEBAAA """
-        # Convertir el frame a escala de grises para la detección facial
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         print("[DETECTAR EMOCION] Detectamos cara con OpenCV")
-        # Detectar caras usando el clasificador en cascada
         faces = self.face_cascade.detectMultiScale(
             gray,
             scaleFactor=1.1,
             minNeighbors=5,
             minSize=(30, 30)
         )
-        """ """
         #TODO: ¿Qué hacemos si detecta más de una cara?
         if len(faces) > 0:
             try:
                 x, y, w, h = faces[0]
-                # Obtiene las coordenadas del área facial detectada
-                face_region = frame[y:y + h, x:x + w]
 
                 # Analiza las emociones del rostro detectado
                 print("[DETECTAR EMOCION]Analizamos emocion")

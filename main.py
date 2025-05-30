@@ -388,9 +388,13 @@ class VentanaInicioSesion:
         figura = Figure(figsize=(10, 9), dpi=80)
         ax1 = figura.add_subplot(121)  # Gráfico de tarta
         ax2 = figura.add_subplot(122)  # Gráfico de barras
+        if (all(x == 0.0 for x in valores)):
+            # Crear gráfico de tarta
+            ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
+        else:
+            ax1.pie(valores, labels=etiquetas, autopct='%1.1f%%')
 
-        # Crear gráfico de tarta
-        ax1.pie(valores, labels=etiquetas, autopct='%1.1f%%')
+
         ax1.set_title('Gráfico de tarta')
 
         # Crear gráfico de barras

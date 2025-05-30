@@ -7,6 +7,7 @@ from datetime import datetime
 from GestorAtencion import GestorAtencion
 from GestorEmociones import GestorEmociones
 from Estadistica import Estadistica
+from concurrent.futures import ThreadPoolExecutor
 
 
 class Camara:
@@ -16,6 +17,8 @@ class Camara:
         self._gestorEmociones = GestorEmociones()
         self._gestorAtencion = GestorAtencion()
         self._estadisticas = estadistica
+
+        self._executor = ThreadPoolExecutor(max_workers=2)
     """
         Leemos el frame de la cámara.
         Return: boolean
@@ -32,17 +35,20 @@ class Camara:
             return
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
-        # TODO: Llamar mediante un hilo aparte
+        # Lanzar tareas en paralelo
         print("Detectamos emocion")
-        emocion = self._gestorEmociones.detectar_emocion(frame, self.__segundo_actual())
-
-        # LLAMAMOS A LA CLASE DE GESTOR EMOCIONES
-        # TODO: Llamar mediante un hilo aparte
+        future_emocion = self._executor.submit(
+            self._gestorEmociones.detectar_emocion, frame, self.__segundo_actual()
+        )
         print("Detectamos atencion")
-        atencion, text_atencion = self._gestorAtencion.detectar_atencion(frame, self.__segundo_actual())
+        future_atencion = self._executor.submit(
+            self._gestorAtencion.detectar_atencion, frame, self.__segundo_actual()
+        )
 
-        # TODO: Incluir un semaforo que controle que ambas cosas se han hecho
+        # Esperamos a que terminen y obtenemos los resultados recabados
+        emocion = future_emocion.result()
+        atencion, text_atencion = future_atencion.result()
+
         # Agregamos el texto a la imagen
         print(emocion)
         print(type(emocion))

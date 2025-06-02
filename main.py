@@ -10,6 +10,8 @@ from Terapeuta import Terapeuta
 from Database import DataBase
 from Estadistica import Estadistica
 
+from pygrabber.dshow_graph import FilterGraph
+
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
@@ -172,23 +174,6 @@ class VentanaInicioSesion:
             notificacion = self.mostrar_mensaje_exito("ERROR: Por favor, introduzca todos los datos correctamente")
             self.formulario_crear_paciente(notificacion)
 
-    """
-        Enumera las cámaras disponibles y muestra información sobre cada una.
-    """
-
-    def listar_camaras(self):
-        num_camara = 0
-        while True:
-            cap = cv2.VideoCapture(num_camara)
-            if not cap.isOpened():
-                break
-            _, frame = cap.read()
-            h, w = frame.shape[:2]
-            print(f"Cámara {num_camara}: {w}x{h}")
-            cap.release()
-            num_camara += 1
-        return int(input("Introduce camara: "))
-
     def seleccionar_paciente_terapia(self):
         # Cargamos todos los terapeutas activos
         paciente_var = tk.StringVar()
@@ -222,10 +207,23 @@ class VentanaInicioSesion:
                                                self.terapeuta.get_terapeuta_id(), datetime.now())
         print("[OK] Estadísticas iniciales: ")
 
-        self.camara_terapia()
+        self.listar_camaras()
 
-    def camara_terapia(self):
-        camara = Camara(0, self.estadisticas)
+    """
+            Enumera las cámaras disponibles y muestra información sobre cada una.
+    """
+
+    def listar_camaras(self):
+        graph = FilterGraph()
+        camaras = graph.get_input_devices()
+
+        # Crear un botón por cada cámara
+        for i, nombre in enumerate(camaras):
+            boton = tk.Button(self.root, text=nombre, command=lambda idx=i: self.camara_terapia(idx))
+            boton.pack(padx=10, pady=5, fill="x")
+
+    def camara_terapia(self, camara):
+        camara = Camara(camara, self.estadisticas)
         print("[OK] Creada camara")
 
         while True:
@@ -376,7 +374,6 @@ class VentanaInicioSesion:
         calculo_estadisticas = Calculo_estadisticas(estadisticas)
         calculo_estadisticas.inicializarDatos()
 
-        # figura = Figure(figsize=(10, 9), dpi=80)
         valores = [calculo_estadisticas.porcentaje_enfadado, calculo_estadisticas.porcentaje_disgustado,
                     calculo_estadisticas.porcentaje_miedoso, calculo_estadisticas.porcentaje_contento,
                     calculo_estadisticas.porcentaje_triste, calculo_estadisticas.porcentaje_sorprendido,

@@ -3,6 +3,8 @@ from Emociones import Emociones
 from Calculo_estadisticas import Calculo_estadisticas
 from Camara import Camara
 import cv2
+from PIL import Image, ImageTk
+
 import tkinter as tk
 from datetime import datetime
 from Paciente import Paciente
@@ -32,6 +34,9 @@ class VentanaInicioSesion:
         self.terapeuta_mapa = self.__obtener_mapa_terapeuta()
         self.estadisticas = None
         self.end = False
+
+        # Crear etiqueta para mostrar el video
+        self.label_video = tk.Label(self.root)
 
     """
         Método mediante el que establecemos que la ventana va a estar abierta en todo momento.
@@ -223,15 +228,48 @@ class VentanaInicioSesion:
             boton.pack(padx=10, pady=5, fill="x")
 
     def camara_terapia(self, camara):
+        print(" Iniciamos la cámara con id "+str(camara))
         camara = Camara(camara, self.estadisticas)
         print("[OK] Creada camara")
 
-        while True:
-            end = camara.read_frame()
-            print("[OK] frame")
-            if not end or self.end:
-                break
+        self.reset_page(None)
 
+        self.end = False  # Nos aseguramos de tener esta bandera en tu clase
+        # Actualizamos las etiquetas porque se habrán eliminado
+        self.label_video = tk.Label(self.root)
+        self.label_video.pack()
+
+        btn_parar = tk.Button(self.root, text="Parar Terapia", command= self.parar_terapia)
+        btn_parar.pack(pady=10)
+
+        self.mostrar_frame(camara)  # Inicia el refresco del video
+
+    def mostrar_frame(self,camara):
+        print("**********  Frame  ***********")
+        if self.end:
+            self.cerrar_terapia()
+            return
+        end, frame = camara.read_frame()
+
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        img = Image.fromarray(frame_rgb)
+        imgtk = ImageTk.PhotoImage(image=img)
+
+        self.label_video.imgtk = imgtk
+        self.label_video.configure(image=imgtk)
+
+        # Ajustar la ventana al primer frame
+        if not hasattr(self, 'window_resized'):
+            self.root.geometry(f"{imgtk.width()}x{imgtk.height()+20}")
+            self.window_resized = True
+
+        self.root.after(30,lambda: self.mostrar_frame(camara))  # 30ms ≈ 33fps
+
+    def parar_terapia(self):
+        print("Terapia detenida por el usuario.")
+        self.end = True
+
+    def cerrar_terapia(self):
         self.pintar_datos()
         self.database.incluir_estadistica_terapia(self.estadisticas)
 

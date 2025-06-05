@@ -33,7 +33,6 @@ class Camara:
         if not ret:
             print("[DETECTAR EMOCION]Terminamoos")
             return
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # Lanzar tareas en paralelo
         print("Detectamos emocion")
@@ -68,7 +67,7 @@ class Camara:
         cv2.putText(frame, text_atencion, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, color_atencion, 2)
         cv2.putText(frame, str(self.__segundo_actual()), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-        cv2.imshow('Detección de Caras', frame)
+        # cv2.imshow('Detección de Caras', frame)
         # Terminamos el proceso si se ha interrumpido
         if self.__terminar_proceso():
             self._cap.release()
@@ -81,7 +80,7 @@ class Camara:
             self.pintar_datos()
             return False
         else:
-            return True
+            return True, frame
 
     """"
         Calculamos el tiempo que lleva la cámara encendida.
@@ -120,11 +119,10 @@ class Camara:
             True si se ha terminado
             False si no
     """
-
     def __terminar_proceso(self):
         return cv2.waitKey(1) & 0xFF == ord('q')
 
-    """ELIMINAAAAARRR
+    """**********ELIMINAAAAARRR*********
     """
 
     def pintar_datos(self):

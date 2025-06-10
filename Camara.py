@@ -44,9 +44,18 @@ class Camara:
             self._gestorAtencion.detectar_atencion, frame, self.__segundo_actual()
         )
 
-        # Esperamos a que terminen y obtenemos los resultados recabados
-        emocion = future_emocion.result()
-        atencion, text_atencion = future_atencion.result()
+        # Esperamos a que terminen y obtenemos los resultados recabados siempre controlando las excepciones que puedan surgir
+        try:
+            emocion, emociones = future_emocion.result()
+        except Exception as e:
+            print(f"[ERROR] Al detectar emoción: {e}")
+            emocion, emociones = None, {}
+
+        try:
+            atencion, text_atencion = future_atencion.result(timeout=5)
+        except Exception as e:
+            print(f"[ERROR] Al detectar atención: {e}")
+            atencion, text_atencion = False, "Atención desconocida"
 
         # Agregamos el texto a la imagen
         print(emocion)
@@ -70,17 +79,9 @@ class Camara:
         # cv2.imshow('Detección de Caras', frame)
         # Terminamos el proceso si se ha interrumpido
         if self.__terminar_proceso():
-            self._cap.release()
-            cv2.destroyAllWindows()
-            self.__recabar_estadisticas()
-            self._gestorAtencion.terminar_escaneo(self.__segundo_actual())
-            self._gestorEmociones.terminar_escaneo(self.__segundo_actual())
-
-            # ELIMINAR
-            self.pintar_datos()
             return False
         else:
-            return True, frame
+            return True, frame, emociones
 
     """"
         Calculamos el tiempo que lleva la cámara encendida.
@@ -89,6 +90,18 @@ class Camara:
     """
     def __segundo_actual(self):
         return int(time.time() - self._tiempoInicio)
+
+    """
+        Destruimos la camara y recabamos las estadísticas.
+    """
+    def cerrar_camara(self):
+        self._cap.release()
+        cv2.destroyAllWindows()
+        self.__recabar_estadisticas()
+        self._gestorAtencion.terminar_escaneo(self.__segundo_actual())
+        self._gestorEmociones.terminar_escaneo(self.__segundo_actual())
+        # ELIMINAR
+        self.pintar_datos()
 
     """
         Cargamos los datos recabados en la clase de estadisticas

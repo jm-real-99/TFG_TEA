@@ -15,6 +15,7 @@ from Estadistica import Estadistica
 from pygrabber.dshow_graph import FilterGraph
 
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 
@@ -33,10 +34,12 @@ class VentanaInicioSesion:
         self.paciente_mapa = self.__obtener_mapa_pacientes()
         self.terapeuta_mapa = self.__obtener_mapa_terapeuta()
         self.estadisticas = None
-        self.end = False
 
-        # Crear etiqueta para mostrar el video
+        # Vista del video de la terapia
         self.label_video = tk.Label(self.root)
+        self.frame_grafica = tk.Frame(self.root)
+        self.window_resized = False
+        self.end = False
 
     """
         Método mediante el que establecemos que la ventana va a estar abierta en todo momento.
@@ -185,7 +188,7 @@ class VentanaInicioSesion:
         tk.Label(self.root, text="Seleccione paciente para terapia:").pack(pady=2)
         tk.OptionMenu(self.root, paciente_var, *list(self.paciente_mapa.values())).pack(pady=10)
         # Botón para crear el objeto Paciente
-        tk.Button(self.root, text="Comenzar",
+        tk.Button(self.root, text="Seleccionar cámara",
                   command=lambda: self.comenzar_terapia(paciente_var.get())).pack()
         # Actualiza la ventana principal
         self.root.update_idletasks()
@@ -194,7 +197,6 @@ class VentanaInicioSesion:
     """
         Comenzamos la terapia y activamos la cámara.
     """
-
     def comenzar_terapia(self, paciente):
         # Nos aseguramos que la variable con la que vamos a terminar la terapia este a false
         self.end = False
@@ -237,19 +239,25 @@ class VentanaInicioSesion:
         self.end = False  # Nos aseguramos de tener esta bandera en tu clase
         # Actualizamos las etiquetas porque se habrán eliminado
         self.label_video = tk.Label(self.root)
-        self.label_video.pack()
+        self.label_video.pack(side=tk.LEFT)
 
-        btn_parar = tk.Button(self.root, text="Parar Terapia", command= self.parar_terapia)
+        btn_parar = tk.Button(self.root, text="Parar Terapia", command= lambda: self.parar_terapia(camara))
         btn_parar.pack(pady=10)
 
-        self.mostrar_frame(camara)  # Inicia el refresco del video
+        # Frame para la gráfica
+        self.frame_grafica = tk.Frame(self.root)
+        self.frame_grafica.pack(side=tk.RIGHT, padx=30)
 
-    def mostrar_frame(self,camara):
+        # Crear figura de matplotlib
+        fig, ax = plt.subplots(figsize=(5, 4))
+        canvas = FigureCanvasTkAgg(fig, master=self.frame_grafica)
+        canvas.get_tk_widget().pack()
+
+        self.mostrar_frame(camara,ax,canvas)  # Inicia el refresco del video
+
+    def mostrar_frame(self,camara,ax,canvas):
         print("**********  Frame  ***********")
-        if self.end:
-            self.cerrar_terapia()
-            return
-        end, frame = camara.read_frame()
+        end, frame, emociones = camara.read_frame()
 
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img = Image.fromarray(frame_rgb)
@@ -257,19 +265,45 @@ class VentanaInicioSesion:
 
         self.label_video.imgtk = imgtk
         self.label_video.configure(image=imgtk)
+        self.label_video.pack()
 
-        # Ajustar la ventana al primer frame
+        if emociones:
+            self.actualizar_grafica(emociones,ax,canvas)
+
         if not hasattr(self, 'window_resized'):
-            self.root.geometry(f"{imgtk.width()}x{imgtk.height()+20}")
+            self.root.update()
             self.window_resized = True
 
-        self.root.after(30,lambda: self.mostrar_frame(camara))  # 30ms ≈ 33fps
+        if self.end:
+            self.cerrar_terapia(camara)
+            return
+        else:
+            self.root.after(30,lambda: self.mostrar_frame(camara,ax,canvas))  # 30ms ≈ 33fps
 
-    def parar_terapia(self):
+    def actualizar_grafica(self, emociones_dict,ax,canvas):
+        ax.clear()
+        emociones = list(emociones_dict.keys())
+        valores = list(emociones_dict.values())
+
+        max_index = valores.index(max(valores))
+        colores = ['skyblue' if i == max_index else 'lightgray' for i in range(len(emociones))]
+
+        ax.bar(emociones, valores, color=colores)
+        ax.set_ylim(0, 100)
+        ax.set_ylabel('%')
+        ax.set_title('Probabilidades de Emociones')
+        ax.tick_params(axis='x', rotation=45)
+        # Pintamos la gráfica actualizada
+        fig = ax.figure
+        fig.tight_layout()
+        canvas.draw()
+
+    def parar_terapia(self,camara):
         print("Terapia detenida por el usuario.")
         self.end = True
 
-    def cerrar_terapia(self):
+    def cerrar_terapia(self, camara):
+        camara.cerrar_camara()
         self.pintar_datos()
         self.database.incluir_estadistica_terapia(self.estadisticas)
 

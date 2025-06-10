@@ -64,13 +64,16 @@ class GestorEmociones:
                 print("[DETECTAR EMOCION]Obtenemos emocion dominante")
                 dominant_emotion = analysis[0]['dominant_emotion']
 
+                # Obtenemos el diccionario de las emociones detectadas junto a su %
+                emotions = analysis[0]['emotion']
+
                 print("--Dominant emotion:")
                 print(dominant_emotion)
 
                 self.__registrar_emocion(dominant_emotion, tiempo)
 
                 print("\t\t\t\tVamos a devolver: " + self._emocionActual)
-                return self._emocionActual
+                return self._emocionActual, emotions
             except FileNotFoundError:
                 print("ERROR: El archivo no se encontró")
                 input("Presione cualquier tecla para continuar")

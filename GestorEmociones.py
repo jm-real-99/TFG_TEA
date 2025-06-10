@@ -29,6 +29,8 @@ class GestorEmociones:
         # terapia, esto nos permitirá ahorrar tiempo de cómputo a la hora de calcular las estadísticas.
         self._tiempoTotalEmocion = {emotion.value: 0 for emotion in Emociones}
 
+        self._smoothEmotions = None
+
     """
         Detectamos las emociones en el frame indicado
         :arg
@@ -60,12 +62,17 @@ class GestorEmociones:
                 print("[DETECTAR EMOCION]Analizamos emocion")
                 analysis = DeepFace.analyze(frame[y:y + h, x:x + w], actions=['emotion'], detector_backend='skip',  enforce_detection=False)
 
-                # Obtiene la emoción principal detectada
-                print("[DETECTAR EMOCION]Obtenemos emocion dominante")
-                dominant_emotion = analysis[0]['dominant_emotion']
 
                 # Obtenemos el diccionario de las emociones detectadas junto a su %
                 emotions = analysis[0]['emotion']
+
+                #Suavizamos las emociones para que los cambios no sean tan bruscos
+                self.suavizar_emociones(emotions)
+
+                # Obtiene la emoción principal detectada
+                print("[DETECTAR EMOCION]Obtenemos emocion dominante")
+                dominant_emotion = max(self._smoothEmotions, key=self._smoothEmotions.get)
+
 
                 print("--Dominant emotion:")
                 print(dominant_emotion)
@@ -73,7 +80,7 @@ class GestorEmociones:
                 self.__registrar_emocion(dominant_emotion, tiempo)
 
                 print("\t\t\t\tVamos a devolver: " + self._emocionActual)
-                return self._emocionActual, emotions
+                return self._emocionActual, self.suavizar_emociones
             except FileNotFoundError:
                 print("ERROR: El archivo no se encontró")
                 input("Presione cualquier tecla para continuar")
@@ -84,6 +91,18 @@ class GestorEmociones:
         else:
             #Si no detectamos una cara entonces marcamos vacío
             self.__cambiar_emocion(tiempo,Emociones.NONE.value)
+
+    """
+     Suaviazado exponencial con factor alpha a 0.5
+    """
+    def suavizar_emociones(self,emotions, alpha=0.5):
+        if self._smoothEmotions is None:
+            self._smoothEmotions = emotions
+        else:
+            self._smoothEmotions = {
+                k: alpha * emotions[k] + (1 - alpha) * self._smoothEmotions[k]
+                for k in emotions
+            }
 
     """
         Funcion desde la que gestionamos la emoción actual del frame

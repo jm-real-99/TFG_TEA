@@ -41,61 +41,53 @@ class GestorEmociones:
     """
 
     def detectar_emocion(self, frame, tiempo):
-        print("Entramos en detectar_emocion")
+
         # Vemos si deberíamos de actualizar el tiempo actual
-        print("[DETECTAR EMOCION] Actualizamos tiempo")
         self.__actualizar_tiempo(tiempo)
+
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        print("[DETECTAR EMOCION] Detectamos cara con OpenCV")
+
         faces = self.face_cascade.detectMultiScale(
             gray,
             scaleFactor=1.1,
             minNeighbors=5,
             minSize=(30, 30)
         )
-        #TODO: ¿Qué hacemos si detecta más de una cara?
-        if len(faces) > 0:
-            try:
-                x, y, w, h = faces[0]
 
-                # Analiza las emociones del rostro detectado
-                print("[DETECTAR EMOCION]Analizamos emocion")
-                analysis = DeepFace.analyze(frame[y:y + h, x:x + w], actions=['emotion'], detector_backend='skip',  enforce_detection=False)
+        if len(faces) <= 0:
+            self.__cambiar_emocion(tiempo, Emociones.NONE.value)
+            return self._emocionActual, None, None
 
-
-                # Obtenemos el diccionario de las emociones detectadas junto a su %
-                emotions = analysis[0]['emotion']
-
-                #Suavizamos las emociones para que los cambios no sean tan bruscos
-                self.suavizar_emociones(emotions)
-
-                # Obtiene la emoción principal detectada
-                print("[DETECTAR EMOCION]Obtenemos emocion dominante")
-                dominant_emotion = max(self._smoothEmotions, key=self._smoothEmotions.get)
+        try:
+            x, y, w, h = faces[0]
+            face_crop = frame[y:y + h, x:x + w]
+            # Analiza las emociones del rostro detectado
+            analysis = DeepFace.analyze(face_crop, actions=['emotion'], detector_backend='skip',  enforce_detection=False)
 
 
-                print("--Dominant emotion:")
-                print(dominant_emotion)
+            # Obtenemos el diccionario de las emociones detectadas junto a su %
+            emotions = analysis[0]['emotion']
 
-                self.__registrar_emocion(dominant_emotion, tiempo)
+            # Suavizamos las emociones para que los cambios no sean tan bruscos
+            self.suavizar_emociones(emotions)
 
-                print("\t\t\t\tVamos a devolver: " + self._emocionActual)
-                return self._emocionActual, self._smoothEmotions
-            except FileNotFoundError:
-                print("ERROR: El archivo no se encontró")
-                input("Presione cualquier tecla para continuar")
-                return self._emocionActual
-            except ValueError as e:
-                print(f"[ADVERTENCIA] No se detectó ningún rostro: {e}")
-                return self._emocionActual
-        else:
-            #Si no detectamos una cara entonces marcamos vacío
-            self.__cambiar_emocion(tiempo,Emociones.NONE.value)
+            # Obtiene la emoción principal detectada
+            dominant_emotion = max(self._smoothEmotions, key= self._smoothEmotions.get)
+            # dominant_emotion = analysis[0]['dominant_emotion']
+
+            self.__registrar_emocion(dominant_emotion, tiempo)
+
+            return self._emocionActual, self._smoothEmotions, faces[0]
+
+        except Exception as e:
+            print(f"[ERROR] en detección de emoción: {e}")
+            return self._emocionActual, None, None
 
     """
      Suaviazado exponencial con factor alpha a 0.5
     """
-    def suavizar_emociones(self,emotions, alpha=0.5):
+
+    def suavizar_emociones(self, emotions, alpha=0.5):
         if self._smoothEmotions is None:
             self._smoothEmotions = emotions
         else:
@@ -129,8 +121,6 @@ class GestorEmociones:
         """
 
     def __cambiar_emocion(self, tiempo, emocion):
-        print("tiempo: " + str(tiempo))
-        print("Emocion: "+str(emocion))
         self.__add_emotion_interval(tiempo)
         self._t_inicioEmocion = tiempo
         self._emocionActual = emocion
@@ -144,8 +134,6 @@ class GestorEmociones:
     """
 
     def __add_emotion_interval(self, fin):
-        print(
-            "Añadimos emocion " + self._emocionActual + ": (" + str(self._t_inicioEmocion) + "," + str(fin) + ")")
         self._intervalosEmociones[self._emocionActual].append((self._t_inicioEmocion, fin))
         self._tiempoTotalEmocion[self._emocionActual] += (fin - self._t_inicioEmocion) + 1
 

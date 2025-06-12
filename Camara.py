@@ -18,6 +18,10 @@ class Camara:
         self._gestorAtencion = GestorAtencion()
         self._estadisticas = estadistica
 
+        self.fps = 0
+        self.fpsmax= 0
+        self.lastSecond = 0
+
         self._executor = ThreadPoolExecutor(max_workers=2)
     """
         Leemos el frame de la cámara.
@@ -27,39 +31,37 @@ class Camara:
     """
 
     def read_frame(self):
-        print("[CAMARA]Leemos frame")
         ret, frame = self._cap.read()
+
+        segundo_actual =  self.__segundo_actual()
+        self.calcularfps(segundo_actual)
 
         if not ret:
             print("[DETECTAR EMOCION]Terminamoos")
             return
 
         # Lanzar tareas en paralelo
-        print("Detectamos emocion")
         future_emocion = self._executor.submit(
-            self._gestorEmociones.detectar_emocion, frame, self.__segundo_actual()
+            self._gestorEmociones.detectar_emocion, frame, segundo_actual
         )
-        print("Detectamos atencion")
         future_atencion = self._executor.submit(
-            self._gestorAtencion.detectar_atencion, frame, self.__segundo_actual()
+            self._gestorAtencion.detectar_atencion, frame, segundo_actual
         )
 
         # Esperamos a que terminen y obtenemos los resultados recabados siempre controlando las excepciones que puedan surgir
         try:
-            emocion, emociones = future_emocion.result()
+            emocion, emociones, face = future_emocion.result()
         except Exception as e:
             print(f"[ERROR] Al detectar emoción: {e}")
-            emocion, emociones = None, {}
+            emocion, emociones, face = None, {}, None
 
         try:
-            atencion, text_atencion = future_atencion.result(timeout=5)
+            atencion, text_atencion = future_atencion.result()
         except Exception as e:
             print(f"[ERROR] Al detectar atención: {e}")
             atencion, text_atencion = False, "Atención desconocida"
 
         # Agregamos el texto a la imagen
-        print(emocion)
-        print(type(emocion))
         if emocion is not None:
             texto_emocion = emocion
             color_emocion = (0, 255, 0)
@@ -75,8 +77,10 @@ class Camara:
         cv2.putText(frame, texto_emocion, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_emocion, 2)
         cv2.putText(frame, text_atencion, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, color_atencion, 2)
         cv2.putText(frame, str(self.__segundo_actual()), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        if face is not None:
+            x,y,w,h = face
+            cv2.rectangle(frame, (x,y),(x+w,y+h),(255,0,0),2)
 
-        # cv2.imshow('Detección de Caras', frame)
         # Terminamos el proceso si se ha interrumpido
         if self.__terminar_proceso():
             return False
@@ -137,6 +141,21 @@ class Camara:
 
     """**********ELIMINAAAAARRR*********
     """
+
+    def calcularfps(self, segundo_actual):
+        if(segundo_actual > self.lastSecond):
+            self.fpsmax = max(self.fpsmax,self.fps)
+            print(
+                f"\nVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\n "
+                f"SEGUNDO : {self.__segundo_actual()} | "
+                f"FPS : {self.fps} | "
+                f"FPSMAX : {self.fpsmax}"
+                f"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n")
+
+            self.fps = 0
+            self.lastSecond = segundo_actual
+        else:
+            self.fps += 1
 
     def pintar_datos(self):
         self.cabecera_end()

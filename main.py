@@ -217,7 +217,7 @@ class VentanaInicioSesion:
         self.listar_camaras()
 
     """
-            Enumera las cámaras disponibles y muestra información sobre cada una.
+        Enumera las cámaras disponibles y muestra información sobre cada una.
     """
 
     def listar_camaras(self):
@@ -229,6 +229,9 @@ class VentanaInicioSesion:
             boton = tk.Button(self.root, text=nombre, command=lambda idx=i: self.camara_terapia(idx))
             boton.pack(padx=10, pady=5, fill="x")
 
+    """
+        Inicializamos la configuración necesaria para la Cámara y la vista de esta
+    """
     def camara_terapia(self, camara):
         print(" Iniciamos la cámara con id "+str(camara))
         camara = Camara(camara, self.estadisticas)
@@ -255,6 +258,9 @@ class VentanaInicioSesion:
 
         self.mostrar_frame(camara,ax,canvas)  # Inicia el refresco del video
 
+    """
+        Mostramos el frame que ha recogido la cámara y lo mostramos. Función recursiva
+    """
     def mostrar_frame(self,camara,ax,canvas):
         print("**********  Frame  ***********")
         end, frame, emociones = camara.read_frame()
@@ -280,6 +286,9 @@ class VentanaInicioSesion:
         else:
             self.root.after(30,lambda: self.mostrar_frame(camara,ax,canvas))  # 30ms ≈ 33fps
 
+    """
+        Actualizamos la gráfica con las emociones detectadas durante la terapia
+    """
     def actualizar_grafica(self, emociones_dict,ax,canvas):
         ax.clear()
         emociones = list(emociones_dict.keys())
@@ -298,10 +307,16 @@ class VentanaInicioSesion:
         fig.tight_layout()
         canvas.draw()
 
+    """
+        Indicamos al bucle que deberá parar la terapia
+    """
     def parar_terapia(self,camara):
         print("Terapia detenida por el usuario.")
         self.end = True
 
+    """
+        Hacemos las gestiones necesarias para finalizar la terapia.
+    """
     def cerrar_terapia(self, camara):
         camara.cerrar_camara()
         self.pintar_datos()
@@ -320,6 +335,9 @@ class VentanaInicioSesion:
             if componente != no_eliminar:
                 componente.destroy()
 
+    """
+        Mostramos una notificacion en una ventana nueva mostrando el mensaje que se pasa por la variable "notificación"
+    """
     def mostrar_mensaje_exito(self, notificacion):
         # Crear una nueva ventana emergente (Toplevel)
         ventana_exito = tk.Toplevel(self.root)
@@ -372,9 +390,6 @@ class VentanaInicioSesion:
             terapeuta_mapa[f"{terapeuta.get_nombre()} {terapeuta.get_apellido()}"] = terapeuta
         return terapeuta_mapa
 
-    def terminarTerapia(self):
-        self.end = True
-
 
     def pintar_datos(self):
         self.cabecera_end()
@@ -422,8 +437,11 @@ class VentanaInicioSesion:
 
     """ *******************************************
            MÉTODOS RELACIONADOS CON LAS ESTADÍSTICAS
-           ******************************************* """
+    *********************************************** """
 
+    """
+        Damos a elegir al usuario el paciente del que vamos a mostrar las estdísticas
+    """
     def consultar_estadisticas(self):
         # Cargamos todos los terapeutas activos
         paciente_var = tk.StringVar()
@@ -436,6 +454,9 @@ class VentanaInicioSesion:
         self.root.update_idletasks()
         return None
 
+    """
+        Mostramos las estadísticas del paciente pasado por parámetro
+    """
     def consultas_estadisticas_paciente(self, paciente):
         self.reset_page(None)
 
@@ -470,14 +491,31 @@ class VentanaInicioSesion:
         y_pos = np.arange(len(etiquetas))
         ax2.bar(y_pos, valores, align='center', alpha=0.5)
         ax2.set_xticks(y_pos)
-        ax2.set_xticklabels(etiquetas)
+        ax2.set_xticklabels(etiquetas, rotation=45, ha='right')  # Rotar y alinear etiquetas
         ax2.set_title('Gráfico de barras')
+
+        # Ajustar layout automáticamente para evitar superposición
+        figura.tight_layout()
 
         # Crear el lienzo de Tkinter con la figura
         canvas = FigureCanvasTkAgg(figura, master=self.root)
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
+        # Botones por cada terapia individual
+        for idx, estadistica in enumerate(estadisticas):
+            id_terapia = estadistica.get_id_terapia()  # Asegúrate de que tu objeto tenga este método
+
+            btn = tk.Button(
+                self.root,
+                text=f"Terapia {idx + 1}",
+                command=lambda id_terapiaa=id_terapia: self.mostrar_estadisticas_terapia(id_terapiaa)
+            )
+            btn.pack(pady=2)
+
+    def mostrar_estadisticas_terapia(self, id_terapia):
+        print(f"Mostrando estadísticas para la terapia con ID: {id_terapia}")
+        # Aquí puedes mostrar otra ventana, panel o gráfico detallado.
 
 
 if __name__ == "__main__":
@@ -486,12 +524,9 @@ if __name__ == "__main__":
 
 """
 TODO:
-- ¡¡¡ ARREGLAR Y VER POR QUÉ AHORA NO DEJA INICIALIZAR LA CÁMARA Y DA ERROR AL INICIAR TERAPIAS !!!
-    Seguro sea un error con las librerías y haya que reinstalar todo.
-- Implementar boton para terminar la terapia (Actualmente no refresca bien la ventana) 
     
 - Ver como mostrar en la interfaz gráfica los resultados de las estadísticas de los pacientes: 
-    - Ajustar los componentes de gráficas para que se vea mejor y no se pisen los textos
+    - Ajustar los componentes de gráficas para que se vea me  jor y no se pisen los textos
     - Añadir en texto información como los minutos totales, nº de terapias, apariciones totales, etc
     - Incluir vista para ver información por terapia
     - Mostrar los datos para solo esa terapia.

@@ -139,7 +139,7 @@ class Camara:
     def __terminar_proceso(self):
         return cv2.waitKey(1) & 0xFF == ord('q')
 
-    """**********ELIMINAAAAARRR*********
+    """**********ELIMINAAAAARRR*****************************************************
     """
 
     def calcularfps(self, segundo_actual):

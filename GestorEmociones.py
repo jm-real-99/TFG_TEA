@@ -156,14 +156,6 @@ class GestorEmociones:
     def terminar_escaneo(self, tiempo):
         self.__add_emotion_interval(tiempo)
 
-    """
-        Hemos terminado la terapia así que exportaremos los datos de recabados a la base de datos
-    """
-
-    def exportar_datos(self):
-        # TODO: implementar funcionalidad
-        pass
-
     """*****************************************
     ***********GETTERS AND SETTERS**************
     *****************************************"""

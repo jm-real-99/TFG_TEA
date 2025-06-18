@@ -1,3 +1,5 @@
+import dlib
+
 from Emociones import Emociones
 import numpy as np
 import cv2
@@ -8,10 +10,7 @@ class GestorEmociones:
         """*****************
         VARIABLES DE RECONOCIMIENTO FACIAL
         ******************"""
-        # Inicializamos el clasificador en cascada de Haar para detección facial
-        self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        if self.face_cascade.empty():
-            raise RuntimeError("Error: No se pudo cargar el clasificador en cascada de Haar")
+
         """*****************
         VARIABLES DE DATOS
         ******************"""
@@ -40,28 +39,22 @@ class GestorEmociones:
             String. Emocion
     """
 
-    def detectar_emocion(self, frame, tiempo):
+    def detectar_emocion(self, frame, face , tiempo):
 
         # Vemos si deberíamos de actualizar el tiempo actual
         self.__actualizar_tiempo(tiempo)
 
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        faces = self.face_cascade.detectMultiScale(
-            gray,
-            scaleFactor=1.1,
-            minNeighbors=5,
-            minSize=(30, 30)
-        )
-
-        if len(faces) <= 0:
+        if not face:
             self.__cambiar_emocion(tiempo, Emociones.NONE.value)
             return self._emocionActual, None, None
 
         try:
-            x, y, w, h = faces[0]
+
+            x, y, w, h = face
+
             face_crop = frame[y:y + h, x:x + w]
             # Analiza las emociones del rostro detectado
+
             analysis = DeepFace.analyze(face_crop, actions=['emotion'], detector_backend='skip',  enforce_detection=False)
 
 
@@ -73,11 +66,10 @@ class GestorEmociones:
 
             # Obtiene la emoción principal detectada
             dominant_emotion = max(self._smoothEmotions, key= self._smoothEmotions.get)
-            # dominant_emotion = analysis[0]['dominant_emotion']
 
             self.__registrar_emocion(dominant_emotion, tiempo)
 
-            return self._emocionActual, self._smoothEmotions, faces[0]
+            return self._emocionActual, self._smoothEmotions, face
 
         except Exception as e:
             print(f"[ERROR] en detección de emoción: {e}")

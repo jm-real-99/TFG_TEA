@@ -36,10 +36,8 @@ class GestorAtencion:
             Boolean. Hay atención o no
             String. Lado donde miramos
     """
-
-    # TODO: Arreglar la toma de intervalos ya que guarda intervalos que son iguales.
-    def detectar_atencion(self, frame, tiempo):
-        self._gaze.refresh(frame)
+    def detectar_atencion(self, frame, face_dlib ,tiempo):
+        self._gaze.refresh(frame,face_dlib)
         # Si estamos mirando al centro y en el segundo anterior no teniamos la atención entonces iniciamos intervalo
         if self._gaze.is_center() and not self._atencionActual:
             self._atencionActual = True

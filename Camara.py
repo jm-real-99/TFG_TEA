@@ -1,4 +1,6 @@
 import cv2
+import dlib
+
 from Emociones import Emociones
 import numpy as np
 import time
@@ -22,6 +24,12 @@ class Camara:
         self.fpsmax= 0
         self.lastSecond = 0
 
+
+        self._face_detector =  dlib.get_frontal_face_detector()
+        self._face_dlib = None
+        self._face = None
+        self._ultimo_segundo_cara = 0
+
         self._executor = ThreadPoolExecutor(max_workers=2)
     """
         Leemos el frame de la cámara.
@@ -40,12 +48,14 @@ class Camara:
             print("[DETECTAR EMOCION]Terminamoos")
             return
 
+        self.detectar_cara(frame)
+
         # Lanzar tareas en paralelo
         future_emocion = self._executor.submit(
-            self._gestorEmociones.detectar_emocion, frame, segundo_actual
+            self._gestorEmociones.detectar_emocion, frame, self._face , segundo_actual
         )
         future_atencion = self._executor.submit(
-            self._gestorAtencion.detectar_atencion, frame, segundo_actual
+            self._gestorAtencion.detectar_atencion, frame, self._face_dlib, segundo_actual
         )
 
         # Esperamos a que terminen y obtenemos los resultados recabados siempre controlando las excepciones que puedan surgir
@@ -77,8 +87,8 @@ class Camara:
         cv2.putText(frame, texto_emocion, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_emocion, 2)
         cv2.putText(frame, text_atencion, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, color_atencion, 2)
         cv2.putText(frame, str(self.__segundo_actual()), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        if face is not None:
-            x,y,w,h = face
+        if self._face is not None:
+            x,y,w,h = self._face
             cv2.rectangle(frame, (x,y),(x+w,y+h),(255,0,0),2)
 
         # Terminamos el proceso si se ha interrumpido
@@ -86,6 +96,49 @@ class Camara:
             return False
         else:
             return True, frame, emociones
+
+    def detectar_cara(self, frame):
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces_dlib = self._face_detector(gray)
+
+        # Reiniciar si han pasado más de 2 segundos sin cara
+        segundo_actual = self.__segundo_actual()
+        if hasattr(self, '_ultimo_segundo_cara') and segundo_actual - self._ultimo_segundo_cara > 2:
+            self._face = None
+
+        if not faces_dlib:
+            return None  # No se detectó cara
+
+        mejor = None
+        i = -1
+        # Si hay una cara anterior, buscamos la más cercana
+        if hasattr(self, '_face') and self._face is not None:
+            i+=1
+            x_prev, y_prev, w_prev, h_prev = self._face
+            centro_prev = np.array([x_prev + w_prev / 2, y_prev + h_prev / 2])
+
+            menor_distancia = float('inf')
+            for rect in faces_dlib:
+                x = rect.left()
+                y = rect.top()
+                w = rect.width()
+                h = rect.height()
+                centro = np.array([x + w / 2, y + h / 2])
+                distancia = np.linalg.norm(centro - centro_prev)
+
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    mejor = (x, y, w, h)
+        else:
+            # Si no hay cara previa, tomamos la primera
+            rect = faces_dlib[0]
+            i = 0
+            mejor = (rect.left(), rect.top(), rect.width(), rect.height())
+
+        # Guardamos la última cara y el segundo en que fue vista
+        self._face = mejor
+        self._face_dlib = faces_dlib[i]
+        self._ultimo_segundo_cara = segundo_actual
 
     """"
         Calculamos el tiempo que lleva la cámara encendida.

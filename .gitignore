@@ -6,3 +6,5 @@
 .idea/vcs.xml
 
 config.properties
+*.iml
+*.pyc

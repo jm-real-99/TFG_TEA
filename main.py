@@ -460,6 +460,8 @@ class VentanaInicioSesion:
     def consultas_estadisticas_paciente(self, paciente):
         self.reset_page(None)
 
+        tk.Label(self.root, text=paciente).pack(pady=2)
+
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
 
         paciente = self.paciente_mapa[paciente]
@@ -503,6 +505,10 @@ class VentanaInicioSesion:
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
         # Botones por cada terapia individual
+
+        # Creamos un frame para contener los botones
+        botones_frame = tk.Frame(self.root)
+        botones_frame.pack(pady=(10, 30))
         for idx, estadistica in enumerate(estadisticas):
             id_terapia = estadistica.get_id_terapia()  # Asegúrate de que tu objeto tenga este método
 
@@ -511,7 +517,7 @@ class VentanaInicioSesion:
                 text=f"Terapia {idx + 1}",
                 command=lambda id_terapiaa=id_terapia: self.mostrar_estadisticas_terapia(id_terapiaa)
             )
-            btn.pack(pady=2)
+            btn.pack(side=tk.LEFT, padx=5)
 
     def mostrar_estadisticas_terapia(self, id_terapia):
         print(f"Mostrando estadísticas para la terapia con ID: {id_terapia}")
@@ -526,10 +532,10 @@ if __name__ == "__main__":
 TODO:
     
 - Ver como mostrar en la interfaz gráfica los resultados de las estadísticas de los pacientes: 
-    - Ajustar los componentes de gráficas para que se vea me  jor y no se pisen los textos
     - Añadir en texto información como los minutos totales, nº de terapias, apariciones totales, etc
     - Incluir vista para ver información por terapia
     - Mostrar los datos para solo esa terapia.
+    - Exportar terapias a PDF
 
      
 Menos importantes:

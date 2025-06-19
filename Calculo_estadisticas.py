@@ -182,3 +182,5 @@ class Calculo_estadisticas():
         return emocion.count("inicio") if emocion else default
 
 
+
+

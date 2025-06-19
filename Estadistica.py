@@ -197,7 +197,7 @@ class Estadistica:
             texto = ''
             for intervalo in intervalos_emociones[emocion]:
                 inicio, final = intervalo
-                texto += '{"inicio":' + str(inicio) + ' "fin":' + str(final) + ' }, '
+                texto += '{"inicio":' + str(inicio) + ', "fin":' + str(final) + ' }, '
             # Eliminamos los dos últimos carácteres porque serán una coma y un espacio
             texto = texto[:-2]
             if emocion == Emociones.ENFADO:

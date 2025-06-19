@@ -1,3 +1,4 @@
+import json
 import time
 from Emociones import Emociones
 from Calculo_estadisticas import Calculo_estadisticas
@@ -18,6 +19,8 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
+
+import re
 
 
 class VentanaInicioSesion:
@@ -457,14 +460,14 @@ class VentanaInicioSesion:
     """
         Mostramos las estadísticas del paciente pasado por parámetro
     """
-    def consultas_estadisticas_paciente(self, paciente):
+    def consultas_estadisticas_paciente(self, paciente_selected):
         self.reset_page(None)
 
-        tk.Label(self.root, text=paciente).pack(pady=2)
+        tk.Label(self.root, text=paciente_selected).pack(pady=2)
 
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
 
-        paciente = self.paciente_mapa[paciente]
+        paciente = self.paciente_mapa[paciente_selected]
         estadisticas = self.database.obtener_estadisticas_by_paciente(paciente.get_paciente_id())
         calculo_estadisticas = Calculo_estadisticas(estadisticas)
         calculo_estadisticas.inicializarDatos()
@@ -510,19 +513,83 @@ class VentanaInicioSesion:
         botones_frame = tk.Frame(self.root)
         botones_frame.pack(pady=(10, 30))
         for idx, estadistica in enumerate(estadisticas):
-            id_terapia = estadistica.get_id_terapia()  # Asegúrate de que tu objeto tenga este método
 
             btn = tk.Button(
                 self.root,
                 text=f"Terapia {idx + 1}",
-                command=lambda id_terapiaa=id_terapia: self.mostrar_estadisticas_terapia(id_terapiaa)
+                command=lambda est=estadistica: self.mostrar_estadisticas_terapia(est, paciente_selected)
             )
             btn.pack(side=tk.LEFT, padx=5)
 
-    def mostrar_estadisticas_terapia(self, id_terapia):
-        print(f"Mostrando estadísticas para la terapia con ID: {id_terapia}")
+    def mostrar_estadisticas_terapia(self, estadistica, paciente):
+        print(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
         # Aquí puedes mostrar otra ventana, panel o gráfico detallado.
+        self.reset_page(None)  # Si usas esto para limpiar
 
+        tk.Button(self.root, text="Volver", command=lambda: self.consultas_estadisticas_paciente(paciente)).pack(pady=10)
+        self.mostrar_grafico_emociones_tiempo(estadistica)
+
+    def mostrar_grafico_emociones_tiempo(self, estadistica):
+        figura = Figure(figsize=(10, 5), dpi=100)
+        ax = figura.add_subplot(111)
+        ax.set_title("Emociones a lo largo de la terapia")
+        ax.set_xlabel("Tiempo (s)")
+        ax.set_ylabel("Emoción")
+
+        # Guardamos en variables locales ya transformadas
+        enfadado = self.parse_intervalos(estadistica.get_enfadado())
+        disgustado = self.parse_intervalos(estadistica.get_disgustado())
+        miedoso = self.parse_intervalos(estadistica.get_miedoso())
+        contento = self.parse_intervalos(estadistica.get_contento())
+        triste = self.parse_intervalos(estadistica.get_triste())
+        sorprendido = self.parse_intervalos(estadistica.get_triste())
+        neutro = self.parse_intervalos(estadistica.get_neutro())
+
+        # Mapeo de emociones a Y ejes y colores
+        emociones_info = {
+            "Enfadado": (enfadado, 0, 'red'),
+            "Disgustado": (disgustado, 1, 'orange'),
+            "Miedoso": (miedoso, 2, 'purple'),
+            "Contento": (contento, 3, 'green'),
+            "Triste": (triste, 4, 'blue'),
+            "Sorprendido": (sorprendido, 5, 'pink'),
+            "Neutro": (neutro, 6, 'gray'),
+        }
+
+        yticks = []
+        ylabels = []
+
+        for emocion, (intervalos, y, color) in emociones_info.items():
+            if intervalos:
+                bars = [(item["inicio"], item["fin"] - item["inicio"]) for item in intervalos]
+                ax.broken_barh(bars, (y - 0.4, 0.8), facecolors=color)
+                yticks.append(y)
+                ylabels.append(emocion)
+
+        ax.set_ylim(-1, len(emociones_info))
+        ax.set_yticks(yticks)
+        ax.set_yticklabels(ylabels)
+
+        ax.set_xlim(0, estadistica._tiempototal)
+        ax.grid(True)
+
+        # Empaquetar en tkinter
+        canvas = FigureCanvasTkAgg(figura, master=self.root)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+        # 🔁 Transformamos los datos si son strings (JSON)
+    def parse_intervalos(self, data):
+        if isinstance(data, str):
+            try:
+                # Añadir coma entre "número fin" si falta (entre comillas o no)
+                # TODO: ELIMINAAAAARRR
+                data = re.sub(r'("inicio"\s*:\s*\d+)\s+("fin"\s*:\s*\d+)', r'\1, \2', data)
+                return json.loads(data)
+            except json.JSONDecodeError as e:
+                print(f"[ERROR] Al parsear a json los intervalos: {e}")
+                return []
+        return data or []
 
 if __name__ == "__main__":
     interfaz = VentanaInicioSesion()

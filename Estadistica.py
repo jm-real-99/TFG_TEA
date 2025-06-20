@@ -200,19 +200,19 @@ class Estadistica:
                 texto += '{"inicio":' + str(inicio) + ', "fin":' + str(final) + ' }, '
             # Eliminamos los dos últimos carácteres porque serán una coma y un espacio
             texto = texto[:-2]
-            if emocion == Emociones.ENFADO:
+            if emo == Emociones.ENFADO:
                 self._enfadado = "[" + texto + "]"
-            elif emocion == Emociones.DISGUSTADO:
+            elif emo == Emociones.DISGUSTADO:
                 self._disgustado = "[" + texto + "]"
-            elif emocion == Emociones.MIEDOSO:
+            elif emo == Emociones.MIEDOSO:
                 self._miedoso = "[" + texto + "]"
-            elif emocion == Emociones.CONTENTO:
+            elif emo == Emociones.CONTENTO:
                 self._contento = "[" + texto + "]"
-            elif emocion == Emociones.TRISTE:
+            elif emo == Emociones.TRISTE:
                 self._triste = "[" + texto + "]"
-            elif emocion == Emociones.SORPRENDIDO:
+            elif emo == Emociones.SORPRENDIDO:
                 self._sorprendido = "[" + texto + "]"
-            elif emocion == Emociones.NEUTRO:
+            elif emo == Emociones.NEUTRO:
                 self._neutro = "[" + texto + "]"
             # Ignoramos si el valor es NONE
     """

@@ -50,39 +50,43 @@ class Camara:
 
         self.detectar_cara(frame)
 
-        # Lanzar tareas en paralelo
-        future_emocion = self._executor.submit(
-            self._gestorEmociones.detectar_emocion, frame, self._face , segundo_actual
-        )
-        future_atencion = self._executor.submit(
-            self._gestorAtencion.detectar_atencion, frame, self._face_dlib, segundo_actual
-        )
+        # Valores por defecto para mostrar. Serán si hay fallo
+        texto_emocion = "No se detecta la cara"
+        color_emocion = (0, 0, 255)
+        color_atencion = (0, 0, 255)
+        text_atencion = "No se detecta la cara"
+        emociones = None
 
-        # Esperamos a que terminen y obtenemos los resultados recabados siempre controlando las excepciones que puedan surgir
-        try:
-            emocion, emociones, face = future_emocion.result()
-        except Exception as e:
-            print(f"[ERROR] Al detectar emoción: {e}")
-            emocion, emociones, face = None, {}, None
+        # Solo hacemos la evaluación si se ha detectado un cara
+        if self._face:
+            # Lanzar tareas en paralelo
+            future_emocion = self._executor.submit(
+                self._gestorEmociones.detectar_emocion, frame, self._face , segundo_actual
+            )
+            future_atencion = self._executor.submit(
+                self._gestorAtencion.detectar_atencion, frame, self._face_dlib, segundo_actual
+            )
 
-        try:
-            atencion, text_atencion = future_atencion.result()
-        except Exception as e:
-            print(f"[ERROR] Al detectar atención: {e}")
-            atencion, text_atencion = False, "Atención desconocida"
+            # Esperamos a que terminen y obtenemos los resultados recabados siempre controlando las excepciones que puedan surgir
+            try:
+                emocion, emociones, face = future_emocion.result()
+            except Exception as e:
+                print(f"[ERROR] Al detectar emoción: {e}")
+                emocion, emociones, face = None, {}, None
 
-        # Agregamos el texto a la imagen
-        if emocion is not None:
-            texto_emocion = emocion
-            color_emocion = (0, 255, 0)
-        else:
-            texto_emocion = "No se detecta la cara"
-            color_emocion = (0, 0, 255)
+            try:
+                atencion, text_atencion = future_atencion.result()
+            except Exception as e:
+                print(f"[ERROR] Al detectar atención: {e}")
+                atencion, text_atencion = False, "Atención desconocida"
 
-        if atencion:
-            color_atencion = (0, 255, 0)
-        else:
-            color_atencion = (0, 0, 255)
+            # Agregamos el texto a la imagen
+            if emocion is not None:
+                texto_emocion = emocion
+                color_emocion = (0, 255, 0)
+
+            if atencion:
+                color_atencion = (0, 255, 0)
 
         cv2.putText(frame, texto_emocion, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_emocion, 2)
         cv2.putText(frame, text_atencion, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, color_atencion, 2)
@@ -105,6 +109,7 @@ class Camara:
         segundo_actual = self.__segundo_actual()
         if hasattr(self, '_ultimo_segundo_cara') and segundo_actual - self._ultimo_segundo_cara > 2:
             self._face = None
+            self._face_dlib = None
 
         if not faces_dlib:
             return None  # No se detectó cara
@@ -154,9 +159,11 @@ class Camara:
     def cerrar_camara(self):
         self._cap.release()
         cv2.destroyAllWindows()
-        self.__recabar_estadisticas()
+
         self._gestorAtencion.terminar_escaneo(self.__segundo_actual())
         self._gestorEmociones.terminar_escaneo(self.__segundo_actual())
+
+        self.__recabar_estadisticas()
         # ELIMINAR
         self.pintar_datos()
 

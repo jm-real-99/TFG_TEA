@@ -542,7 +542,7 @@ class VentanaInicioSesion:
         miedoso = self.parse_intervalos(estadistica.get_miedoso())
         contento = self.parse_intervalos(estadistica.get_contento())
         triste = self.parse_intervalos(estadistica.get_triste())
-        sorprendido = self.parse_intervalos(estadistica.get_triste())
+        sorprendido = self.parse_intervalos(estadistica.get_sorprendido())
         neutro = self.parse_intervalos(estadistica.get_neutro())
 
         # Mapeo de emociones a Y ejes y colores
@@ -583,9 +583,8 @@ class VentanaInicioSesion:
         if isinstance(data, str):
             try:
                 # Añadir coma entre "número fin" si falta (entre comillas o no)
-                # TODO: ELIMINAAAAARRR
-                data = re.sub(r'("inicio"\s*:\s*\d+)\s+("fin"\s*:\s*\d+)', r'\1, \2', data)
-                return json.loads(data)
+                parsed = data
+                return json.loads(parsed)
             except json.JSONDecodeError as e:
                 print(f"[ERROR] Al parsear a json los intervalos: {e}")
                 return []

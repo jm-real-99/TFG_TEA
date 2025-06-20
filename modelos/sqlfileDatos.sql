@@ -61,6 +61,7 @@ CREATE TABLE EstadisticasTerapias (
     neturototal INT,
     atencion TEXT,
     atenciontotal INT,
+    fecha DATE NOT NULL,
     fechahoracomienzo TIME NOT NULL,
     fechahorafin TIME NOT NULL,
     tiempototal INT NOT NULL,

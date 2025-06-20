@@ -173,7 +173,7 @@ class Camara:
     def __recabar_estadisticas(self):
 
         self._estadisticas.set_tiempototal(self.__segundo_actual())
-        self._estadisticas.set_fechahorafin(datetime.now())
+        self._estadisticas.set_horafin(datetime.now())
         total_emociones = self._gestorEmociones.get_tiempototalemocion()
         self._estadisticas.convertir_JSON_emociones(self._gestorEmociones.get_intervalosemociones())
         self._estadisticas.set_enfadadototal(total_emociones[Emociones.ENFADO.value])

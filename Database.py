@@ -194,8 +194,8 @@ class DataBase:
     # ********* METODOS RELACIONADOS CON LAS ESTADÍSTICAS ************
     def incluir_estadistica_terapia(self, estadistica):
         if ((estadistica.get_paciente_id() is None) or (estadistica.get_terapeuta_id() is None) or
-                (estadistica.get_fechahoracomienzo() is None) or (estadistica.get_fechahorafin() is None) or
-                (estadistica.get_tiempototal() is None)):
+                (estadistica.get_horacomienzo() is None) or (estadistica.get_fecha() is None) or
+                (estadistica.get_horafin() is None) or (estadistica.get_tiempototal() is None)):
             print("[DB] Error al introducir la estadística en la base de datos, uno de los datos Not Null es None")
             return False
         try:
@@ -203,9 +203,9 @@ class DataBase:
             self.cursor.execute("INSERT INTO EstadisticasTerapias (paciente_id, terapeuta_id, enfadado, "
                                 "enfadadototal, disgustado, disgustadototal, miedoso, miedosototal, contento, "
                                 "contentototal, triste, tristetotal, sorprendido, sorprendidototal, neutro, "
-                                "neturototal, atencion, atenciontotal, fechahoracomienzo, fechahorafin, tiempototal, "
+                                "neturototal, atencion, atenciontotal, fecha, fechahoracomienzo, fechahorafin, tiempototal, "
                                 "observaciones) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,"
-                                " %s, %s, %s,  %s, %s, %s);"
+                                " %s, %s, %s,  %s, %s, %s, %s);"
                                 , (estadistica.get_paciente_id(), estadistica.get_terapeuta_id(),
                                    estadistica.get_enfadado(), estadistica.get_enfadado_total(),
                                    estadistica.get_disgustado(), estadistica.get_disgustadototal(),
@@ -215,8 +215,8 @@ class DataBase:
                                    estadistica.get_tristetotal(), estadistica.get_sorprendido(),
                                    estadistica.get_sorprendidototal(), estadistica.get_neutro(),
                                    estadistica.get_neutrototal(), estadistica.get_atencion(),
-                                   estadistica.get_atenciontotal(), estadistica.get_fechahoracomienzo(),
-                                   estadistica.get_fechahorafin(), estadistica.get_tiempototal(),
+                                   estadistica.get_atenciontotal(), estadistica.get_horacomienzo(),
+                                   estadistica.get_fecha(), estadistica.get_horafin(), estadistica.get_tiempototal(),
                                    estadistica.get_observaciones()))
             print("[DB] Creada la consulta")
             self.connection.commit()

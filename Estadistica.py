@@ -7,8 +7,8 @@ import json
 class Estadistica:
     def __init__(self, id_terapia, paciente_id, terapeuta_id, enfadado, enfadadototal,
                  disgustado, disgustadototal, miedoso, miedosototal, contento, contentototal,
-                 triste, tristetotal, sorprendido, sorprendidototal, neutro, neutrototal, atencion, atenciontotal,
-                 fechahoracomienzo, fechahorafin, tiempototal, observaciones):
+                 triste, tristetotal, sorprendido, sorprendidototal, neutro, neutrototal, atencion, atenciontotal, fecha,
+                 horacomienzo, horafin, tiempototal, observaciones):
         self._id_terapia = id_terapia
         self._paciente_id = paciente_id
         self._terapeuta_id = terapeuta_id
@@ -28,8 +28,9 @@ class Estadistica:
         self._neutrototal = neutrototal
         self._atencion = atencion
         self._atenciontotal = atenciontotal
-        self._fechahoracomienzo = fechahoracomienzo
-        self._fechahorafin = fechahorafin
+        self._fecha = fecha
+        self._horacomienzo = horacomienzo
+        self._horafin = horafin
         self._tiempototal = tiempototal
         self._observaciones = observaciones
 
@@ -38,12 +39,12 @@ class Estadistica:
     """
 
     @classmethod
-    def init_minimo(cls, paciente_id, terapeuta_id, fechahoracomienzo):
+    def init_minimo(cls, paciente_id, terapeuta_id, fecha, hora_comienzo):
         print("[ESTADISTICA] Creamos estadística minima")
         return cls(None, paciente_id, terapeuta_id, None, 0,
                    None, 0, None, 0, None, 0,
-                   None, 0, None, 0, None, 0, None, 0,
-                   fechahoracomienzo, None, 0, "")
+                   None, 0, None, 0, None, 0, None, 0,fecha,
+                   hora_comienzo, None, 0, "")
 
     # ********* GETTERS ***********
 
@@ -104,11 +105,14 @@ class Estadistica:
     def get_atenciontotal(self):
         return self._atenciontotal
 
-    def get_fechahoracomienzo(self):
-        return self._fechahoracomienzo
+    def get_fecha(self):
+        return self._fecha
 
-    def get_fechahorafin(self):
-        return self._fechahorafin
+    def get_horacomienzo(self):
+        return self._horacomienzo
+
+    def get_horafin(self):
+        return self._horafin
 
     def get_tiempototal(self):
         return self._tiempototal
@@ -175,11 +179,14 @@ class Estadistica:
     def set_atenciontotal(self, value):
         self._atenciontotal = value
 
-    def set_fechahoracomienzo(self, value):
-        self._fechahoracomienzo = value
+    def set_fecha(self,value):
+        self._fecha = value
 
-    def set_fechahorafin(self, value):
-        self._fechahorafin = value
+    def set__horacomienzo(self, value):
+        self._horacomienzo = value
+
+    def set_horafin(self, value):
+        self._horafin = value
 
     def set_tiempototal(self, value):
         self._tiempototal = value

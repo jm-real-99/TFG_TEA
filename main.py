@@ -214,7 +214,7 @@ class VentanaInicioSesion:
         paciente = self.paciente_mapa[paciente]
         pacienteid = paciente.get_paciente_id()
         self.estadisticas = Estadistica.init_minimo(pacienteid,
-                                               self.terapeuta.get_terapeuta_id(), datetime.now())
+                                               self.terapeuta.get_terapeuta_id(), datetime.now().strftime("%d/%m/%Y") ,datetime.now())
         print("[OK] Estadísticas iniciales: ")
 
         self.listar_camaras()
@@ -414,8 +414,8 @@ class VentanaInicioSesion:
         print("Neutro Total:", self.estadisticas.get_neutrototal())
         print("Atención:", self.estadisticas.get_atencion())
         print("Atención Total:", self.estadisticas.get_atenciontotal())
-        print("Fecha y Hora Comienzo:", self.estadisticas.get_fechahoracomienzo())
-        print("Fecha y Hora Fin:", self.estadisticas.get_fechahorafin())
+        print("Fecha y Hora Comienzo:", self.estadisticas.get_horacomienzo())
+        print("Fecha y Hora Fin:", self.estadisticas.get_horafin())
         print("Tiempo Total:", self.estadisticas.get_tiempototal())
         print("Observaciones:", self.estadisticas.get_observaciones())
 
@@ -472,32 +472,46 @@ class VentanaInicioSesion:
         calculo_estadisticas = Calculo_estadisticas(estadisticas)
         calculo_estadisticas.inicializarDatos()
 
-        valores = [calculo_estadisticas.porcentaje_enfadado, calculo_estadisticas.porcentaje_disgustado,
+        valores_emociones_porcentaje = [calculo_estadisticas.porcentaje_enfadado, calculo_estadisticas.porcentaje_disgustado,
                     calculo_estadisticas.porcentaje_miedoso, calculo_estadisticas.porcentaje_contento,
                     calculo_estadisticas.porcentaje_triste, calculo_estadisticas.porcentaje_sorprendido,
                     calculo_estadisticas.porcentaje_neutro]
-        etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name, Emociones.CONTENTO.name,
+        valores_emociones_apariciones = [calculo_estadisticas.totalenfadado, calculo_estadisticas.totaldisgustado,
+                    calculo_estadisticas.totalmiedoso, calculo_estadisticas.totalcontento,
+                    calculo_estadisticas.totaltriste, calculo_estadisticas.totalsorprendido,
+                    calculo_estadisticas.totalneutro]
+        emociones_etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name, Emociones.CONTENTO.name,
                      Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
 
-        # Crear una figura y un conjunto de subtramas
+        valores_atencion_porcentaje = [calculo_estadisticas.porcentaje_atencion, 100-calculo_estadisticas.porcentaje_atencion]
+        atención_etiquetas = ["Atención", "No atención"]
+
+        # Creamos un gráfico de tarta
         figura = Figure(figsize=(10, 9), dpi=80)
         ax1 = figura.add_subplot(121)  # Gráfico de tarta
-        ax2 = figura.add_subplot(122)  # Gráfico de barras
-        if (all(x == 0.0 for x in valores)):
+        if (all(x == 0.0 for x in valores_emociones_porcentaje)):
             # Crear gráfico de tarta
             ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
         else:
-            ax1.pie(valores, labels=etiquetas, autopct='%1.1f%%')
-
-
-        ax1.set_title('Gráfico de tarta')
+            ax1.pie(valores_emociones_porcentaje, labels=emociones_etiquetas, autopct='%1.1f%%')
+        ax1.set_title('% expresión global de emociones')
 
         # Crear gráfico de barras
-        y_pos = np.arange(len(etiquetas))
-        ax2.bar(y_pos, valores, align='center', alpha=0.5)
+        ax2 = figura.add_subplot(122)  # Gráfico de barras
+        y_pos = np.arange(len(emociones_etiquetas))
+        ax2.bar(y_pos, valores_emociones_apariciones, align='center', alpha=0.5)
         ax2.set_xticks(y_pos)
-        ax2.set_xticklabels(etiquetas, rotation=45, ha='right')  # Rotar y alinear etiquetas
-        ax2.set_title('Gráfico de barras')
+        ax2.set_xticklabels(emociones_etiquetas, rotation=45, ha='right')  # Rotar y alinear etiquetas
+        ax2.set_title('Tiempo total de cada emoción')
+
+        # Creamos un gráfico de tarta de la atención
+        ax3 = figura.add_subplot(121)  # Gráfico de tarta atención
+        if (all(x == 0.0 for x in valores_atencion_porcentaje)):
+            # Crear gráfico de tarta
+            ax3.pie([100], labels=[atención_etiquetas[1]], autopct='%1.1f%%')
+        else:
+            ax3.pie(valores_atencion_porcentaje, labels=atención_etiquetas, autopct='%1.1f%%')
+        ax3.set_title('% atención global')
 
         # Ajustar layout automáticamente para evitar superposición
         figura.tight_layout()

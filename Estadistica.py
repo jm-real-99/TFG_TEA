@@ -229,7 +229,22 @@ class Estadistica:
         texto = ''
         for intervalo in intervalos_atencion:
             inicio, final = intervalo
-            texto += '{"inicio":' + str(inicio) + ' "fin":' + str(final) + ' }, '
+            texto += '{"inicio":' + str(inicio) + ', "fin":' + str(final) + ' }, '
         # Eliminamos los dos últimos carácteres porque serán una coma y un espacio
         texto = texto[:-2]
         self._atencion = "[" + texto + "]"
+
+    def get_emocion_mas_expresada(self):
+        emociones = [(self._contentototal, Emociones.CONTENTO), (self._disgustadototal, Emociones.DISGUSTADO),
+                     (self._enfadadototal, Emociones.ENFADO), (self._tristetotal, Emociones.TRISTE),
+                     (self._miedosototal, Emociones.MIEDOSO), (self._sorprendidototal, Emociones.SORPRENDIDO),
+                     (self._neutrototal, Emociones.NEUTRO)]
+        return max(emociones, key=lambda x: x[0])[1]
+
+    def get_emociones_porcentajes(self):
+        return [self._enfadadototal/self._tiempototal , self._disgustadototal/self._tiempototal ,
+                self._miedosototal/self._tiempototal , self._contentototal/self._tiempototal ,
+                self._tristetotal/self._tiempototal , self._sorprendidototal/self._tiempototal ,
+                self._neutrototal/self._tiempototal]
+
+

@@ -215,9 +215,9 @@ class DataBase:
                                    estadistica.get_tristetotal(), estadistica.get_sorprendido(),
                                    estadistica.get_sorprendidototal(), estadistica.get_neutro(),
                                    estadistica.get_neutrototal(), estadistica.get_atencion(),
-                                   estadistica.get_atenciontotal(), estadistica.get_horacomienzo(),
-                                   estadistica.get_fecha(), estadistica.get_horafin(), estadistica.get_tiempototal(),
-                                   estadistica.get_observaciones()))
+                                   estadistica.get_atenciontotal(), estadistica.get_fecha(),
+                                   estadistica.get_horacomienzo(), estadistica.get_horafin(),
+                                   estadistica.get_tiempototal(), estadistica.get_observaciones()))
             print("[DB] Creada la consulta")
             self.connection.commit()
         except mysql.connector.Error as err:

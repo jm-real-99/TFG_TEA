@@ -47,6 +47,9 @@ class Calculo_estadisticas():
         self.emocion_mas_expresada = None
 
     def inicializarDatos(self):
+        if not self.estadisticas:
+            return None
+
         self.num_terapias = len(self.estadisticas)
         tiempo_total_terapias = 0
         mejora_atencion = []

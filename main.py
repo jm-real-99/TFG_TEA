@@ -7,7 +7,7 @@ import cv2
 from PIL import Image, ImageTk
 
 import tkinter as tk
-from datetime import datetime
+from datetime import datetime, date
 from Paciente import Paciente
 from Terapeuta import Terapeuta
 from Database import DataBase
@@ -214,7 +214,7 @@ class VentanaInicioSesion:
         paciente = self.paciente_mapa[paciente]
         pacienteid = paciente.get_paciente_id()
         self.estadisticas = Estadistica.init_minimo(pacienteid,
-                                               self.terapeuta.get_terapeuta_id(), datetime.now().strftime("%d/%m/%Y") ,datetime.now())
+                                               self.terapeuta.get_terapeuta_id(), date.today() ,datetime.now())
         print("[OK] Estadísticas iniciales: ")
 
         self.listar_camaras()
@@ -322,11 +322,34 @@ class VentanaInicioSesion:
     """
     def cerrar_terapia(self, camara):
         camara.cerrar_camara()
+        self.add_observaciones()
+
+    def add_observaciones(self):
+        self.reset_page(None)
+        tk.Label(self.root, text="Introduce tus observaciones:", font=("Arial", 12)).pack(pady=10)
+
+        # Campo de texto grande
+        self.text_area = tk.Text(self.root, height=10, width=60, wrap=tk.WORD)
+        self.text_area.pack(padx=10, pady=10)
+
+        # Botones
+        btn_frame = tk.Frame(self.root)
+        btn_frame.pack(pady=10)
+
+        tk.Button(btn_frame, text="Añadir observaciones", command=self.enviar_terapia_finalizada).pack(side=tk.LEFT, padx=10)
+        tk.Button(btn_frame, text="Saltar", command=self.enviar_terapia_finalizada).pack(side=tk.LEFT, padx=10)
+
+    def enviar_terapia_finalizada(self):
+        texto = self.text_area.get("1.0", tk.END).strip()
+        if texto:
+            self.estadisticas.set_observaciones(texto)
+
         self.pintar_datos()
         self.database.incluir_estadistica_terapia(self.estadisticas)
 
         notificacion = self.mostrar_mensaje_exito("Terapia finalizada")
         self.mostrar_main(notificacion)
+
 
     """
         Método auxiliar mediante el que vamos a eliminar todo el contenido que haya en la vista. Esto nos permite 
@@ -486,9 +509,10 @@ class VentanaInicioSesion:
         valores_atencion_porcentaje = [calculo_estadisticas.porcentaje_atencion, 100-calculo_estadisticas.porcentaje_atencion]
         atención_etiquetas = ["Atención", "No atención"]
 
+        figura = Figure(figsize=(15, 5), dpi=80)
+
         # Creamos un gráfico de tarta
-        figura = Figure(figsize=(10, 9), dpi=80)
-        ax1 = figura.add_subplot(121)  # Gráfico de tarta
+        ax1 = figura.add_subplot(1, 3, 1)  # Gráfico de tarta
         if (all(x == 0.0 for x in valores_emociones_porcentaje)):
             # Crear gráfico de tarta
             ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
@@ -497,7 +521,7 @@ class VentanaInicioSesion:
         ax1.set_title('% expresión global de emociones')
 
         # Crear gráfico de barras
-        ax2 = figura.add_subplot(122)  # Gráfico de barras
+        ax2 = figura.add_subplot(1, 3, 2)  # Gráfico de barras
         y_pos = np.arange(len(emociones_etiquetas))
         ax2.bar(y_pos, valores_emociones_apariciones, align='center', alpha=0.5)
         ax2.set_xticks(y_pos)
@@ -505,13 +529,27 @@ class VentanaInicioSesion:
         ax2.set_title('Tiempo total de cada emoción')
 
         # Creamos un gráfico de tarta de la atención
-        ax3 = figura.add_subplot(121)  # Gráfico de tarta atención
+        ax3 = figura.add_subplot(1, 3, 3)  # Gráfico de tarta atención
         if (all(x == 0.0 for x in valores_atencion_porcentaje)):
             # Crear gráfico de tarta
             ax3.pie([100], labels=[atención_etiquetas[1]], autopct='%1.1f%%')
         else:
             ax3.pie(valores_atencion_porcentaje, labels=atención_etiquetas, autopct='%1.1f%%')
         ax3.set_title('% atención global')
+
+        tk.Label(self.root, text=f"Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones:.2f}").pack(pady=2)
+        tk.Label(self.root,
+                 text=f"Tendencia en la mejora de expresión de emociones: {calculo_estadisticas.mejora_tendencia_expresion_emociones:.2f}").pack(
+            pady=2)
+        tk.Label(self.root,
+                 text=f"Mejora desde el inicio en la atención: {calculo_estadisticas.mejora_inicio_atencion:.2f}").pack(
+            pady=2)
+        tk.Label(self.root,
+                 text=f"Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion:.2f}").pack(
+            pady=2)
+        tk.Label(self.root,
+                 text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}").pack(
+            pady=2)
 
         # Ajustar layout automáticamente para evitar superposición
         figura.tight_layout()
@@ -526,26 +564,60 @@ class VentanaInicioSesion:
         # Creamos un frame para contener los botones
         botones_frame = tk.Frame(self.root)
         botones_frame.pack(pady=(10, 30))
-        for idx, estadistica in enumerate(estadisticas):
+        for estadistica in estadisticas:
 
             btn = tk.Button(
                 self.root,
-                text=f"Terapia {idx + 1}",
+                text=f"Terapia {estadistica.get_fecha()}",
                 command=lambda est=estadistica: self.mostrar_estadisticas_terapia(est, paciente_selected)
             )
             btn.pack(side=tk.LEFT, padx=5)
 
     def mostrar_estadisticas_terapia(self, estadistica, paciente):
         print(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
-        # Aquí puedes mostrar otra ventana, panel o gráfico detallado.
-        self.reset_page(None)  # Si usas esto para limpiar
+        self.reset_page(None)
 
         tk.Button(self.root, text="Volver", command=lambda: self.consultas_estadisticas_paciente(paciente)).pack(pady=10)
-        self.mostrar_grafico_emociones_tiempo(estadistica)
+        figura = Figure(figsize=(10, 8), dpi=100)
+        gs = figura.add_gridspec(2, 2)
+        self.mostrar_grafico_emociones_tiempo(estadistica, figura,gs)
+        self.mostrar_grafico_atencion_tiempo(estadistica,figura,gs)
 
-    def mostrar_grafico_emociones_tiempo(self, estadistica):
-        figura = Figure(figsize=(10, 5), dpi=100)
-        ax = figura.add_subplot(111)
+        # Creamos un gráfico de tarta
+
+        emociones_etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name, Emociones.CONTENTO.name,
+                     Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
+        emociones_porcentajes = estadistica.get_emociones_porcentajes()
+        ax1 = figura.add_subplot(gs[1, :])  # Gráfico de tarta
+        if (all(x == 0.0 for x in emociones_porcentajes)):
+            # Crear gráfico de tarta
+            ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
+        else:
+            ax1.pie(emociones_porcentajes, labels=emociones_etiquetas, autopct='%1.1f%%')
+
+        ax1.set_title('% expresión global de emociones')
+        tk.Label(self.root,
+                 text=f"Fecha terapia: {estadistica.get_fecha()}").pack(pady=2)
+        tk.Label(self.root,
+                 text=f"Hora comienzo: {estadistica.get_horacomienzo()}").pack(pady=2)
+        tk.Label(self.root,
+                 text=f"Tiempo total terapia:  {estadistica.get_tiempototal()/60} min").pack(pady=2)
+        tk.Label(self.root,
+                 text=f"Emoción más expresada:  {estadistica.get_emocion_mas_expresada()}").pack(pady=2)
+        tk.Label(self.root,
+                 text=f"Observaciones:  {estadistica.get_observaciones()}").pack(pady=2)
+        # Ajustar layout automáticamente para evitar superposición
+        figura.tight_layout()
+
+        # Crear el lienzo de Tkinter con la figura
+        canvas = FigureCanvasTkAgg(figura, master=self.root)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+
+
+    def mostrar_grafico_emociones_tiempo(self, estadistica, figura, gs):
+        ax = figura.add_subplot(gs[0, 0])
         ax.set_title("Emociones a lo largo de la terapia")
         ax.set_xlabel("Tiempo (s)")
         ax.set_ylabel("Emoción")
@@ -587,16 +659,32 @@ class VentanaInicioSesion:
         ax.set_xlim(0, estadistica._tiempototal)
         ax.grid(True)
 
-        # Empaquetar en tkinter
-        canvas = FigureCanvasTkAgg(figura, master=self.root)
-        canvas.draw()
-        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+    def mostrar_grafico_atencion_tiempo(self, estadistica, figura, gs):
+        ax = figura.add_subplot(gs[0, 1])
+        ax.set_title("Atención a lo largo de la terapia")
+        ax.set_xlabel("Tiempo (s)")
+        ax.set_ylabel("Atención")
 
-        # 🔁 Transformamos los datos si son strings (JSON)
+        # Convertir datos JSON a lista de intervalos
+        intervalos = self.parse_intervalos(estadistica.get_atencion())
+
+        if intervalos:
+            bars = [(item["inicio"], item["fin"] - item["inicio"]) for item in intervalos]
+            ax.broken_barh(bars, (0.3, 0.4), facecolors='green')  # Altura 0.4 en y=0.3
+            ax.set_yticks([0.5])
+            ax.set_yticklabels(["Atento"])
+        else:
+            ax.text(0.5, 0.5, "Sin datos de atención", ha="center", va="center", transform=ax.transAxes)
+
+        ax.set_xlim(0, estadistica._tiempototal)
+        ax.set_ylim(0, 1)
+        ax.grid(True)
+
     def parse_intervalos(self, data):
         if isinstance(data, str):
             try:
                 # Añadir coma entre "número fin" si falta (entre comillas o no)
+                data = re.sub(r'("inicio"\s*:\s*\d+)\s+("fin"\s*:\s*\d+)', r'\1, \2', data)
                 parsed = data
                 return json.loads(parsed)
             except json.JSONDecodeError as e:

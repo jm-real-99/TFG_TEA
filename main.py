@@ -19,6 +19,12 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas as pdf_canvas
+from reportlab.lib.utils import ImageReader
+import tempfile
+import os
+from reportlab.lib.units import cm
 
 import re
 
@@ -495,47 +501,11 @@ class VentanaInicioSesion:
         calculo_estadisticas = Calculo_estadisticas(estadisticas)
         calculo_estadisticas.inicializarDatos()
 
-        valores_emociones_porcentaje = [calculo_estadisticas.porcentaje_enfadado, calculo_estadisticas.porcentaje_disgustado,
-                    calculo_estadisticas.porcentaje_miedoso, calculo_estadisticas.porcentaje_contento,
-                    calculo_estadisticas.porcentaje_triste, calculo_estadisticas.porcentaje_sorprendido,
-                    calculo_estadisticas.porcentaje_neutro]
-        valores_emociones_apariciones = [calculo_estadisticas.totalenfadado, calculo_estadisticas.totaldisgustado,
-                    calculo_estadisticas.totalmiedoso, calculo_estadisticas.totalcontento,
-                    calculo_estadisticas.totaltriste, calculo_estadisticas.totalsorprendido,
-                    calculo_estadisticas.totalneutro]
-        emociones_etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name, Emociones.CONTENTO.name,
-                     Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
-
-        valores_atencion_porcentaje = [calculo_estadisticas.porcentaje_atencion, 100-calculo_estadisticas.porcentaje_atencion]
-        atención_etiquetas = ["Atención", "No atención"]
-
-        figura = Figure(figsize=(15, 5), dpi=80)
-
-        # Creamos un gráfico de tarta
-        ax1 = figura.add_subplot(1, 3, 1)  # Gráfico de tarta
-        if (all(x == 0.0 for x in valores_emociones_porcentaje)):
-            # Crear gráfico de tarta
-            ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
-        else:
-            ax1.pie(valores_emociones_porcentaje, labels=emociones_etiquetas, autopct='%1.1f%%')
-        ax1.set_title('% expresión global de emociones')
-
-        # Crear gráfico de barras
-        ax2 = figura.add_subplot(1, 3, 2)  # Gráfico de barras
-        y_pos = np.arange(len(emociones_etiquetas))
-        ax2.bar(y_pos, valores_emociones_apariciones, align='center', alpha=0.5)
-        ax2.set_xticks(y_pos)
-        ax2.set_xticklabels(emociones_etiquetas, rotation=45, ha='right')  # Rotar y alinear etiquetas
-        ax2.set_title('Tiempo total de cada emoción')
-
-        # Creamos un gráfico de tarta de la atención
-        ax3 = figura.add_subplot(1, 3, 3)  # Gráfico de tarta atención
-        if (all(x == 0.0 for x in valores_atencion_porcentaje)):
-            # Crear gráfico de tarta
-            ax3.pie([100], labels=[atención_etiquetas[1]], autopct='%1.1f%%')
-        else:
-            ax3.pie(valores_atencion_porcentaje, labels=atención_etiquetas, autopct='%1.1f%%')
-        ax3.set_title('% atención global')
+        figura = Figure(figsize=(10, 8), dpi=100)
+        gs = figura.add_gridspec(2, 2)
+        self.mostrar_grafico_tarta_emociones_general(calculo_estadisticas,figura, gs)
+        self.mostrar_grafico_barra_emociones_general(calculo_estadisticas, figura, gs)
+        self.mostrar_grafico_tarta_atencion_general(calculo_estadisticas,figura, gs)
 
         tk.Label(self.root, text=f"Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones:.2f}").pack(pady=2)
         tk.Label(self.root,
@@ -551,8 +521,9 @@ class VentanaInicioSesion:
                  text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}").pack(
             pady=2)
 
-        # Ajustar layout automáticamente para evitar superposición
-        figura.tight_layout()
+        tk.Button(self.root, text="Exportar a PDF",
+                  command=lambda: self.exportar_estadisticas_generales_pdf(calculo_estadisticas, paciente_selected)).pack(
+            pady=10)
 
         # Crear el lienzo de Tkinter con la figura
         canvas = FigureCanvasTkAgg(figura, master=self.root)
@@ -573,6 +544,131 @@ class VentanaInicioSesion:
             )
             btn.pack(side=tk.LEFT, padx=5)
 
+        # Ajustar layout automáticamente para evitar superposición
+        figura.tight_layout()
+
+
+    def mostrar_grafico_tarta_emociones_general(self,calculo_estadisticas, figura, gs):
+        valores_emociones_porcentaje = [calculo_estadisticas.porcentaje_enfadado,
+                                        calculo_estadisticas.porcentaje_disgustado,
+                                        calculo_estadisticas.porcentaje_miedoso,
+                                        calculo_estadisticas.porcentaje_contento,
+                                        calculo_estadisticas.porcentaje_triste,
+                                        calculo_estadisticas.porcentaje_sorprendido,
+                                        calculo_estadisticas.porcentaje_neutro]
+        emociones_etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name,
+                               Emociones.CONTENTO.name,
+                               Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
+
+        # Creamos un gráfico de tarta
+        ax1 = figura.add_subplot(gs[0, 0])  # Gráfico de tarta
+        if (all(x == 0.0 for x in valores_emociones_porcentaje)):
+            # Crear gráfico de tarta
+            ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
+        else:
+            ax1.pie(valores_emociones_porcentaje, labels=emociones_etiquetas, autopct='%1.1f%%')
+        ax1.set_title('% expresión global de emociones')
+
+    def mostrar_grafico_barra_emociones_general(self, calculo_estadisticas, figura, gs):
+        valores_emociones_apariciones = [calculo_estadisticas.totalenfadado, calculo_estadisticas.totaldisgustado,
+                                         calculo_estadisticas.totalmiedoso, calculo_estadisticas.totalcontento,
+                                         calculo_estadisticas.totaltriste, calculo_estadisticas.totalsorprendido,
+                                         calculo_estadisticas.totalneutro]
+        emociones_etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name,
+                               Emociones.CONTENTO.name,
+                               Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
+        # Crear gráfico de barras
+        ax2 = figura.add_subplot(gs[0, 1]) # Gráfico de barras
+        y_pos = np.arange(len(emociones_etiquetas))
+        ax2.bar(y_pos, valores_emociones_apariciones, align='center', alpha=0.5)
+        ax2.set_xticks(y_pos)
+        ax2.set_xticklabels(emociones_etiquetas, rotation=45, ha='right')  # Rotar y alinear etiquetas
+        ax2.set_title('Tiempo total de cada emoción')
+
+    def mostrar_grafico_tarta_atencion_general(self, calculo_estadisticas, figura, gs):
+        valores_atencion_porcentaje = [calculo_estadisticas.porcentaje_atencion,
+                                       100 - calculo_estadisticas.porcentaje_atencion]
+        atención_etiquetas = ["Atención", "No atención"]
+
+        # Creamos un gráfico de tarta de la atención
+        ax3 = figura.add_subplot(gs[1, :])  # Gráfico de tarta atención
+        if (all(x == 0.0 for x in valores_atencion_porcentaje)):
+            # Crear gráfico de tarta
+            ax3.pie([100], labels=[atención_etiquetas[1]], autopct='%1.1f%%')
+        else:
+            ax3.pie(valores_atencion_porcentaje, labels=atención_etiquetas, autopct='%1.1f%%')
+        ax3.set_title('% atención global')
+
+    def exportar_estadisticas_generales_pdf(self,calculo_estadisticas, paciente_key ):
+        paciente = self.paciente_mapa[paciente_key]
+
+        # Crear figuras
+        figura = Figure(figsize=(10, 8), dpi=100)
+        gs = figura.add_gridspec(2, 2)
+        self.mostrar_grafico_tarta_emociones_general(calculo_estadisticas, figura, gs)
+        self.mostrar_grafico_barra_emociones_general(calculo_estadisticas, figura, gs)
+        self.mostrar_grafico_tarta_atencion_general(calculo_estadisticas, figura, gs)
+
+        figura.tight_layout()
+
+        # Guardar figura en un archivo temporal
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
+            figura.savefig(tmpfile.name)
+            imagen_path = tmpfile.name
+
+        # Crear PDF
+        pdf_path = f"resumen_terapias_{paciente_key}_{paciente.get_num_expediente()}.pdf"
+        c = pdf_canvas.Canvas(pdf_path, pagesize=A4)
+        width, height = A4
+        margin = 50
+        y_cursor = height - margin
+
+        def draw_line(text, font="Helvetica", size=12, spacing=15):
+            nonlocal y_cursor
+            if y_cursor < 100:
+                c.showPage()
+                y_cursor = height - margin
+            c.setFont(font, size)
+            c.drawString(margin, y_cursor, text)
+            y_cursor -= spacing
+
+        # --- Página 1: Estadísticas generales ---
+        # Información paciente
+        draw_line("Paciente:", "Helvetica-Bold", 16, 20)
+        draw_line(f"Paciente ID: {paciente.get_paciente_id()}")
+        draw_line(f"    Nombre: {paciente.get_nombre()} {paciente.get_apellido()}")
+        draw_line(f"    Expediente: {paciente.get_num_expediente()}", spacing=25)
+
+        # Información terapeuta
+        draw_line("Terapeuta:", "Helvetica-Bold", 16, 20)
+        draw_line(f"    Terapeuta ID: {self.terapeuta.get_terapeuta_id()}")
+        draw_line(f"    Nombre: {self.terapeuta.get_nombre()} {self.terapeuta.get_apellido()}", spacing=25)
+
+        # Información terapias
+        draw_line("Estadísticas terapia:", "Helvetica-Bold", 16, 20)
+        draw_line(f"    Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones:.2f}")
+        draw_line(f"    Tendencia en la mejora de expresión de emociones: {calculo_estadisticas.mejora_tendencia_expresion_emociones:.2f}")
+        draw_line(f"    Mejora desde el inicio en la atención: {calculo_estadisticas.mejora_inicio_atencion:.2f}")
+        draw_line(f"    Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion:.2f}")
+        draw_line(f"    Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}")
+
+        # Si no hay espacio suficiente para imagen, se pasa a una nueva página
+        if y_cursor < 300:
+            c.showPage()
+            y_cursor = height - margin
+
+        # Insertar imagen
+        img_width = 16 * cm
+        img_height = 13 * cm
+        c.drawImage(ImageReader(imagen_path), margin, y_cursor - img_height, width=img_width, height=img_height)
+
+        c.showPage()
+        c.save()
+
+        os.remove(imagen_path)  # Eliminar imagen temporal
+
+        print(f"[INFO] PDF guardado en: {pdf_path}")
+
     def mostrar_estadisticas_terapia(self, estadistica, paciente):
         print(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
         self.reset_page(None)
@@ -582,20 +678,8 @@ class VentanaInicioSesion:
         gs = figura.add_gridspec(2, 2)
         self.mostrar_grafico_emociones_tiempo(estadistica, figura,gs)
         self.mostrar_grafico_atencion_tiempo(estadistica,figura,gs)
+        self.mostrar_grafica_emociones_tarta(estadistica,figura,gs)
 
-        # Creamos un gráfico de tarta
-
-        emociones_etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name, Emociones.CONTENTO.name,
-                     Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
-        emociones_porcentajes = estadistica.get_emociones_porcentajes()
-        ax1 = figura.add_subplot(gs[1, :])  # Gráfico de tarta
-        if (all(x == 0.0 for x in emociones_porcentajes)):
-            # Crear gráfico de tarta
-            ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
-        else:
-            ax1.pie(emociones_porcentajes, labels=emociones_etiquetas, autopct='%1.1f%%')
-
-        ax1.set_title('% expresión global de emociones')
         tk.Label(self.root,
                  text=f"Fecha terapia: {estadistica.get_fecha()}").pack(pady=2)
         tk.Label(self.root,
@@ -606,6 +690,10 @@ class VentanaInicioSesion:
                  text=f"Emoción más expresada:  {estadistica.get_emocion_mas_expresada()}").pack(pady=2)
         tk.Label(self.root,
                  text=f"Observaciones:  {estadistica.get_observaciones()}").pack(pady=2)
+
+        tk.Button(self.root, text="Exportar a PDF", command=lambda: self.exportar_estadistica_pdf(estadistica,paciente)).pack(
+            pady=10)
+
         # Ajustar layout automáticamente para evitar superposición
         figura.tight_layout()
 
@@ -613,8 +701,6 @@ class VentanaInicioSesion:
         canvas = FigureCanvasTkAgg(figura, master=self.root)
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-
-
 
     def mostrar_grafico_emociones_tiempo(self, estadistica, figura, gs):
         ax = figura.add_subplot(gs[0, 0])
@@ -679,6 +765,104 @@ class VentanaInicioSesion:
         ax.set_xlim(0, estadistica._tiempototal)
         ax.set_ylim(0, 1)
         ax.grid(True)
+
+    def mostrar_grafica_emociones_tarta(self, estadistica, figura, gs):
+        # Creamos un gráfico de tarta
+        emociones_etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name,
+                               Emociones.CONTENTO.name,
+                               Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
+        emociones_porcentajes = estadistica.get_emociones_porcentajes()
+        ax1 = figura.add_subplot(gs[1, :])  # Gráfico de tarta
+        if (all(x == 0.0 for x in emociones_porcentajes)):
+            # Crear gráfico de tarta
+            ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
+        else:
+            ax1.pie(emociones_porcentajes, labels=emociones_etiquetas, autopct='%1.1f%%')
+
+        ax1.set_title('% expresión global de emociones')
+
+    def exportar_estadistica_pdf(self, estadistica, paciente_name):
+        # Crear figuras
+        figura = Figure(figsize=(10, 8), dpi=100)
+        gs = figura.add_gridspec(2, 2)
+        self.mostrar_grafico_emociones_tiempo(estadistica, figura, gs)
+        self.mostrar_grafico_atencion_tiempo(estadistica, figura, gs)
+        self.mostrar_grafica_emociones_tarta(estadistica,figura,gs)
+
+        figura.tight_layout()
+
+        # Guardar figura en un archivo temporal
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
+            figura.savefig(tmpfile.name)
+            imagen_path = tmpfile.name
+
+        # Crear el PDF
+        pdf_path = f"estadisticas_terapia_{estadistica.get_id_terapia()}_f{estadistica.get_fecha()}.pdf"
+        c = pdf_canvas.Canvas(pdf_path, pagesize=A4)
+        width, height = A4
+        margin = 50
+        y_cursor = height - margin
+
+        paciente = self.paciente_mapa[paciente_name]
+
+        def draw_line(text, font="Helvetica", size=12, spacing=15):
+            nonlocal y_cursor
+            if y_cursor < 100:
+                c.showPage()
+                y_cursor = height - margin
+            c.setFont(font, size)
+            c.drawString(margin, y_cursor, text)
+            y_cursor -= spacing
+
+        # Información paciente
+        draw_line("Paciente:", "Helvetica-Bold", 16, 20)
+        draw_line(f"Paciente ID: {paciente.get_paciente_id()}")
+        draw_line(f"Nombre: {paciente.get_nombre()} {paciente.get_apellido()}")
+        draw_line(f"Expediente: {paciente.get_num_expediente()}", spacing=25)
+
+        # Información terapeuta
+        draw_line("Terapeuta:", "Helvetica-Bold", 16, 20)
+        draw_line(f"Terapeuta ID: {self.terapeuta.get_terapeuta_id()}")
+        draw_line(f"Nombre: {self.terapeuta.get_nombre()} {self.terapeuta.get_apellido()}", spacing=25)
+
+        # Información terapia
+        draw_line(f"Estadísticas de la Terapia ID {estadistica.get_id_terapia()}", "Helvetica-Bold", 16, 20)
+        draw_line(f"Fecha: {estadistica.get_fecha()}")
+        draw_line(f"Hora de inicio: {estadistica.get_horacomienzo()}")
+        draw_line(f"Duración total: {estadistica.get_tiempototal() / 60:.2f} min")
+        draw_line(f"Emoción más expresada: {estadistica.get_emocion_mas_expresada()}", spacing=25)
+
+        # Observaciones
+        draw_line("Observaciones:", "Helvetica-Bold", 12, 18)
+        c.setFont("Helvetica", 12)
+        text_obj = c.beginText(margin, y_cursor)
+        for line in estadistica.get_observaciones().splitlines():
+            if y_cursor < 100:
+                c.drawText(text_obj)
+                c.showPage()
+                y_cursor = height - margin
+                text_obj = c.beginText(margin, y_cursor)
+            text_obj.textLine(line)
+            y_cursor -= 14
+        c.drawText(text_obj)
+        y_cursor -= 20
+
+        # Si no hay espacio suficiente para imagen, se pasa a una nueva página
+        if y_cursor < 300:
+            c.showPage()
+            y_cursor = height - margin
+
+        # Insertar imagen
+        img_width = 16 * cm
+        img_height = 13 * cm
+        c.drawImage(ImageReader(imagen_path), margin, y_cursor - img_height, width=img_width, height=img_height)
+
+        c.showPage()
+        c.save()
+
+        os.remove(imagen_path)  # Eliminar imagen temporal
+
+        print(f"[INFO] PDF guardado en: {pdf_path}")
 
     def parse_intervalos(self, data):
         if isinstance(data, str):

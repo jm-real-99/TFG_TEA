@@ -121,6 +121,27 @@ class DataBase:
             print(f"[DB] Index error: {err}")
             return None
 
+    def obtener_paciente_by_id(self, identificador):
+        try:
+            # Ejecuta la consulta para obtener datos de la tabla Paciente
+            self.cursor.execute("SELECT * FROM Pacientes WHERE id  = %s",
+                                [identificador])
+            pacientes_data = self.cursor.fetchall()  # Obtiene todos los registros
+
+            if pacientes_data:
+                print("[DB] Paciente obtenido con éxito")
+                return Paciente(*pacientes_data[0])
+            else:
+                print("[DB] Error en la consulta del paciente")
+                return None
+
+        except mysql.connector.Error as err:
+            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            return None
+        except IndexError as err:
+            print(f"[DB] Index error: {err}")
+            return None
+
     # ********* METODOS RELACIONADOS CON LOS PACIENTES ************
     """
         Obtenemos una lista de todos los terapeutas

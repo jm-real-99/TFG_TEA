@@ -506,47 +506,86 @@ class VentanaInicioSesion:
         calculo_estadisticas = Calculo_estadisticas(estadisticas)
         calculo_estadisticas.inicializarDatos()
 
+        # Canvas con Scrollbar
+        tk_canvas  = tk.Canvas(self.root)
+        scrollbar = tk.Scrollbar(self.root, orient="vertical", command=tk_canvas .yview)
+        scroll_frame = tk.Frame(tk_canvas)
+
+        scroll_window  = tk_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+
+        # Ajustamos el canvas para que se adapte horizontalmente
+        tk_canvas.bind("<Configure>", lambda event: tk_canvas.itemconfig(
+            scroll_window, width=event.width)
+            )
+
+        # Añadimos el scroll vertical
+        scroll_frame.bind(
+            "<Configure>",
+            lambda e: tk_canvas.configure(
+                scrollregion=tk_canvas.bbox("all")
+            )
+        )
+
+        tk_canvas.configure(yscrollcommand=scrollbar.set)
+
+        tk_canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        # == Añadimos los campos ==
+
+        # Frame principal
+        main_frame = tk.Frame(scroll_frame)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Frame para los gráficos
+        frame_graficos = tk.Frame(scroll_frame)
+        frame_graficos.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        # Frame para los botones y etiquetas
+        frame_info = tk.Frame(scroll_frame)
+        frame_info.pack(side=tk.TOP, fill=tk.X, pady=10)
+
         figura = Figure(figsize=(10, 8), dpi=100)
         gs = figura.add_gridspec(2, 2)
         self.mostrar_grafico_tarta_emociones_general(calculo_estadisticas,figura, gs)
         self.mostrar_grafico_barra_emociones_general(calculo_estadisticas, figura, gs)
         self.mostrar_grafico_tarta_atencion_general(calculo_estadisticas,figura, gs)
-
-        tk.Label(self.root, text=f"Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones:.2f}").pack(pady=2)
-        tk.Label(self.root,
-                 text=f"Tendencia en la mejora de expresión de emociones: {calculo_estadisticas.mejora_tendencia_expresion_emociones:.2f}").pack(
-            pady=2)
-        tk.Label(self.root,
-                 text=f"Mejora desde el inicio en la atención: {calculo_estadisticas.mejora_inicio_atencion:.2f}").pack(
-            pady=2)
-        tk.Label(self.root,
-                 text=f"Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion:.2f}").pack(
-            pady=2)
-        tk.Label(self.root,
-                 text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}").pack(
-            pady=2)
-
-        tk.Button(self.root, text="Exportar a PDF",
-                  command=lambda: self.exportar_estadisticas_generales_pdf(calculo_estadisticas, paciente_selected)).pack(
-            pady=10)
-
         # Crear el lienzo de Tkinter con la figura
-        canvas = FigureCanvasTkAgg(figura, master=self.root)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        figura_canvas = FigureCanvasTkAgg(figura, master=frame_graficos)
+        figura_canvas.draw()
+        figura_canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
         # Ajustar layout automáticamente para evitar superposición
         figura.tight_layout()
 
+        # Estadísticas de texto
+        tk.Label(frame_info, text=f"Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones:.2f}").pack(pady=2)
+        tk.Label(frame_info,
+                 text=f"Tendencia en la mejora de expresión de emociones: {calculo_estadisticas.mejora_tendencia_expresion_emociones:.2f}").pack(
+            pady=2)
+        tk.Label(frame_info,
+                 text=f"Mejora desde el inicio en la atención: {calculo_estadisticas.mejora_inicio_atencion:.2f}").pack(
+            pady=2)
+        tk.Label(frame_info,
+                 text=f"Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion:.2f}").pack(
+            pady=2)
+        tk.Label(frame_info,
+                 text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}").pack(
+            pady=2)
+
+        tk.Button(frame_info, text="Exportar a PDF",
+                  command=lambda: self.exportar_estadisticas_generales_pdf(calculo_estadisticas, paciente_selected)).pack(
+            pady=10)
+
         # Botones por cada terapia individual
 
         # Creamos un frame para contener los botones
-        botones_frame = tk.Frame(self.root)
-        botones_frame.pack(pady=(10, 30))
+        botones_frame = tk.Frame(scroll_frame)
+        botones_frame.pack(side=tk.TOP, fill=tk.X, pady=10)
         for estadistica in estadisticas:
 
             btn = tk.Button(
-                self.root,
+                botones_frame,
                 text=f"Terapia {estadistica.get_fecha()}",
                 command=lambda est=estadistica: self.mostrar_estadisticas_terapia(est, paciente_selected)
             )

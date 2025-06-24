@@ -38,7 +38,12 @@ class VentanaInicioSesion:
 
     def __init__(self):
         self.database = DataBase()
+
         self.root = tk.Tk()
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        self.root.geometry(f"{screen_width}x{screen_height}")
+
         self.terapeuta = None
         self.paciente_mapa = self.__obtener_mapa_pacientes()
         self.terapeuta_mapa = self.__obtener_mapa_terapeuta()
@@ -355,7 +360,6 @@ class VentanaInicioSesion:
         if texto:
             self.estadisticas.set_observaciones(texto)
 
-        self.pintar_datos()
         self.database.incluir_estadistica_terapia(self.estadisticas)
 
         notificacion = self.mostrar_mensaje_exito("Terapia finalizada")
@@ -426,51 +430,6 @@ class VentanaInicioSesion:
         for terapeuta in terapeutas:
             terapeuta_mapa[f"{terapeuta.get_nombre()} {terapeuta.get_apellido()}"] = terapeuta
         return terapeuta_mapa
-
-
-    def pintar_datos(self):
-        self.cabecera_end()
-        print("Paciente ID:", self.estadisticas.get_paciente_id())
-        print("Terapeuta ID:", self.estadisticas.get_terapeuta_id())
-        print("Enfadado:", self.estadisticas.get_enfadado())
-        print("Enfadado Total:", self.estadisticas.get_enfadado_total())
-        print("Disgustado:", self.estadisticas.get_disgustado())
-        print("Disgustado Total:", self.estadisticas.get_disgustadototal())
-        print("Miedoso:", self.estadisticas.get_miedoso())
-        print("Miedoso Total:", self.estadisticas.get_miedosototal())
-        print("Contento:", self.estadisticas.get_contento())
-        print("Contento Total:", self.estadisticas.get_contentototal())
-        print("Triste:", self.estadisticas.get_triste())
-        print("Triste Total:", self.estadisticas.get_tristetotal())
-        print("Sorprendido:", self.estadisticas.get_sorprendido())
-        print("Sorprendido Total:", self.estadisticas.get_sorprendidototal())
-        print("Neutro:", self.estadisticas.get_neutro())
-        print("Neutro Total:", self.estadisticas.get_neutrototal())
-        print("Atención:", self.estadisticas.get_atencion())
-        print("Atención Total:", self.estadisticas.get_atenciontotal())
-        print("Fecha y Hora Comienzo:", self.estadisticas.get_horacomienzo())
-        print("Fecha y Hora Fin:", self.estadisticas.get_horafin())
-        print("Tiempo Total:", self.estadisticas.get_tiempototal())
-        print("Observaciones:", self.estadisticas.get_observaciones())
-
-    def cabecera_end(self):
-        end = [
-            "****** ***      ** *****",
-            "**     ** **    ** **   **",
-            "****** **   **  ** **    **",
-            "**     **    ** ** **   **",
-            "****** **     **** *****"
-        ]
-
-        print("\n" * 5)
-
-        for linea in end:
-            print(linea)
-
-        print("\n" * 2)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("~~~~~~~~~~~~~~~~~~~~RESULTADOS 2~~~~~~~~~~~~~~~~~~~~")
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     """ *******************************************
            MÉTODOS RELACIONADOS CON LAS ESTADÍSTICAS
@@ -543,13 +502,19 @@ class VentanaInicioSesion:
 
         # Frame para los botones y etiquetas
         frame_info = tk.Frame(scroll_frame)
-        frame_info.pack(side=tk.TOP, fill=tk.X, pady=10)
+        frame_info.pack(side=tk.TOP, fill=tk.X, pady=10, expand=True)
+
+
+        # Creamos un frame para contener los botones de terpias individuales
+        botones_frame = tk.Frame(scroll_frame)
+        botones_frame.pack(side=tk.TOP, fill=tk.X, pady=10, expand=True)
 
         figura = Figure(figsize=(10, 8), dpi=100)
         gs = figura.add_gridspec(2, 2)
         self.mostrar_grafico_tarta_emociones_general(calculo_estadisticas,figura, gs)
         self.mostrar_grafico_barra_emociones_general(calculo_estadisticas, figura, gs)
         self.mostrar_grafico_tarta_atencion_general(calculo_estadisticas,figura, gs)
+        self.mostrar_grafico_progreso_atencion(estadisticas,figura,gs)
         # Crear el lienzo de Tkinter con la figura
         figura_canvas = FigureCanvasTkAgg(figura, master=frame_graficos)
         figura_canvas.draw()
@@ -574,14 +539,10 @@ class VentanaInicioSesion:
             pady=2)
 
         tk.Button(frame_info, text="Exportar a PDF",
-                  command=lambda: self.exportar_estadisticas_generales_pdf(calculo_estadisticas, paciente_selected)).pack(
+                  command=lambda: self.exportar_estadisticas_generales_pdf(estadisticas, calculo_estadisticas, paciente_selected)).pack(
             pady=10)
 
         # Botones por cada terapia individual
-
-        # Creamos un frame para contener los botones
-        botones_frame = tk.Frame(scroll_frame)
-        botones_frame.pack(side=tk.TOP, fill=tk.X, pady=10)
         for estadistica in estadisticas:
 
             btn = tk.Button(
@@ -636,7 +597,7 @@ class VentanaInicioSesion:
         atención_etiquetas = ["Atención", "No atención"]
 
         # Creamos un gráfico de tarta de la atención
-        ax3 = figura.add_subplot(gs[1, :])  # Gráfico de tarta atención
+        ax3 = figura.add_subplot(gs[1, 0])  # Gráfico de tarta atención
         if (all(x == 0.0 for x in valores_atencion_porcentaje)):
             # Crear gráfico de tarta
             ax3.pie([100], labels=[atención_etiquetas[1]], autopct='%1.1f%%')
@@ -644,7 +605,31 @@ class VentanaInicioSesion:
             ax3.pie(valores_atencion_porcentaje, labels=atención_etiquetas, autopct='%1.1f%%')
         ax3.set_title('% atención global')
 
-    def exportar_estadisticas_generales_pdf(self,calculo_estadisticas, paciente_key ):
+    def mostrar_grafico_progreso_atencion(self, estadisticas, figura, gs):
+
+        ax = figura.add_subplot(gs[1, 1])
+        ax.set_title("Progreso de atención por terapia")
+        ax.set_xlabel("Sesión")
+        ax.set_ylabel("Atención (%)")
+
+        sesiones = []
+        porcentajes = []
+
+        for idx, estadistica in enumerate(estadisticas):
+            if estadistica.get_tiempototal() > 0:
+                porcentaje = (estadistica.get_atenciontotal() / estadistica.get_tiempototal()) * 100
+            else:
+                porcentaje = 0.0
+
+            sesiones.append(idx + 1)
+            porcentajes.append(porcentaje)
+
+        ax.plot(sesiones, porcentajes, marker='o', linestyle='-', color='green')
+        ax.set_xticks(sesiones)
+        ax.set_ylim(0, 100)
+        ax.grid(True)
+
+    def exportar_estadisticas_generales_pdf(self,estadisticas, calculo_estadisticas, paciente_key ):
         paciente = self.paciente_mapa[paciente_key]
 
         # Crear figuras
@@ -653,6 +638,7 @@ class VentanaInicioSesion:
         self.mostrar_grafico_tarta_emociones_general(calculo_estadisticas, figura, gs)
         self.mostrar_grafico_barra_emociones_general(calculo_estadisticas, figura, gs)
         self.mostrar_grafico_tarta_atencion_general(calculo_estadisticas, figura, gs)
+        self.mostrar_grafico_progreso_atencion(estadisticas, figura, gs)
 
         figura.tight_layout()
 

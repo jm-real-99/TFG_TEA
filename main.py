@@ -1,7 +1,6 @@
 import json
 import time
 from Emociones import Emociones
-from Calculo_estadisticas import Calculo_estadisticas
 from Camara import Camara
 import cv2
 from PIL import Image, ImageTk
@@ -13,19 +12,20 @@ from Terapeuta import Terapeuta
 from Database import DataBase
 from Estadistica import Estadistica
 
+from Calculo_estadisticas import Calculo_estadisticas
 from pygrabber.dshow_graph import FilterGraph
-
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
+
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas as pdf_canvas
 from reportlab.lib.utils import ImageReader
 import tempfile
 import os
 from reportlab.lib.units import cm
-
+import configparser
 import re
 
 
@@ -49,6 +49,11 @@ class VentanaInicioSesion:
         self.frame_grafica = tk.Frame(self.root)
         self.window_resized = False
         self.end = False
+
+        # Exportación estadísticas
+        config = configparser.ConfigParser()
+        config.read('config.properties')
+        self.route = config.get('export', 'route')
 
     """
         Método mediante el que establecemos que la ventana va a estar abierta en todo momento.
@@ -530,6 +535,9 @@ class VentanaInicioSesion:
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
+        # Ajustar layout automáticamente para evitar superposición
+        figura.tight_layout()
+
         # Botones por cada terapia individual
 
         # Creamos un frame para contener los botones
@@ -544,8 +552,6 @@ class VentanaInicioSesion:
             )
             btn.pack(side=tk.LEFT, padx=5)
 
-        # Ajustar layout automáticamente para evitar superposición
-        figura.tight_layout()
 
 
     def mostrar_grafico_tarta_emociones_general(self,calculo_estadisticas, figura, gs):
@@ -617,7 +623,8 @@ class VentanaInicioSesion:
             imagen_path = tmpfile.name
 
         # Crear PDF
-        pdf_path = f"resumen_terapias_{paciente_key}_{paciente.get_num_expediente()}.pdf"
+        pdf_name = f"resumen_terapias_{paciente_key}_{paciente.get_num_expediente()}.pdf"
+        pdf_path = os.path.join(self.route, pdf_name)
         c = pdf_canvas.Canvas(pdf_path, pagesize=A4)
         width, height = A4
         margin = 50
@@ -667,6 +674,7 @@ class VentanaInicioSesion:
 
         os.remove(imagen_path)  # Eliminar imagen temporal
 
+        self.mostrar_mensaje_exito(f"PDF creado con éxito en la ruta {pdf_path}")
         print(f"[INFO] PDF guardado en: {pdf_path}")
 
     def mostrar_estadisticas_terapia(self, estadistica, paciente):
@@ -797,7 +805,8 @@ class VentanaInicioSesion:
             imagen_path = tmpfile.name
 
         # Crear el PDF
-        pdf_path = f"estadisticas_terapia_{estadistica.get_id_terapia()}_f{estadistica.get_fecha()}.pdf"
+        nombre_pdf = f"estadisticas_terapia_{estadistica.get_id_terapia()}_f{estadistica.get_fecha()}.pdf"
+        pdf_path = os.path.join(self.route, nombre_pdf)
         c = pdf_canvas.Canvas(pdf_path, pagesize=A4)
         width, height = A4
         margin = 50
@@ -862,6 +871,7 @@ class VentanaInicioSesion:
 
         os.remove(imagen_path)  # Eliminar imagen temporal
 
+        self.mostrar_mensaje_exito(f"PDF creado con éxito en la ruta {pdf_path}")
         print(f"[INFO] PDF guardado en: {pdf_path}")
 
     def parse_intervalos(self, data):

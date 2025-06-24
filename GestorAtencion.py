@@ -15,6 +15,8 @@ class GestorAtencion:
         ******************"""
         # Mediante esta variable controlaremos si el usuario está prestando atención actualmente. Lo usaremos para
         self._atencionActual = False
+        # Mediante esta variable sabremos si en el segundo atencióin hubo atención. Gracias a ella cerraremos intervalos
+        self._atencionPrevia = False
         # Mediante esta variable sabremos cuando hemos empezado a detectar el intervalo de la atención
         self._t_inicioAtencion = 0
         # Mediante esta variable sabremos el segundo en el que estamos. Esto nos permitirá saber si hemos cambiado la
@@ -38,33 +40,44 @@ class GestorAtencion:
     """
     def detectar_atencion(self, frame, face_dlib ,tiempo):
         self._gaze.refresh(frame,face_dlib)
-        # Si estamos mirando al centro y en el segundo anterior no teniamos la atención entonces iniciamos intervalo
-        if self._gaze.is_center() and not self._atencionActual:
+        if self._gaze.is_center():
+            text = "Centro"
+            mirando = True
             self._atencionActual = True
-            self._t_inicioAtencion = tiempo
-            self.__actualizar_tiempo(tiempo)
-            return True, "Centro"
-        # Si estamos mirando al centro y en el anterior también entonces sumamos uno a la cuenta del intervalo
-        elif self._gaze.is_center() and tiempo > self._tiempoActual and self._atencionActual:
-            self._atencionActual = True
-            self.__actualizar_tiempo(tiempo)
-            return True, "Centro"
-        # Si no estamos mirando al centro, durante el segundo anterior no lo hemos hecho y lo tenemos marcado como visto
-        # , entonces terminamos el intervalo en el anterior segundo
-        elif (not self._gaze.is_center()) and tiempo > self._tiempoActual + 1 and self._atencionActual:
-            self._intervalosAtencion.append((self._t_inicioAtencion, self._tiempoActual))
-            self._tiempoTotalAtencion += (self._tiempoActual - self._t_inicioAtencion) + 1
+        elif self._gaze.is_blinking():
+            text = "Parpadeando"
+            mirando = False
+        elif self._gaze.is_right():
+            text = "Mirando derecha"
+            mirando = False
+        elif self._gaze.is_left():
+            text = "Mirando izquierda"
+            mirando = False
+        else:
+            text = "Otro"
+            mirando = False
+
+        self.__evaluar_intervalo(tiempo)
+
+        return mirando, text
+
+    def __evaluar_intervalo(self, tiempo):
+
+        # Si el tiempo recibido es mayor al actual procedemos a evaluar
+        if self.__actualizar_tiempo(tiempo):
+            # Si el tiempo anterior no teníamos atención y este hemos tenido atención entonces abrimos el intervalo
+            if  not self._atencionPrevia and self._atencionActual:
+                self._t_inicioAtencion = self._tiempoActual
+            # Si el tiempo anterior teníamos atención y este no hemos tenido atención entonces cerramos el intervalo
+            elif self._atencionPrevia and not self._atencionActual:
+                self._intervalosAtencion.append((self._t_inicioAtencion, self._tiempoActual))
+                self._tiempoTotalAtencion += (self._tiempoActual - self._t_inicioAtencion )
+            # En el caso en el que no se cumpla ninguna de las dos es que o llevamos dos segundos seguidos sin cambios,
+            # así que solo realizamos las actualizaciones de los segundos
+
+            self._atencionPrevia = self._atencionActual
             self._atencionActual = False
 
-        if self._gaze.is_blinking():
-            text = "Blinking"
-        elif self._gaze.is_right():
-            text = "Looking right"
-        elif self._gaze.is_left():
-            text = "Looking left"
-        else:
-            return True, "Centro"
-        return False, text
 
     """
             Actualizamos el segundo si es que ya ha pasado el actual
@@ -75,6 +88,8 @@ class GestorAtencion:
     def __actualizar_tiempo(self, tiempo):
         if tiempo > self._tiempoActual:
             self._tiempoActual = tiempo
+            return True
+        return False
 
     """
         En el caso de que terminemos la ejecución y tengamos un intervalo abierto lo cerramos

@@ -246,7 +246,7 @@ class VentanaInicioSesion:
         # Crear un botón por cada cámara
         for i, nombre in enumerate(camaras):
             boton = tk.Button(self.root, text=nombre, command=lambda idx=i: self.camara_terapia(idx))
-            boton.pack(padx=10, pady=5, fill="x")
+            boton.pack(padx=10, pady=10)
 
     """
         Inicializamos la configuración necesaria para la Cámara y la vista de esta
@@ -524,18 +524,18 @@ class VentanaInicioSesion:
         figura.tight_layout()
 
         # Estadísticas de texto
-        tk.Label(frame_info, text=f"Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones:.2f}").pack(pady=2)
+        tk.Label(frame_info, text=f"Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones():.2f}").pack(pady=2)
         tk.Label(frame_info,
-                 text=f"Tendencia en la mejora de expresión de emociones: {calculo_estadisticas.mejora_tendencia_expresion_emociones:.2f}").pack(
+                 text=f"Tendencia en la mejora de expresión de emociones: {calculo_estadisticas.mejora_tendencia_expresion_emociones():.2f}").pack(
             pady=2)
         tk.Label(frame_info,
-                 text=f"Mejora desde el inicio en la atención: {calculo_estadisticas.mejora_inicio_atencion:.2f}").pack(
+                 text=f"Mejora desde el inicio en la atención: {calculo_estadisticas.mejora_inicio_atencion():.2f}").pack(
             pady=2)
         tk.Label(frame_info,
-                 text=f"Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion:.2f}").pack(
+                 text=f"Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion():.2f}").pack(
             pady=2)
         tk.Label(frame_info,
-                 text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}").pack(
+                 text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada().name}").pack(
             pady=2)
 
         tk.Button(frame_info, text="Exportar a PDF",
@@ -720,7 +720,7 @@ class VentanaInicioSesion:
         tk.Label(self.root,
                  text=f"Tiempo total terapia:  {estadistica.get_tiempototal()/60} min").pack(pady=2)
         tk.Label(self.root,
-                 text=f"Emoción más expresada:  {estadistica.get_emocion_mas_expresada()}").pack(pady=2)
+                 text=f"Emoción más expresada:  {estadistica.get_emocion_mas_expresada().name}").pack(pady=2)
         tk.Label(self.root,
                  text=f"Observaciones:  {estadistica.get_observaciones()}").pack(pady=2)
 

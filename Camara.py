@@ -13,6 +13,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 class Camara:
+    """
+    Creamos y gestionamos la cámara durante las terpias.
+    """
     def __init__(self, camera, estadistica):
         self._cap = cv2.VideoCapture(camera)
         self._tiempoInicio = time.time()
@@ -31,14 +34,14 @@ class Camara:
         self._ultimo_segundo_cara = 0
 
         self._executor = ThreadPoolExecutor(max_workers=2)
-    """
-        Leemos el frame de la cámara.
-        Return: boolean
-            True si continuamos con la lectura
-            False si no continuamos con la lectura, es decir, hemos detectado una interrupción
-    """
 
     def read_frame(self):
+        """
+        Leemos el frame de la cámara.
+        @return: Devolvemos un Boolean.
+            True si continuamos con la lectura
+            False si no continuamos con la lectura, es decir, hemos detectado una interrupción
+        """
         ret, frame = self._cap.read()
 
         segundo_actual =  self.__segundo_actual()
@@ -48,7 +51,7 @@ class Camara:
             print("[DETECTAR EMOCION]Terminamoos")
             return
 
-        self.detectar_cara(frame)
+        self.__detectar_cara(frame)
 
         # Valores por defecto para mostrar. Serán si hay fallo
         texto_emocion = "No se detecta la cara"
@@ -101,7 +104,13 @@ class Camara:
         else:
             return True, frame, emociones
 
-    def detectar_cara(self, frame):
+    def __detectar_cara(self, frame):
+        """
+        Detectamos la cara en el frame. Además realizamos una aproximación a la cara principal en caso de que se
+        detecten varias.
+        @param frame: Frame a analizar
+        @return: None
+        """
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces_dlib = self._face_detector(gray)
 
@@ -145,18 +154,18 @@ class Camara:
         self._face_dlib = faces_dlib[i]
         self._ultimo_segundo_cara = segundo_actual
 
-    """"
-        Calculamos el tiempo que lleva la cámara encendida.
-            return: int
-                
-    """
     def __segundo_actual(self):
+        """
+        Calculamos el tiempo que lleva la cámara encendida y por tanto, de terapia.
+        @return: Int
+        """
         return int(time.time() - self._tiempoInicio)
 
-    """
-        Destruimos la camara y recabamos las estadísticas.
-    """
     def cerrar_camara(self):
+        """
+        La terapia ha finalizado, por lo que cerramos la cámara y recabamos las estadísticas de los módulos.
+        @return:
+        """
         self._cap.release()
         cv2.destroyAllWindows()
 
@@ -167,11 +176,11 @@ class Camara:
         # ELIMINAR
         self.pintar_datos()
 
-    """
-        Cargamos los datos recabados en la clase de estadisticas
-    """
     def __recabar_estadisticas(self):
-
+        """
+        Cargamos en estadísticas los datos recabados durante la terapia.
+        @return: None
+        """
         self._estadisticas.set_tiempototal(self.__segundo_actual())
         self._estadisticas.set_horafin(datetime.now())
         total_emociones = self._gestorEmociones.get_tiempototalemocion()
@@ -187,77 +196,11 @@ class Camara:
         self._estadisticas.convertir_JSON_atencion(self._gestorAtencion.get_intervalosatencion())
         self._estadisticas.set_atenciontotal(self._gestorAtencion.get_tiempototalatencion())
 
-
-
-
-    """
+    def __terminar_proceso(self):
+        """
         Evaluamos si el usuario ha terminado el proceso
-        Return: boolean
+        @return: Booleano
             True si se ha terminado
             False si no
-    """
-    def __terminar_proceso(self):
+        """
         return cv2.waitKey(1) & 0xFF == ord('q')
-
-    """**********ELIMINAAAAARRR*****************************************************
-    """
-
-    def calcularfps(self, segundo_actual):
-        if(segundo_actual > self.lastSecond):
-            self.fpsmax = max(self.fpsmax,self.fps)
-            print(
-                f"\nVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\n "
-                f"SEGUNDO : {self.__segundo_actual()} | "
-                f"FPS : {self.fps} | "
-                f"FPSMAX : {self.fpsmax}"
-                f"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n")
-
-            self.fps = 0
-            self.lastSecond = segundo_actual
-        else:
-            self.fps += 1
-
-    def pintar_datos(self):
-        self.cabecera_end()
-        self.imprimir_estadisticas_emociones()
-        self.imprimir_estadisticas_atencion()
-
-    def imprimir_estadisticas_emociones(self):
-        print("\n" * 2)
-        print("EMOCIONES:")
-        intervalos_emociones = self._gestorEmociones.get_intervalosemociones()
-        tiempototal_emocion = self._gestorEmociones.get_tiempototalemocion()
-        for emotion in Emociones:
-            print("\t-" + emotion.name, end="")
-            print(intervalos_emociones[emotion.value])
-            print("\tTiempo total: ", end="")
-            print(tiempototal_emocion[emotion.value])
-
-    def imprimir_estadisticas_atencion(self):
-        print("\n" * 2)
-        print("ATENCION:")
-        intervalos_atencion = self._gestorAtencion.get_intervalosatencion()
-        tiempototal_atencion = self._gestorAtencion.get_tiempototalatencion()
-        print("\tIntervalos: ", end="")
-        print(intervalos_atencion)
-        print("\tTiempo total: ", end="")
-        print(tiempototal_atencion)
-
-    def cabecera_end(self):
-        end = [
-            "****** ***      ** *****",
-            "**     ** **    ** **   **",
-            "****** **   **  ** **    **",
-            "**     **    ** ** **   **",
-            "****** **     **** *****"
-        ]
-
-        print("\n" * 5)
-
-        for linea in end:
-            print(linea)
-
-        print("\n" * 2)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("~~~~~~~~~~~~~~~~~~~~RESULTADOS~~~~~~~~~~~~~~~~~~~~")
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")

@@ -3,6 +3,9 @@ from Emociones import Emociones
 
 
 class Calculo_estadisticas():
+    """
+    En esta clase vamos a realizar los cálculos necesarios para obtener las estadísticas generales de todas las terapias
+    """
     def __init__(self, estadisticas):
         self.estadisticas = estadisticas
         # Primero vamos a mostrar estadísticas generales
@@ -47,6 +50,10 @@ class Calculo_estadisticas():
         self.emocion_mas_expresada = None
 
     def inicializarDatos(self):
+        """
+        Creamos las estadísticas los datos con las estadísticas.
+        @return: None
+        """
         if not self.estadisticas:
             return None
 
@@ -179,9 +186,23 @@ class Calculo_estadisticas():
         self.mejora_tendencia_atencion = sum(incremento) / len(incremento)
 
     def __calcular_porcentaje(self, numero, total, default=0.0):
+        """
+        Función auxiliar donde vamos a calcular el porcentaje dado
+        @param numero: Número del porcentaje
+        @param total: Total del porcentaje
+        @param default: Valor de control en caso de que el valor sea  menor a 0 u ocurra algún problema en la división
+        @return: Porcentaje %
+        """
         return (numero / total * 100) if total != 0 else default
 
     def __count_inicio(self,emocion,default=0):
+        """
+        Función auxiliar donde contamos las veces que aparece la palabra "inicio" en una cadena de texto para contar
+        las apariciones de la emoción o atención.
+        @param emocion: Intervalos de la emoción
+        @param default: Valor 0 en caso de que no
+        @return: Cuenta de apariciones.
+        """
         return emocion.count("inicio") if emocion else default
 
 

@@ -1,4 +1,7 @@
 class Terapeuta:
+    """
+    Clase de la entidad Terapeuta
+    """
     def __init__(self, terapeuta_id, usuario, contrasena, nombre, apellido, correo, admin):
         self._terapeuta_id = terapeuta_id
         self._usuario = usuario
@@ -8,7 +11,9 @@ class Terapeuta:
         self._correo = correo
         self._admin = admin
 
-    # Métodos getter
+    """ **************************************************************************************
+        ************************************** GETTERS ***************************************
+        ************************************************************************************** """
     def get_terapeuta_id(self):
         return self._terapeuta_id
 
@@ -30,7 +35,10 @@ class Terapeuta:
     def get_admin(self):
         return self._admin
 
-    # Métodos setter
+    """ **************************************************************************************
+        ************************************** SETTERS ***************************************
+        ************************************************************************************** """
+
     def set_terapeuta_id(self, terapeuta_id):
         self._terapeuta_id = terapeuta_id
 
@@ -53,5 +61,9 @@ class Terapeuta:
         self._admin = admin
 
     def __str__(self):
+        """
+        To String
+        @return: Valor a imprimir asociado a la clase
+        """
         return self._nombre+" "+self._apellido
 

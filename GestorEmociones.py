@@ -6,10 +6,10 @@ import cv2
 from deepface import DeepFace
 
 class GestorEmociones:
+    """
+    Clase donde vamos a realizar el análisis de las emociones
+    """
     def __init__(self):
-        """*****************
-        VARIABLES DE RECONOCIMIENTO FACIAL
-        ******************"""
 
         """*****************
         VARIABLES DE DATOS
@@ -28,18 +28,20 @@ class GestorEmociones:
         # terapia, esto nos permitirá ahorrar tiempo de cómputo a la hora de calcular las estadísticas.
         self._tiempoTotalEmocion = {emotion.value: 0 for emotion in Emociones}
 
+        # Emociones suavizadas
         self._smoothEmotions = None
 
-    """
-        Detectamos las emociones en el frame indicado
-        :arg
-            frame(cv2): Frame en el que nos encontramos
-            tiempo (int): Segundo en que nos encontramos
-        :return
-            String. Emocion
-    """
-
     def detectar_emocion(self, frame, face , tiempo):
+        """
+        Realizamos el análisis del frame
+        @param frame: Frame en el que nos encontramos
+        @param face: Cara detectada
+        @param tiempo: Segundo en el que nos encontramos
+        @return: (EMOCIONES,Dict[str, float],(x, y, w, h ))
+            - EMOCIONES: Enum de la emoción detectada
+            - Dict[str, float]: Diccionario de las emociones analizadas con su probabilidad.
+            - (x, y, w, h ): Coordenadas de la cara detectada y recortada
+        """
 
         # Vemos si deberíamos de actualizar el tiempo actual
         self.__actualizar_tiempo(tiempo)
@@ -75,11 +77,13 @@ class GestorEmociones:
             print(f"[ERROR] en detección de emoción: {e}")
             return self._emocionActual, None, None
 
-    """
-     Suaviazado exponencial con factor alpha a 0.5
-    """
-
     def suavizar_emociones(self, emotions, alpha=0.5):
+        """
+        Suavizado exponencial de las emociones, para evitar cambios bruscos
+        @param emotions: Diccionario de las emociones con su probabilidad
+        @param alpha: Suavizado de 0.5
+        @return: None
+        """
         if self._smoothEmotions is None:
             self._smoothEmotions = emotions
         else:
@@ -88,14 +92,13 @@ class GestorEmociones:
                 for k in emotions
             }
 
-    """
-        Funcion desde la que gestionamos la emoción actual del frame
-        Args:
-            tiempo (int): Tiempo actual
-            emocion (int): Emoción detectada del enum Emociones
-        """
-
     def __registrar_emocion(self, emocion, tiempo):
+        """
+        Función desde la que gestionamos la emoción actual detectada en el frame
+        @param emocion: Emoción detectada del enum Emociones
+        @param tiempo: Segundo actual
+        @return:
+        """
         # Para el caso de que el segundo actual sea el mismo, entonces solo cambiaremos de emocion si ha aparecido una
         # emocion distinta y esta no es prioritaria (no es NONE).
         if tiempo == self._tiempo and emocion != self._emocionActual and emocion != Emociones.NONE:
@@ -105,47 +108,41 @@ class GestorEmociones:
             self.__cambiar_emocion(tiempo, emocion)
         # Para cualquier otro caso no hacemos nada.
 
-    """
-            Actualizamos las variables actuales referidas a la emocion actual
-            Args:
-                tiempo (int): Tiempo actual
-                emocion (int): Emoción detectada del enum Emociones
-        """
-
     def __cambiar_emocion(self, tiempo, emocion):
+        """
+        Cambiamos de emoción detectada
+        @param tiempo: Segundo actual
+        @param emocion: Emoción detectada
+        @return: None
+        """
         self.__add_emotion_interval(tiempo)
         self._t_inicioEmocion = tiempo
         self._emocionActual = emocion
 
-    """
-        Agregamos un intervalo con la emoción específica
-        Args:
-            comienzo (int): Tiempo de inicio en segundos.
-            fin (int): Tiempo de fin en segundos.
-            emocion (int): Emoción detectada del enum Emociones
-    """
-
     def __add_emotion_interval(self, fin):
+        """
+        Agregamos un intervalo con la emoción que tenemos detectada actualmente
+        @param fin: Segundo actual, en el que termina el intervalo
+        @return: None
+        """
         self._intervalosEmociones[self._emocionActual].append((self._t_inicioEmocion, fin))
         self._tiempoTotalEmocion[self._emocionActual] += (fin - self._t_inicioEmocion) + 1
 
-    """
-        Actualizamos el segundo si es que ya ha pasado el actual
-        Args:
-            tiempo(int): Tiempo actual
-    """
-
     def __actualizar_tiempo(self, tiempo):
+        """
+        Actualizamos el segundo actual
+        @param tiempo: Segundo actual
+        @return: None
+        """
         if tiempo > self._tiempo:
             self._tiempo = tiempo
 
-    """
-            En el caso de que terminemos la ejecución y tengamos un intervalo abierto lo cerramos
-            Args:
-                tiempo(int): Tiempo actual
-            """
-
     def terminar_escaneo(self, tiempo):
+        """
+        Terminamos el escaneo y si tenemos un intervalo abierto lo cerramos
+        @param tiempo: Segundo actual y final
+        @return: None
+        """
         self.__add_emotion_interval(tiempo)
 
     """*****************************************

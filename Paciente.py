@@ -1,4 +1,7 @@
 class Paciente:
+    """
+    Clase de la entidad paciente
+    """
     def __init__(self, paciente_id, nombre, apellido, edad, num_expediente, terapeuta_asignado, observaciones, telf_contacto):
         self._paciente_id = paciente_id
         self._nombre = nombre
@@ -9,7 +12,10 @@ class Paciente:
         self._observaciones = observaciones
         self._telf_contacto = telf_contacto
 
-    # Métodos getter
+    """ **************************************************************************************
+        ************************************** GETTERS ***************************************
+        ************************************************************************************** """
+
     def get_paciente_id(self):
         return self._paciente_id
 
@@ -34,7 +40,10 @@ class Paciente:
     def get_telf_contacto(self):
         return self._telf_contacto
 
-    # Métodos setter
+    """ **************************************************************************************
+        ************************************** SETTERS ***************************************
+        ************************************************************************************** """
+
     def set_paciente_id(self, paciente_id):
         self._paciente_id = paciente_id
 
@@ -59,5 +68,10 @@ class Paciente:
     def set_telf_contacto(self, telf_contacto):
         self._telf_contacto = telf_contacto
 
+
     def __str__(self):
+        """
+        To String
+        @return: Valor a imprimir asociado a la clase
+        """
         return self._nombre+" "+self._apellido

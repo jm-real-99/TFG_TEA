@@ -5,6 +5,9 @@ import json
 
 
 class Estadistica:
+    """
+    Clase de las estadísticas. Contiene toda la información recabada a lo largo de una terapia.
+    """
     def __init__(self, id_terapia, paciente_id, terapeuta_id, enfadado, enfadadototal,
                  disgustado, disgustadototal, miedoso, miedosototal, contento, contentototal,
                  triste, tristetotal, sorprendido, sorprendidototal, neutro, neutrototal, atencion, atenciontotal, fecha,
@@ -34,19 +37,28 @@ class Estadistica:
         self._tiempototal = tiempototal
         self._observaciones = observaciones
 
-    """
-        Inicializamos la clase con los valores mínimos para irlos rellenando al final de la terapia
-    """
-
     @classmethod
     def init_minimo(cls, paciente_id, terapeuta_id, fecha, hora_comienzo):
+        """
+        Inicializamos la clase con los valores mínimos para irlos rellenando al final de la terapia
+        @param paciente_id: Identificador del paciente que está llevando a cabo la terapia
+         y por tanto asociada a esta estadística
+        @param terapeuta_id: Identificador del terpeuta que está llevando a cabo la terapia
+         y por tanto asociada a esta estadística
+        @param fecha: Fecha en la que se está realizando la terapia
+        @param hora_comienzo: Hora comienzo de la terapia
+        @return: Entidad Estadística creada.
+        """
         print("[ESTADISTICA] Creamos estadística minima")
         return cls(None, paciente_id, terapeuta_id, None, 0,
                    None, 0, None, 0, None, 0,
                    None, 0, None, 0, None, 0, None, 0,fecha,
                    hora_comienzo, None, 0, "")
 
-    # ********* GETTERS ***********
+
+    """ **************************************************************************************
+        ************************************** GETTERS ***************************************
+        ************************************************************************************** """
 
     def get_id_terapia(self):
         return self._id_terapia
@@ -120,7 +132,9 @@ class Estadistica:
     def get_observaciones(self):
         return self._observaciones
 
-    # ********** SETTERS ***********
+    """ **************************************************************************************
+        ************************************** SETTERS ***************************************
+        ************************************************************************************** """
 
     def set_id_terapia(self, value):
         self._id_terapia = value
@@ -199,6 +213,11 @@ class Estadistica:
         Como nosotros recogemos los datos como una matriz, ahora tenemos que convertirlos a JSON
     """
     def convertir_JSON_emociones(self, intervalos_emociones):
+        """
+        Transformamos los diccionarios que se han recogido durante las terapias a JSON para almacenarlos en BD
+        @param intervalos_emociones: Diccionario con las emociones expresadas a lo largo de la terapia
+        @return: None
+        """
         for emo in Emociones:
             emocion = emo.value
             texto = ''
@@ -226,6 +245,11 @@ class Estadistica:
             Como nosotros recogemos los datos como un a matriz, ahora tenemos que convertirlos a JSON
     """
     def convertir_JSON_atencion(self, intervalos_atencion):
+        """
+        Transformamos los diccionarios que se han recogido durante las terapias a JSON para almacenarlos en BD
+        @param intervalos_atencion: Diccionario con los intervalos de la atención
+        @return: None
+        """
         texto = ''
         for intervalo in intervalos_atencion:
             inicio, final = intervalo
@@ -235,6 +259,10 @@ class Estadistica:
         self._atencion = "[" + texto + "]"
 
     def get_emocion_mas_expresada(self):
+        """
+        Obtenemos la emoción más expresada
+        @return: Emoción más expresada
+        """
         emociones = [(self._contentototal, Emociones.CONTENTO), (self._disgustadototal, Emociones.DISGUSTADO),
                      (self._enfadadototal, Emociones.ENFADO), (self._tristetotal, Emociones.TRISTE),
                      (self._miedosototal, Emociones.MIEDOSO), (self._sorprendidototal, Emociones.SORPRENDIDO),
@@ -242,9 +270,11 @@ class Estadistica:
         return max(emociones, key=lambda x: x[0])[1]
 
     def get_emociones_porcentajes(self):
+        """
+        Obtenemos los porcentajes de las emociones
+        @return: Array de los porcentajes para cada emoción
+        """
         return [self._enfadadototal/self._tiempototal , self._disgustadototal/self._tiempototal ,
                 self._miedosototal/self._tiempototal , self._contentototal/self._tiempototal ,
                 self._tristetotal/self._tiempototal , self._sorprendidototal/self._tiempototal ,
                 self._neutrototal/self._tiempototal]
-
-

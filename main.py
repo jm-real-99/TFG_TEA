@@ -37,6 +37,9 @@ class VentanaInicioSesion:
     CAMPO_INPUT = (14, 40)
 
     def __init__(self):
+        """
+        Inicializamos la clase main.
+        """
         self.database = DataBase()
 
         self.root = tk.Tk()
@@ -60,21 +63,19 @@ class VentanaInicioSesion:
         config.read('config.properties')
         self.route = config.get('export', 'route')
 
-    """
-        Método mediante el que establecemos que la ventana va a estar abierta en todo momento.
-        Comenzamos iniciando la sesión del terapeuta
-    """
-
     def comenzar_programa(self):
+        """
+        Métododonde que establecemos que la ventana va a estar abierta en todo momento.
+        Comenzamos iniciando la sesión del terapeuta
+        """
         self.root.minsize(width=self.VENTANA[0], height=self.VENTANA[1])
-        self.iniciar_sesion()
+        self.formulario_inicio_sesion()
         self.root.mainloop()
 
-    """
-        Iniciamos sesión con el terapeuta
-    """
-
-    def iniciar_sesion(self):
+    def formulario_inicio_sesion(self):
+        """
+        Creamos el formulario de inicio de sesión
+        """
         self.root.title("Inicio de Sesión")
         # Variables de instancia para usuario y contraseña
         usuario = tk.StringVar()
@@ -90,31 +91,32 @@ class VentanaInicioSesion:
         tk.Button(self.root, text="Iniciar Sesión",
                   command=lambda: self.comprobar_inicio_sesion(usuario, contrasena)).pack()
 
-    """
-        Vamos a evaluar si los datos introducidos en el inicio de sesión son correctos
-    """
-
     def comprobar_inicio_sesion(self, usuario, contrasena):
+        """
+        Vamos a evaluar si los datos introducidos en el inicio de sesión son correcto
+        @param usuario: Nombre usuario introducido
+        @param contrasena: Contraseña introducida
+        """
         if usuario.get() != "" or contrasena.get() != "":
             self.terapeuta = self.database.obtener_terapeuta_by_usuario_y_contrasena(usuario.get(), contrasena.get())
 
             if self.terapeuta is not None:
-                notificacion = self.mostrar_mensaje_exito("¡Inicio de sesión correcto!")
+                notificacion = self.__mostrar_mensaje_exito("¡Inicio de sesión correcto!")
                 self.mostrar_main(notificacion)
             else:
-                notificacion = self.mostrar_mensaje_exito("¡Error! Creenciales incorrectas")
-                self.reset_page(notificacion)
-                self.iniciar_sesion()
-
-    """
-        Mostramos las opciones disponibles una vez que hayamos inciado sesión correctamente. En este caso serán:
-            -Crear paciente
-            -Iniciar terapia
-    """
+                notificacion = self.__mostrar_mensaje_exito("¡Error! Creenciales incorrectas")
+                self.__reset_page(notificacion)
+                self.comprobar_inicio_sesion()
 
     def mostrar_main(self, notificacion):
-
-        self.reset_page(notificacion)
+        """
+        Mostramos las opciones disponibles una vez que hayamos inciado sesión correctamente. En este caso serán:
+            - Crear paciente
+            - Consultar estadísticas
+            - Iniciar terapia
+        @param notificacion: Notificación de inicio de sesión exitoso
+        """
+        self.__reset_page(notificacion)
 
         tk.Button(self.root, text="Dar de alta paciente", command=lambda: self.formulario_crear_paciente(None)).pack(
             pady=10)
@@ -127,12 +129,15 @@ class VentanaInicioSesion:
         self.root.update_idletasks()
 
     """
-        Gestionamos la ventana donde daremos de alta los pacientes
+        
     """
 
     def formulario_crear_paciente(self, notificacion):
-
-        self.reset_page(notificacion)
+        """
+        Gestionamos la ventana donde tendremos el formulario de alta los pacientes
+        @param notificacion: Notificación a mostrar en caso de que queramos hacerlo
+        """
+        self.__reset_page(notificacion)
 
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
 
@@ -183,6 +188,17 @@ class VentanaInicioSesion:
 
     def crear_paciente(self, nombre_var, apellido_var, edad_var, num_expediente_var, terapeuta_asignado_var
                        , observaciones_var, telf_contacto_var):
+        """
+        Gestionamos que el formulario se ha rellenado correctamente y si es así, creamos el paciente con los datos
+        que ha introducido el usuario en el formulario
+        @param nombre_var: Nombre del paciente
+        @param apellido_var: Apellido del paciente
+        @param edad_var: Edad del paciente
+        @param num_expediente_var: Número de expediente del paciente
+        @param terapeuta_asignado_var: Terapeuta asignado al paciente
+        @param observaciones_var: Observaciones del paciente
+        @param telf_contacto_var: Teléfono de contato del paciente
+        """
 
         print("Terapeuta asignado: " + terapeuta_asignado_var)
         print(" Num_Exp: "+num_expediente_var)
@@ -195,13 +211,17 @@ class VentanaInicioSesion:
             paciente = self.database.obtener_paciente_by_num_expediente(num_expediente_var)
             self.paciente_mapa[f"{paciente.get_nombre()} {paciente.get_apellido()}"] = paciente
 
-            notificacion = self.mostrar_mensaje_exito("Paciente " + nombre_var + " creado con éxito")
+            notificacion = self.__mostrar_mensaje_exito("Paciente " + nombre_var + " creado con éxito")
             self.mostrar_main(notificacion)
         else:
-            notificacion = self.mostrar_mensaje_exito("ERROR: Por favor, introduzca todos los datos correctamente")
+            notificacion = self.__mostrar_mensaje_exito("ERROR: Por favor, introduzca todos los datos correctamente")
             self.formulario_crear_paciente(notificacion)
 
     def seleccionar_paciente_terapia(self):
+        """
+        Mostramos los pacientes disponibles para hacer la terapia.
+        @return: None
+        """
         # Cargamos todos los terapeutas activos
         paciente_var = tk.StringVar()
         tk.Label(self.root, text="Seleccione paciente para terapia:").pack(pady=2)
@@ -213,33 +233,29 @@ class VentanaInicioSesion:
         self.root.update_idletasks()
         return None
 
-    """
-        Comenzamos la terapia y activamos la cámara.
-    """
+    """ **************************************************************************************
+    ****************** MÉTODOS RELACIONADOS CON LA EJECUCIÓN DE LA TERAPIA *******************
+    ************************************************************************************** """
+
     def comenzar_terapia(self, paciente):
+        """
+        Con el paciente seleccionado inicializamos las estadísticas.
+        @param paciente: Paciente seleccionado para la terapia
+        """
         # Nos aseguramos que la variable con la que vamos a terminar la terapia este a false
         self.end = False
-
-        # Lineas de depuración
-        print("\n" * 2)
-        print("*" * 20)
-        print("Comenzamos terapia")
-        print("*" * 20)
-        print("[OK] Seleccionado paciente: "+paciente)
 
         paciente = self.paciente_mapa[paciente]
         pacienteid = paciente.get_paciente_id()
         self.estadisticas = Estadistica.init_minimo(pacienteid,
                                                self.terapeuta.get_terapeuta_id(), date.today() ,datetime.now())
-        print("[OK] Estadísticas iniciales: ")
 
         self.listar_camaras()
 
-    """
-        Enumera las cámaras disponibles y muestra información sobre cada una.
-    """
-
     def listar_camaras(self):
+        """
+        Listamos las camaras disponibles para que el usuario elija la que quiere utilizar. Luego iniciamos la terpia
+        """
         graph = FilterGraph()
         camaras = graph.get_input_devices()
 
@@ -248,15 +264,17 @@ class VentanaInicioSesion:
             boton = tk.Button(self.root, text=nombre, command=lambda idx=i: self.camara_terapia(idx))
             boton.pack(padx=10, pady=10)
 
-    """
-        Inicializamos la configuración necesaria para la Cámara y la vista de esta
-    """
     def camara_terapia(self, camara):
+        """
+        Creamos y configuramos la ventana de la terapia. Mostraremos la cámara, con sus estadísticas
+        y un botón para detenerla.
+        @param camara: Cámara seleccionada
+        """
         print(" Iniciamos la cámara con id "+str(camara))
         camara = Camara(camara, self.estadisticas)
         print("[OK] Creada camara")
 
-        self.reset_page(None)
+        self.__reset_page(None)
 
         self.end = False  # Nos aseguramos de tener esta bandera en tu clase
         # Actualizamos las etiquetas porque se habrán eliminado
@@ -277,17 +295,20 @@ class VentanaInicioSesion:
 
         self.mostrar_frame(camara,ax,canvas)  # Inicia el refresco del video
 
-    """
-        Mostramos el frame que ha recogido la cámara y lo mostramos. Función recursiva
-    """
     def mostrar_frame(self,camara,ax,canvas):
-        print("**********  Frame  ***********")
+        """
+        Mostramos el frame que ha recogido la cámara y lo mostramos. Función recursiva
+        @param camara: Referencia a la cámara seleccionada
+        @param ax: Figura de las estadísticas
+        @param canvas: Marco de la figura
+        """
         end, frame, emociones = camara.read_frame()
 
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img = Image.fromarray(frame_rgb)
         imgtk = ImageTk.PhotoImage(image=img)
 
+        # Mostramos el frame en el campo creado para ello
         self.label_video.imgtk = imgtk
         self.label_video.configure(image=imgtk)
         self.label_video.pack()
@@ -299,16 +320,21 @@ class VentanaInicioSesion:
             self.root.update()
             self.window_resized = True
 
+        # Si se ha pulsado el botón de terminar la terpia, lo hacemos
         if self.end:
             self.cerrar_terapia(camara)
             return
         else:
-            self.root.after(30,lambda: self.mostrar_frame(camara,ax,canvas))  # 30ms ≈ 33fps
+        # Llamamos a esta función cada 30ms
+            self.root.after(30,lambda: self.mostrar_frame(camara,ax,canvas))
 
-    """
-        Actualizamos la gráfica con las emociones detectadas durante la terapia
-    """
     def actualizar_grafica(self, emociones_dict,ax,canvas):
+        """
+        Actualizamos la gráfica de las emociones detectadas durante la terpia
+        @param emociones_dict: Diccionario de las emociones
+        @param ax: Figura de las estadísticas
+        @param canvas: Marco de la figura
+        """
         ax.clear()
         emociones = list(emociones_dict.keys())
         valores = list(emociones_dict.values())
@@ -326,22 +352,29 @@ class VentanaInicioSesion:
         fig.tight_layout()
         canvas.draw()
 
-    """
-        Indicamos al bucle que deberá parar la terapia
-    """
     def parar_terapia(self,camara):
+        """
+        Si se ha pulsado el botón de parar la terapia, indicamos al bucle que deberá pararla
+        @param camara: Referencia a la cámara seleccionada para la terapia
+        """
         print("Terapia detenida por el usuario.")
         self.end = True
 
-    """
-        Hacemos las gestiones necesarias para finalizar la terapia.
-    """
     def cerrar_terapia(self, camara):
+        """
+        Hacemos las gestiones necesarias para finalizar la terapia y luego iremos a la ventana de
+        añadir las observaciones
+        @param camara: Referencia a la cámara
+        @return:
+        """
         camara.cerrar_camara()
         self.add_observaciones()
 
     def add_observaciones(self):
-        self.reset_page(None)
+        """
+        Formulario para añadir observaciones de la terapia una vez que haya finalizado
+        """
+        self.__reset_page(None)
         tk.Label(self.root, text="Introduce tus observaciones:", font=("Arial", 12)).pack(pady=10)
 
         # Campo de texto grande
@@ -356,89 +389,30 @@ class VentanaInicioSesion:
         tk.Button(btn_frame, text="Saltar", command=self.enviar_terapia_finalizada).pack(side=tk.LEFT, padx=10)
 
     def enviar_terapia_finalizada(self):
+        """
+        Una vez terminada toda la gestión de finalización de la terpia, la guardamos en BD
+        y mostramos una notificación de éxito
+        """
         texto = self.text_area.get("1.0", tk.END).strip()
         if texto:
             self.estadisticas.set_observaciones(texto)
 
         self.database.incluir_estadistica_terapia(self.estadisticas)
 
-        notificacion = self.mostrar_mensaje_exito("Terapia finalizada")
+        notificacion = self.__mostrar_mensaje_exito("Terapia finalizada")
         self.mostrar_main(notificacion)
 
 
-    """
-        Método auxiliar mediante el que vamos a eliminar todo el contenido que haya en la vista. Esto nos permite 
-        refrescar el contenido correctamente
-    """
 
-    def reset_page(self, no_eliminar):
-        for componente in self.root.winfo_children():
-            if componente != no_eliminar:
-                componente.destroy()
+    """ **************************************************************************************
+    *********************** MÉTODOS RELACIONADOS CON LAS ESTADÍSTICAS ************************
+    ************************************************************************************** """
 
-    """
-        Mostramos una notificacion en una ventana nueva mostrando el mensaje que se pasa por la variable "notificación"
-    """
-    def mostrar_mensaje_exito(self, notificacion):
-        # Crear una nueva ventana emergente (Toplevel)
-        ventana_exito = tk.Toplevel(self.root)
-        ventana_exito.minsize(width=self.VENTANA_NOTI[0], height=self.VENTANA_NOTI[1])
-        ventana_exito.title("Notificación")
-        tk.Label(ventana_exito, text=notificacion).pack()
-
-        # Agregar un botón "Cerrar" para cerrar la ventana emergente
-        tk.Button(ventana_exito, text="Cerrar", command=ventana_exito.destroy).pack()
-
-        # Actualizar la ventana principal antes de mostrar la ventana emergente
-        self.root.update()
-        return ventana_exito
-
-    """
-     Como para crear el paciente necesitamos el id y no su nombre y apellido, además de que tampoco podemos buscar 
-     por nombre y apellido ya juntado, vamos a emplear este método para obtener el id del terpeuta asignado.
-    """
-
-    def __obtener_id_terpeuta(self, nombre_y_apellidos):
-        # Primero vamos a ahorrarnos la búsqueda en la bd si este terpaueta somos nosotros
-        if (self.terapeuta.get_nombre() + " " + self.terapeuta.get_apellido()) == nombre_y_apellidos:
-            return self.terapeuta.get_terapeuta_id()
-        # Si no lo somos entonces realizamos una búsqueda en BD
-        terapeutas = self.database.obtener_all_terapeutas()
-        for terpeuta in terapeutas:
-            if (terpeuta.get_nombre() + " " + terpeuta.get_apellido()) == nombre_y_apellidos:
-                return terpeuta.get_terapeuta_id()
-
-    """
-        Creamos un mapa clave-valor de los pacientes donde la clave va a ser la concatenación del nombre y apellidos.
-    """
-
-    def __obtener_mapa_pacientes(self):
-        paciente_mapa = {}
-        pacientes = self.database.obtener_all_pacientes()
-        # Si queremos aumentar la seguridad no cargaremos las contraseñas
-        for paciente in pacientes:
-            paciente_mapa[f"{paciente.get_nombre()} {paciente.get_apellido()}"] = paciente
-        return paciente_mapa
-
-    """
-            Creamos un mapa clave-valor de los pacientes donde la clave va a ser la concatenación del nombre y apellidos.
-        """
-
-    def __obtener_mapa_terapeuta(self):
-        terapeuta_mapa = {}
-        terapeutas = self.database.obtener_all_terapeutas()
-        for terapeuta in terapeutas:
-            terapeuta_mapa[f"{terapeuta.get_nombre()} {terapeuta.get_apellido()}"] = terapeuta
-        return terapeuta_mapa
-
-    """ *******************************************
-           MÉTODOS RELACIONADOS CON LAS ESTADÍSTICAS
-    *********************************************** """
-
-    """
-        Damos a elegir al usuario el paciente del que vamos a mostrar las estdísticas
-    """
     def consultar_estadisticas(self):
+        """
+        Damos a elegir al usuario el paciente del que vamos a mostrar las estdísticas
+        @return: None
+        """
         # Cargamos todos los terapeutas activos
         paciente_var = tk.StringVar()
         tk.Label(self.root, text="Seleccione paciente para ver las estadísticas:").pack(pady=2)
@@ -450,11 +424,12 @@ class VentanaInicioSesion:
         self.root.update_idletasks()
         return None
 
-    """
-        Mostramos las estadísticas del paciente pasado por parámetro
-    """
     def consultas_estadisticas_paciente(self, paciente_selected):
-        self.reset_page(None)
+        """
+        Mostramos las estadísticas generales del paciente pasado por parámetro
+        @param paciente_selected: Clave del paciente seleccionado
+        """
+        self.__reset_page(None)
 
         tk.Label(self.root, text=paciente_selected).pack(pady=2)
 
@@ -505,7 +480,7 @@ class VentanaInicioSesion:
         frame_info.pack(side=tk.TOP, fill=tk.X, pady=10, expand=True)
 
 
-        # Creamos un frame para contener los botones de terpias individuales
+        # Creamos un frame para contener los botones de terapias individuales
         botones_frame = tk.Frame(scroll_frame)
         botones_frame.pack(side=tk.TOP, fill=tk.X, pady=10, expand=True)
 
@@ -555,6 +530,12 @@ class VentanaInicioSesion:
 
 
     def mostrar_grafico_tarta_emociones_general(self,calculo_estadisticas, figura, gs):
+        """
+        Creamos el gráfico de tarta de las emociones expresadas en todas las estadísticas.
+        @param calculo_estadisticas: Estadísticas calculadas
+        @param figura: Figura donde vamos a mostrar esta gráfica
+        @param gs: Referenecia de la posición en la figura.
+        """
         valores_emociones_porcentaje = [calculo_estadisticas.porcentaje_enfadado,
                                         calculo_estadisticas.porcentaje_disgustado,
                                         calculo_estadisticas.porcentaje_miedoso,
@@ -568,7 +549,7 @@ class VentanaInicioSesion:
 
         # Creamos un gráfico de tarta
         ax1 = figura.add_subplot(gs[0, 0])  # Gráfico de tarta
-        if (all(x == 0.0 for x in valores_emociones_porcentaje)):
+        if all(x == 0.0 for x in valores_emociones_porcentaje):
             # Crear gráfico de tarta
             ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
         else:
@@ -576,6 +557,12 @@ class VentanaInicioSesion:
         ax1.set_title('% expresión global de emociones')
 
     def mostrar_grafico_barra_emociones_general(self, calculo_estadisticas, figura, gs):
+        """
+        Creamos el gráfico de barras de las apariciones de cada emoción en todas las terpias.
+        @param calculo_estadisticas: Estadísticas calculadas
+        @param figura: Figura donde vamos a mostrar esta gráfica
+        @param gs: Referenecia de la posición en la figura.
+        """
         valores_emociones_apariciones = [calculo_estadisticas.totalenfadado, calculo_estadisticas.totaldisgustado,
                                          calculo_estadisticas.totalmiedoso, calculo_estadisticas.totalcontento,
                                          calculo_estadisticas.totaltriste, calculo_estadisticas.totalsorprendido,
@@ -592,13 +579,19 @@ class VentanaInicioSesion:
         ax2.set_title('Tiempo total de cada emoción')
 
     def mostrar_grafico_tarta_atencion_general(self, calculo_estadisticas, figura, gs):
+        """
+        Creamos el gráfico de tarta del porcentaje de la atención en todas las terapias.
+        @param calculo_estadisticas: Estadísticas calculadas
+        @param figura: Figura donde vamos a mostrar esta gráfica
+        @param gs: Referenecia de la posición en la figura.
+        """
         valores_atencion_porcentaje = [calculo_estadisticas.porcentaje_atencion,
                                        100 - calculo_estadisticas.porcentaje_atencion]
         atención_etiquetas = ["Atención", "No atención"]
 
         # Creamos un gráfico de tarta de la atención
         ax3 = figura.add_subplot(gs[1, 0])  # Gráfico de tarta atención
-        if (all(x == 0.0 for x in valores_atencion_porcentaje)):
+        if all(x == 0.0 for x in valores_atencion_porcentaje):
             # Crear gráfico de tarta
             ax3.pie([100], labels=[atención_etiquetas[1]], autopct='%1.1f%%')
         else:
@@ -606,7 +599,12 @@ class VentanaInicioSesion:
         ax3.set_title('% atención global')
 
     def mostrar_grafico_progreso_atencion(self, estadisticas, figura, gs):
-
+        """
+        Creamos el gráfico de puntos donde mostramos el progreso de la atención a lo largo de todas las terpias.
+        @param estadisticas: Estadísticas de todas las terapias
+        @param figura: Figura donde vamos a mostrar esta gráfica
+        @param gs: Referenecia de la posición en la figura.
+        """
         ax = figura.add_subplot(gs[1, 1])
         ax.set_title("Progreso de atención por terapia")
         ax.set_xlabel("Sesión")
@@ -630,6 +628,12 @@ class VentanaInicioSesion:
         ax.grid(True)
 
     def exportar_estadisticas_generales_pdf(self,estadisticas, calculo_estadisticas, paciente_key ):
+        """
+        Creamos el documento .pdf donde vamos a exportar las estadísticas generales del paciente seleccionado.
+        @param estadisticas: Estadísticas de todas las terapias
+        @param calculo_estadisticas: Estadísticas calculadas
+        @param paciente_key: Clave del paciente seleccionado.
+        """
         paciente = self.paciente_mapa[paciente_key]
 
         # Crear figuras
@@ -699,12 +703,17 @@ class VentanaInicioSesion:
 
         os.remove(imagen_path)  # Eliminar imagen temporal
 
-        self.mostrar_mensaje_exito(f"PDF creado con éxito en la ruta {pdf_path}")
+        self.__mostrar_mensaje_exito(f"PDF creado con éxito en la ruta {pdf_path}")
         print(f"[INFO] PDF guardado en: {pdf_path}")
 
     def mostrar_estadisticas_terapia(self, estadistica, paciente):
+        """
+        Mostramos las estadísticas de una terapia en específico.
+        @param estadistica: estadísticas de la terapia
+        @param paciente: Paciente seleccionado.
+        """
         print(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
-        self.reset_page(None)
+        self.__reset_page(None)
 
         tk.Button(self.root, text="Volver", command=lambda: self.consultas_estadisticas_paciente(paciente)).pack(pady=10)
         figura = Figure(figsize=(10, 8), dpi=100)
@@ -736,19 +745,26 @@ class VentanaInicioSesion:
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
     def mostrar_grafico_emociones_tiempo(self, estadistica, figura, gs):
+        """
+        Creamos el gráfico de las emociones expresadas a lo largo del tiempo de la terapia.
+        @param estadistica: Estadística de la terpia
+        @param figura: Figura donde vamos a mostrar esta gráfica
+        @param gs: Referenecia de la posición en la figura.
+        @return:
+        """
         ax = figura.add_subplot(gs[0, 0])
         ax.set_title("Emociones a lo largo de la terapia")
         ax.set_xlabel("Tiempo (s)")
         ax.set_ylabel("Emoción")
 
         # Guardamos en variables locales ya transformadas
-        enfadado = self.parse_intervalos(estadistica.get_enfadado())
-        disgustado = self.parse_intervalos(estadistica.get_disgustado())
-        miedoso = self.parse_intervalos(estadistica.get_miedoso())
-        contento = self.parse_intervalos(estadistica.get_contento())
-        triste = self.parse_intervalos(estadistica.get_triste())
-        sorprendido = self.parse_intervalos(estadistica.get_sorprendido())
-        neutro = self.parse_intervalos(estadistica.get_neutro())
+        enfadado = self.__parse_intervalos(estadistica.get_enfadado())
+        disgustado = self.__parse_intervalos(estadistica.get_disgustado())
+        miedoso = self.__parse_intervalos(estadistica.get_miedoso())
+        contento = self.__parse_intervalos(estadistica.get_contento())
+        triste = self.__parse_intervalos(estadistica.get_triste())
+        sorprendido = self.__parse_intervalos(estadistica.get_sorprendido())
+        neutro = self.__parse_intervalos(estadistica.get_neutro())
 
         # Mapeo de emociones a Y ejes y colores
         emociones_info = {
@@ -775,17 +791,24 @@ class VentanaInicioSesion:
         ax.set_yticks(yticks)
         ax.set_yticklabels(ylabels)
 
-        ax.set_xlim(0, estadistica._tiempototal)
+        ax.set_xlim(0, estadistica.get_tiempototal())
         ax.grid(True)
 
     def mostrar_grafico_atencion_tiempo(self, estadistica, figura, gs):
+        """
+        Creamos el gráfico de la atención expresada a lo largo del tiempo de la terapia.
+        @param estadistica: Estadística de la terpia
+        @param figura: Figura donde vamos a mostrar esta gráfica
+        @param gs: Referenecia de la posición en la figura.
+        @return:
+        """
         ax = figura.add_subplot(gs[0, 1])
         ax.set_title("Atención a lo largo de la terapia")
         ax.set_xlabel("Tiempo (s)")
         ax.set_ylabel("Atención")
 
         # Convertir datos JSON a lista de intervalos
-        intervalos = self.parse_intervalos(estadistica.get_atencion())
+        intervalos = self.__parse_intervalos(estadistica.get_atencion())
 
         if intervalos:
             bars = [(item["inicio"], item["fin"] - item["inicio"]) for item in intervalos]
@@ -795,18 +818,24 @@ class VentanaInicioSesion:
         else:
             ax.text(0.5, 0.5, "Sin datos de atención", ha="center", va="center", transform=ax.transAxes)
 
-        ax.set_xlim(0, estadistica._tiempototal)
+        ax.set_xlim(0, estadistica.get_tiempototal())
         ax.set_ylim(0, 1)
         ax.grid(True)
 
     def mostrar_grafica_emociones_tarta(self, estadistica, figura, gs):
+        """
+        Creamos el gráfico de barras de las apariciones de cada emoción a lo largo de la terpia.
+        @param estadistica: Estadísticas calculadas
+        @param figura: Figura donde vamos a mostrar esta gráfica
+        @param gs: Referenecia de la posición en la figura.
+        """
         # Creamos un gráfico de tarta
         emociones_etiquetas = [Emociones.ENFADO.name, Emociones.DISGUSTADO.name, Emociones.MIEDOSO.name,
                                Emociones.CONTENTO.name,
                                Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
         emociones_porcentajes = estadistica.get_emociones_porcentajes()
         ax1 = figura.add_subplot(gs[1, :])  # Gráfico de tarta
-        if (all(x == 0.0 for x in emociones_porcentajes)):
+        if all(x == 0.0 for x in emociones_porcentajes):
             # Crear gráfico de tarta
             ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
         else:
@@ -815,6 +844,11 @@ class VentanaInicioSesion:
         ax1.set_title('% expresión global de emociones')
 
     def exportar_estadistica_pdf(self, estadistica, paciente_name):
+        """
+        Creamos el documento .pdf donde vamos a exportar las estadísticas generales de la terpia seleccionada
+        @param estadistica: Estadísticas de la terpia
+        @param paciente_name: Clave del paciente seleccionado.
+        """
         # Crear figuras
         figura = Figure(figsize=(10, 8), dpi=100)
         gs = figura.add_gridspec(2, 2)
@@ -896,10 +930,93 @@ class VentanaInicioSesion:
 
         os.remove(imagen_path)  # Eliminar imagen temporal
 
-        self.mostrar_mensaje_exito(f"PDF creado con éxito en la ruta {pdf_path}")
+        self.__mostrar_mensaje_exito(f"PDF creado con éxito en la ruta {pdf_path}")
         print(f"[INFO] PDF guardado en: {pdf_path}")
 
-    def parse_intervalos(self, data):
+    """ **************************************************************************************
+        ****************************** MÉTODOS AUXILIARES ************************************
+        ************************************************************************************** """
+
+    def __reset_page(self, no_eliminar):
+        """
+        Eliminamos todo el contenido que haya en la vista.
+        Esto nos permite refrescar el contenido correctamente
+        @param no_eliminar: Pasamos los componente que no queremos eliminar
+        """
+        for componente in self.root.winfo_children():
+            if componente != no_eliminar:
+                componente.destroy()
+
+    def __mostrar_mensaje_exito(self, notificacion):
+        """
+        Mostramos una notificacion en una ventana nueva mostrando el mensaje que se pasa por la variable "notificación"
+        @param notificacion: Mensaje a mostrar
+        @return: Ventana emergente
+        """
+        # Crear una nueva ventana emergente (Toplevel)
+        ventana_exito = tk.Toplevel(self.root)
+        ventana_exito.minsize(width=self.VENTANA_NOTI[0], height=self.VENTANA_NOTI[1])
+        ventana_exito.title("Notificación")
+        tk.Label(ventana_exito, text=notificacion).pack()
+
+        # Agregar un botón "Cerrar" para cerrar la ventana emergente
+        tk.Button(ventana_exito, text="Cerrar", command=ventana_exito.destroy).pack()
+
+        # Actualizar la ventana principal antes de mostrar la ventana emergente
+        self.root.update()
+        return ventana_exito
+
+    def __obtener_id_terpeuta(self, nombre_y_apellidos):
+        """
+        Como para crear el paciente necesitamos el id y no su nombre y apellido, además de que tampoco podemos buscar
+        por nombre y apellido ya juntado, vamos a emplear este método para obtener el id del terpeuta asignado.
+        @param nombre_y_apellidos: Nombre y apellidos del paciente
+        @return: Id del terapeuta
+        """
+        # Primero vamos a ahorrarnos la búsqueda en la bd si este terpaueta somos nosotros
+        if (self.terapeuta.get_nombre() + " " + self.terapeuta.get_apellido()) == nombre_y_apellidos:
+            return self.terapeuta.get_terapeuta_id()
+        # Si no lo somos entonces realizamos una búsqueda en BD
+        terapeutas = self.database.obtener_all_terapeutas()
+        for terpeuta in terapeutas:
+            if (terpeuta.get_nombre() + " " + terpeuta.get_apellido()) == nombre_y_apellidos:
+                return terpeuta.get_terapeuta_id()
+
+    """
+        
+    """
+
+    def __obtener_mapa_pacientes(self):
+        """
+        Para acceder rápidamente a los paciente y no consultar repetidamente a la BD,
+        creamos un mapa clave-valor de los pacientes donde la clave va a ser la concatenación del nombre y apellidos.
+        @return: Mapa de pacientes
+        """
+        paciente_mapa = {}
+        pacientes = self.database.obtener_all_pacientes()
+        # Si queremos aumentar la seguridad no cargaremos las contraseñas
+        for paciente in pacientes:
+            paciente_mapa[f"{paciente.get_nombre()} {paciente.get_apellido()}"] = paciente
+        return paciente_mapa
+
+    def __obtener_mapa_terapeuta(self):
+        """
+        Para acceder rápidamente a los paciente y no consultar repetidamente a la BD,
+        creamos un mapa clave-valor de los pacientes donde la clave va a ser la concatenación del nombre y apellidos.
+        @return:
+        """
+        terapeuta_mapa = {}
+        terapeutas = self.database.obtener_all_terapeutas()
+        for terapeuta in terapeutas:
+            terapeuta_mapa[f"{terapeuta.get_nombre()} {terapeuta.get_apellido()}"] = terapeuta
+        return terapeuta_mapa
+
+    def __parse_intervalos(self, data):
+        """
+        Como desde BD los intervalos nos vienen en texto plano, lo transformamos a un diccionario para hacer uso de él
+        @param data: Datos a transformar.
+        @return: Los datos transformados o una lista vacía si no se ha podido hacer el parseo.
+        """
         if isinstance(data, str):
             try:
                 # Añadir coma entre "número fin" si falta (entre comillas o no)
@@ -915,16 +1032,3 @@ if __name__ == "__main__":
     interfaz = VentanaInicioSesion()
     interfaz.comenzar_programa()
 
-"""
-TODO:
-    
-- Ver como mostrar en la interfaz gráfica los resultados de las estadísticas de los pacientes: 
-    - Añadir en texto información como los minutos totales, nº de terapias, apariciones totales, etc
-    - Incluir vista para ver información por terapia
-    - Mostrar los datos para solo esa terapia.
-    - Exportar terapias a PDF
-
-     
-Menos importantes:
-- Hacer menú de terapeuta admin para que puedas crear desde la aplicación otros usuarios de terpeutas
-"""

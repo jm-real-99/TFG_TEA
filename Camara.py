@@ -11,7 +11,7 @@ from datetime import datetime
 from GestorAtencion import GestorAtencion
 from GestorEmociones import GestorEmociones
 from Estadistica import Estadistica
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 
 
 class Camara:
@@ -37,7 +37,8 @@ class Camara:
         self._face = None
         self._ultimo_segundo_cara = 0
 
-        self._executor = ProcessPoolExecutor(max_workers=2)
+        # self._executor = ProcessPoolExecutor(max_workers=2)
+        self._executor = ThreadPoolExecutor(max_workers=2)
 
     def read_frame(self):
         """

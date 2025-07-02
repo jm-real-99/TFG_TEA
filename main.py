@@ -5,6 +5,9 @@ from Camara import Camara
 import cv2
 from PIL import Image, ImageTk
 
+
+from LoggerManager import LoggerManager
+
 import tkinter as tk
 from datetime import datetime, date
 from Paciente import Paciente
@@ -24,6 +27,7 @@ from reportlab.pdfgen import canvas as pdf_canvas
 from reportlab.lib.utils import ImageReader
 import tempfile
 import os
+import sys
 from reportlab.lib.units import cm
 import configparser
 import re
@@ -40,12 +44,24 @@ class VentanaInicioSesion:
         """
         Inicializamos la clase main.
         """
-        self.database = DataBase()
 
+        # Inicializamos los logs:
+        self._logger = LoggerManager.get_logger()
+
+        # Obtenemos la ruta donde se esté ejecutando la aplicación
+        if getattr(sys, 'frozen', False):
+            base_dir = os.path.dirname(sys.executable)
+        else:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+
+        self.database = DataBase(base_dir)
+
+        self._logger.info("Creamos la ventana")
         self.root = tk.Tk()
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         self.root.geometry(f"{screen_width}x{screen_height}")
+        self._logger.info("Ventana creada")
 
         self.terapeuta = None
         self.paciente_mapa = self.__obtener_mapa_pacientes()
@@ -68,6 +84,7 @@ class VentanaInicioSesion:
         Métododonde que establecemos que la ventana va a estar abierta en todo momento.
         Comenzamos iniciando la sesión del terapeuta
         """
+        self._logger.info("Comenzamos mostrando la ventana")
         self.root.minsize(width=self.VENTANA[0], height=self.VENTANA[1])
         self.formulario_inicio_sesion()
         self.root.mainloop()
@@ -76,6 +93,7 @@ class VentanaInicioSesion:
         """
         Creamos el formulario de inicio de sesión
         """
+        self._logger.info("Formulario inicio de sesión")
         self.root.title("Inicio de Sesión")
         # Variables de instancia para usuario y contraseña
         usuario = tk.StringVar()
@@ -242,6 +260,7 @@ class VentanaInicioSesion:
         Con el paciente seleccionado inicializamos las estadísticas.
         @param paciente: Paciente seleccionado para la terapia
         """
+        self._logger.info("Comenzamos terapia")
         # Nos aseguramos que la variable con la que vamos a terminar la terapia este a false
         self.end = False
 
@@ -256,6 +275,7 @@ class VentanaInicioSesion:
         """
         Listamos las camaras disponibles para que el usuario elija la que quiere utilizar. Luego iniciamos la terpia
         """
+        self._logger.info("Listamos cámaras")
         graph = FilterGraph()
         camaras = graph.get_input_devices()
 
@@ -270,9 +290,9 @@ class VentanaInicioSesion:
         y un botón para detenerla.
         @param camara: Cámara seleccionada
         """
-        print(" Iniciamos la cámara con id "+str(camara))
+        self._logger.info(" Iniciamos la cámara con id "+str(camara))
         camara = Camara(camara, self.estadisticas)
-        print("[OK] Creada camara")
+        self._logger.info("[OK] Creada camara")
 
         self.__reset_page(None)
 
@@ -357,7 +377,7 @@ class VentanaInicioSesion:
         Si se ha pulsado el botón de parar la terapia, indicamos al bucle que deberá pararla
         @param camara: Referencia a la cámara seleccionada para la terapia
         """
-        print("Terapia detenida por el usuario.")
+        self._logger.info("Terapia detenida por el usuario.")
         self.end = True
 
     def cerrar_terapia(self, camara):

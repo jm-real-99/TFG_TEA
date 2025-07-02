@@ -1,5 +1,8 @@
-import mysql.connector
+import os
 import configparser
+
+import mysql.connector
+from LoggerManager import LoggerManager
 
 from Estadistica import Estadistica
 from Paciente import Paciente
@@ -10,13 +13,21 @@ class DataBase:
     """
     En esta clase gestionamos la conexión con la Base de Datos.
     """
-    def __init__(self):
+    def __init__(self, base_dir):
         """
         Establecemos las propiedades de la conexión con la BD y la iniciamos
         """
+        # Inicializamos los logs:
+        self._logger = LoggerManager.get_logger()
+
+        # Cogemos el fichero
+        ruta_config = os.path.join(base_dir, 'config.properties')
+        self._logger.info(f"Ruta config: {ruta_config}" )
+        self._logger.info(f"Existe:{os.path.exists(ruta_config)} ")
+
         # Configura los detalles de conexión
         config = configparser.ConfigParser()
-        config.read('config.properties')
+        config.read(ruta_config)
 
         user = config.get('db', 'user')
         password = config.get('db', 'password')
@@ -30,13 +41,13 @@ class DataBase:
             'host': host,
             'database': database
         }
-
-        print("USER: " + user)
-        print("PASS: " + password)
-        print("HOST: " + host)
-        print("PORT: " + port)
-        print()
-        print(config)
+        self._logger.info("CONNECTING TO DATABASE: ")
+        self._logger.info("USER: " + user)
+        self._logger.info("PASS: " + password)
+        self._logger.info("HOST: " + host)
+        self._logger.info("PORT: " + port)
+        self._logger.info("")
+        self._logger.info(config)
 
         try:
             # Crea una conexión
@@ -45,7 +56,7 @@ class DataBase:
             # Crea un cursor para ejecutar consultas
             self.cursor = self.connection.cursor()
         except mysql.connector.Error as err:
-            print(f"[DB] Error al conectar a la base de datos: {err}")
+            self._logger.error(f"[DB] Error al conectar a la base de datos: {err}")
 
     """ **************************************************************************************
         *********************** MÉTODOS RELACIONADOS CON LOS PACIENTES ***********************

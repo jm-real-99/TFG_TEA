@@ -1,6 +1,8 @@
 import cv2
 import dlib
 
+from LoggerManager import LoggerManager
+
 from Emociones import Emociones
 import numpy as np
 import time
@@ -9,7 +11,7 @@ from datetime import datetime
 from GestorAtencion import GestorAtencion
 from GestorEmociones import GestorEmociones
 from Estadistica import Estadistica
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 
 class Camara:
@@ -17,6 +19,9 @@ class Camara:
     Creamos y gestionamos la cámara durante las terpias.
     """
     def __init__(self, camera, estadistica):
+        # Inicializamos los logs:
+        self._logger = LoggerManager.get_logger()
+
         self._cap = cv2.VideoCapture(camera)
         self._tiempoInicio = time.time()
         self._gestorEmociones = GestorEmociones()
@@ -24,7 +29,6 @@ class Camara:
         self._estadisticas = estadistica
 
         self.fps = 0
-        self.fpsmax= 0
         self.lastSecond = 0
 
 
@@ -33,7 +37,7 @@ class Camara:
         self._face = None
         self._ultimo_segundo_cara = 0
 
-        self._executor = ThreadPoolExecutor(max_workers=2)
+        self._executor = ProcessPoolExecutor(max_workers=2)
 
     def read_frame(self):
         """
@@ -42,10 +46,10 @@ class Camara:
             True si continuamos con la lectura
             False si no continuamos con la lectura, es decir, hemos detectado una interrupción
         """
+        tiempo_inicio = time.time()
         ret, frame = self._cap.read()
 
         segundo_actual =  self.__segundo_actual()
-        self.calcularfps(segundo_actual)
 
         if not ret:
             print("[DETECTAR EMOCION]Terminamoos")
@@ -74,13 +78,13 @@ class Camara:
             try:
                 emocion, emociones, face = future_emocion.result()
             except Exception as e:
-                print(f"[ERROR] Al detectar emoción: {e}")
+                self._logger.error(f"Error al detectar emoción: {e}")
                 emocion, emociones, face = None, {}, None
 
             try:
                 atencion, text_atencion = future_atencion.result()
             except Exception as e:
-                print(f"[ERROR] Al detectar atención: {e}")
+                self._logger.error(f"Error al detectar atención: {e}")
                 atencion, text_atencion = False, "Atención desconocida"
 
             # Agregamos el texto a la imagen
@@ -94,6 +98,9 @@ class Camara:
         cv2.putText(frame, texto_emocion, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_emocion, 2)
         cv2.putText(frame, text_atencion, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, color_atencion, 2)
         cv2.putText(frame, str(self.__segundo_actual()), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+
+        tiempo_fin = time.time()
+        print("TIEMPO EJECUTANDO METODO: "+str(tiempo_fin-tiempo_inicio))
         if self._face is not None:
             x,y,w,h = self._face
             cv2.rectangle(frame, (x,y),(x+w,y+h),(255,0,0),2)
@@ -173,8 +180,6 @@ class Camara:
         self._gestorEmociones.terminar_escaneo(self.__segundo_actual())
 
         self.__recabar_estadisticas()
-        # ELIMINAR
-        self.pintar_datos()
 
     def __recabar_estadisticas(self):
         """

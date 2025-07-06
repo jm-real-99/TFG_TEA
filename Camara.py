@@ -47,7 +47,6 @@ class Camara:
             True si continuamos con la lectura
             False si no continuamos con la lectura, es decir, hemos detectado una interrupción
         """
-        tiempo_inicio = time.time()
         ret, frame = self._cap.read()
 
         segundo_actual =  self.__segundo_actual()
@@ -67,23 +66,15 @@ class Camara:
 
         # Solo hacemos la evaluación si se ha detectado un cara
         if self._face:
-            # Lanzar tareas en paralelo
-            future_emocion = self._executor.submit(
-                self._gestorEmociones.detectar_emocion, frame, self._face , segundo_actual
-            )
-            future_atencion = self._executor.submit(
-                self._gestorAtencion.detectar_atencion, frame, self._face_dlib, segundo_actual
-            )
 
-            # Esperamos a que terminen y obtenemos los resultados recabados siempre controlando las excepciones que puedan surgir
             try:
-                emocion, emociones, face = future_emocion.result()
+                emocion, emociones, face = self._gestorEmociones.detectar_emocion(frame, self._face , segundo_actual)
             except Exception as e:
                 self._logger.error(f"Error al detectar emoción: {e}")
                 emocion, emociones, face = None, {}, None
 
             try:
-                atencion, text_atencion = future_atencion.result()
+                atencion, text_atencion = self._gestorAtencion.detectar_atencion( frame, self._face_dlib, segundo_actual)
             except Exception as e:
                 self._logger.error(f"Error al detectar atención: {e}")
                 atencion, text_atencion = False, "Atención desconocida"
@@ -100,8 +91,6 @@ class Camara:
         cv2.putText(frame, text_atencion, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, color_atencion, 2)
         cv2.putText(frame, str(self.__segundo_actual()), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-        tiempo_fin = time.time()
-        print("TIEMPO EJECUTANDO METODO: "+str(tiempo_fin-tiempo_inicio))
         if self._face is not None:
             x,y,w,h = self._face
             cv2.rectangle(frame, (x,y),(x+w,y+h),(255,0,0),2)

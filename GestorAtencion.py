@@ -82,7 +82,7 @@ class GestorAtencion:
                 self._t_inicioAtencion = self._tiempoActual
             # Si el tiempo anterior teníamos atención y este no hemos tenido atención entonces cerramos el intervalo
             elif self._atencionPrevia and not self._atencionActual:
-                self._intervalosAtencion.append((self._t_inicioAtencion, self._tiempoActual))
+                self._intervalosAtencion.append((self._t_inicioAtencion, self._tiempoActual-1))
                 self._tiempoTotalAtencion += (self._tiempoActual - self._t_inicioAtencion )
             # En el caso en el que no se cumpla ninguna de las dos es que o llevamos dos segundos seguidos sin cambios,
             # así que solo realizamos las actualizaciones de los segundos

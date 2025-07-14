@@ -33,7 +33,7 @@ import configparser
 import re
 
 
-class VentanaInicioSesion:
+class AplicacionTEA:
     # Variables globales
     VENTANA = (400, 300)
     VENTANA_NOTI = (100, 50)
@@ -95,18 +95,23 @@ class VentanaInicioSesion:
         """
         self._logger.info("Formulario inicio de sesión")
         self.root.title("Inicio de Sesión")
+        # Creamos un frame central con padding
+        frame = tk.Frame(self.root, padx=20, pady=20)
+        frame.pack(expand=True, fill="both")
+
         # Variables de instancia para usuario y contraseña
         usuario = tk.StringVar()
         contrasena = tk.StringVar()
+
         # Cuadros de texto para usuario y contraseña
-        tk.Label(self.root, text="Usuario:").pack(pady=2)
-        (tk.Entry(self.root, font=("Arial", self.CAMPO_INPUT[0]), textvariable=usuario, width=self.CAMPO_INPUT[1])
+        tk.Label(frame, text="Usuario:").pack(pady=2)
+        (tk.Entry(frame, font=("Arial", self.CAMPO_INPUT[0]), textvariable=usuario, width=self.CAMPO_INPUT[1])
          .pack(pady=10))
-        tk.Label(self.root, text="Contraseña:").pack(pady=2)
-        tk.Entry(self.root, show="*", font=("Arial", self.CAMPO_INPUT[0]), textvariable=contrasena,
+        tk.Label(frame, text="Contraseña:").pack(pady=2)
+        tk.Entry(frame, show="*", font=("Arial", self.CAMPO_INPUT[0]), textvariable=contrasena,
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
 
-        tk.Button(self.root, text="Iniciar Sesión",
+        tk.Button(frame, text="Iniciar Sesión",
                   command=lambda: self.comprobar_inicio_sesion(usuario, contrasena)).pack()
 
     def comprobar_inicio_sesion(self, usuario, contrasena):
@@ -124,7 +129,7 @@ class VentanaInicioSesion:
             else:
                 notificacion = self.__mostrar_mensaje_exito("¡Error! Creenciales incorrectas")
                 self.__reset_page(notificacion)
-                self.comprobar_inicio_sesion()
+                self.formulario_inicio_sesion()
 
     def mostrar_main(self, notificacion):
         """
@@ -135,12 +140,12 @@ class VentanaInicioSesion:
         @param notificacion: Notificación de inicio de sesión exitoso
         """
         self.__reset_page(notificacion)
-
+        self.root.title("Menú principal")
         tk.Button(self.root, text="Dar de alta paciente", command=lambda: self.formulario_crear_paciente(None)).pack(
             pady=10)
         tk.Button(self.root, text="Consultar estadísticas", command=self.consultar_estadisticas).pack(
             pady=10)
-        tk.Button(self.root, text="Iniciar terapia", command=self.seleccionar_paciente_terapia).pack(pady=10)
+        tk.Button(self.root, text="Iniciar terapia", command=lambda:self.seleccionar_paciente_terapia(None)).pack(pady=10)
         # tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack(pady=10)
 
         # Actualiza la ventana principal
@@ -157,6 +162,7 @@ class VentanaInicioSesion:
         """
         self.__reset_page(notificacion)
 
+        self.root.title("Crear paciente")
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
 
         nombre_var = tk.StringVar()
@@ -173,7 +179,7 @@ class VentanaInicioSesion:
         tk.Label(self.root, text="Apellido *:").pack(pady=2)
         (tk.Entry(self.root, textvariable=apellido_var, font=("Arial", self.CAMPO_INPUT[0]), width=self.CAMPO_INPUT[1])
          .pack(pady=10))
-        tk.Label(self.root, text="Edad:").pack(pady=2)
+        tk.Label(self.root, text="Edad *:").pack(pady=2)
         (tk.Entry(self.root, textvariable=edad_var, font=("Arial", self.CAMPO_INPUT[0]), width=self.CAMPO_INPUT[1])
          .pack(pady=10))
         tk.Label(self.root, text="Telefono contacto:").pack(pady=2)
@@ -220,46 +226,80 @@ class VentanaInicioSesion:
 
         print("Terapeuta asignado: " + terapeuta_asignado_var)
         print(" Num_Exp: "+num_expediente_var)
-        terpeuta_id = self.terapeuta_mapa[terapeuta_asignado_var].get_terapeuta_id()
+        try:
+            if terapeuta_asignado_var is None:
+                notificacion = self.__mostrar_mensaje_exito(
+                    "ERROR: Por favor, introduzca todos los datos correctamente")
+                self.formulario_crear_paciente(notificacion)
 
-        if self.database.crear_paciente(nombre_var, apellido_var, edad_var, num_expediente_var, terpeuta_id
-                , observaciones_var, telf_contacto_var):
+            if self.database.crear_paciente(nombre_var, apellido_var, edad_var, num_expediente_var, self.terapeuta_mapa[terapeuta_asignado_var].get_terapeuta_id()
+                    , observaciones_var, telf_contacto_var):
 
-            # No hay que olvidarnos de mantener la sincronía del mapa de pacientes con la base de datos
-            paciente = self.database.obtener_paciente_by_num_expediente(num_expediente_var)
-            self.paciente_mapa[f"{paciente.get_nombre()} {paciente.get_apellido()}"] = paciente
+                # No hay que olvidarnos de mantener la sincronía del mapa de pacientes con la base de datos
+                paciente = self.database.obtener_paciente_by_num_expediente(num_expediente_var)
+                self.paciente_mapa[f"{paciente.get_nombre()} {paciente.get_apellido()}"] = paciente
 
-            notificacion = self.__mostrar_mensaje_exito("Paciente " + nombre_var + " creado con éxito")
-            self.mostrar_main(notificacion)
-        else:
-            notificacion = self.__mostrar_mensaje_exito("ERROR: Por favor, introduzca todos los datos correctamente")
+                notificacion = self.__mostrar_mensaje_exito("Paciente " + nombre_var + " creado con éxito")
+                self.mostrar_main(notificacion)
+            else:
+                notificacion = self.__mostrar_mensaje_exito(
+                    "ERROR: Por favor, introduzca todos los datos correctamente")
+                self.formulario_crear_paciente(notificacion)
+        except Exception:
+            notificacion = self.__mostrar_mensaje_exito(
+                "ERROR: Ha ocurrido algún error gestionando la petición")
             self.formulario_crear_paciente(notificacion)
 
-    def seleccionar_paciente_terapia(self):
-        """
-        Mostramos los pacientes disponibles para hacer la terapia.
-        @return: None
-        """
-        # Cargamos todos los terapeutas activos
-        paciente_var = tk.StringVar()
-        tk.Label(self.root, text="Seleccione paciente para terapia:").pack(pady=2)
-        tk.OptionMenu(self.root, paciente_var, *list(self.paciente_mapa.values())).pack(pady=10)
-        # Botón para crear el objeto Paciente
-        tk.Button(self.root, text="Seleccionar cámara",
-                  command=lambda: self.comenzar_terapia(paciente_var.get())).pack()
-        # Actualiza la ventana principal
-        self.root.update_idletasks()
-        return None
 
     """ **************************************************************************************
     ****************** MÉTODOS RELACIONADOS CON LA EJECUCIÓN DE LA TERAPIA *******************
     ************************************************************************************** """
 
-    def comenzar_terapia(self, paciente):
+    def seleccionar_paciente_terapia(self, notificacion):
+        """
+        Mostramos los pacientes y las camaras disponibles para hacer la terapia.
+        @return: None
+        """
+        self.__reset_page(notificacion)
+
+        self.root.title("Iniciar terapia")
+
+        tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
+        # Cargamos todos los pacientes activos
+        paciente_var = tk.StringVar()
+        tk.Label(self.root, text="Seleccione paciente para terapia:").pack(pady=2)
+        tk.OptionMenu(self.root, paciente_var, *list(self.paciente_mapa.values())).pack(pady=10)
+
+        self._logger.info("Listamos cámaras")
+        graph = FilterGraph()
+        camaras = graph.get_input_devices()
+
+        # Variable para almacenar la cámara seleccionada
+        camara_var = tk.StringVar()
+
+        tk.Label(self.root, text="Seleccione cámara para la terapia:").pack(pady=2)
+        # Menú desplegable de cámaras
+        tk.OptionMenu(self.root, camara_var, *camaras).pack(pady=10)
+
+        # Botón para iniciar la terapia con la cámara seleccionada
+        tk.Button(self.root, text="Iniciar Terapia",
+                  command=lambda: self.comenzar_terapia(paciente_var.get(),camara_var.get(),camaras)).pack(pady=10)
+
+        # Actualiza la ventana principal
+        self.root.update_idletasks()
+        return None
+
+    def comenzar_terapia(self, paciente, camara, camaras):
         """
         Con el paciente seleccionado inicializamos las estadísticas.
         @param paciente: Paciente seleccionado para la terapia
         """
+        if not paciente or not camara:
+            notificacion = self.__mostrar_mensaje_exito(
+                "ERROR: Por favor, seleccione toda la información")
+            self.seleccionar_paciente_terapia(notificacion)
+
+
         self._logger.info("Comenzamos terapia")
         # Nos aseguramos que la variable con la que vamos a terminar la terapia este a false
         self.end = False
@@ -269,20 +309,9 @@ class VentanaInicioSesion:
         self.estadisticas = Estadistica.init_minimo(pacienteid,
                                                self.terapeuta.get_terapeuta_id(), date.today() ,datetime.now())
 
-        self.listar_camaras()
+        self._logger.info(" Iniciamos la terapia con usuario "+ str(paciente))
 
-    def listar_camaras(self):
-        """
-        Listamos las camaras disponibles para que el usuario elija la que quiere utilizar. Luego iniciamos la terpia
-        """
-        self._logger.info("Listamos cámaras")
-        graph = FilterGraph()
-        camaras = graph.get_input_devices()
-
-        # Crear un botón por cada cámara
-        for i, nombre in enumerate(camaras):
-            boton = tk.Button(self.root, text=nombre, command=lambda idx=i: self.camara_terapia(idx))
-            boton.pack(padx=10, pady=10)
+        self.camara_terapia(camaras.index(camara))
 
     def camara_terapia(self, camara):
         """
@@ -295,7 +324,7 @@ class VentanaInicioSesion:
         self._logger.info("[OK] Creada camara")
 
         self.__reset_page(None)
-
+        self.root.title("Terapia en curso")
         self.end = False  # Nos aseguramos de tener esta bandera en tu clase
         # Actualizamos las etiquetas porque se habrán eliminado
         self.label_video = tk.Label(self.root)
@@ -395,6 +424,7 @@ class VentanaInicioSesion:
         Formulario para añadir observaciones de la terapia una vez que haya finalizado
         """
         self.__reset_page(None)
+        self.root.title("Terapia finalizada. Añadir observaciones")
         tk.Label(self.root, text="Introduce tus observaciones:", font=("Arial", 12)).pack(pady=10)
 
         # Campo de texto grande
@@ -433,12 +463,17 @@ class VentanaInicioSesion:
         Damos a elegir al usuario el paciente del que vamos a mostrar las estdísticas
         @return: None
         """
+        self.__reset_page(None)
+
+        self.root.title("Seleccionar paciente estadísticas")
+        tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
+
         # Cargamos todos los terapeutas activos
         paciente_var = tk.StringVar()
         tk.Label(self.root, text="Seleccione paciente para ver las estadísticas:").pack(pady=2)
         tk.OptionMenu(self.root, paciente_var, *list(self.paciente_mapa.values())).pack(pady=10)
         # Botón para crear el objeto Paciente
-        tk.Button(self.root, text="Comenzar",
+        tk.Button(self.root, text="Ver estadísticas",
                   command=lambda: self.consultas_estadisticas_paciente(paciente_var.get())).pack()
         # Actualiza la ventana principal
         self.root.update_idletasks()
@@ -451,6 +486,7 @@ class VentanaInicioSesion:
         """
         self.__reset_page(None)
 
+        self.root.title(f"Estadísticas generales paciente {paciente_selected}")
         tk.Label(self.root, text=paciente_selected).pack(pady=2)
 
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
@@ -734,7 +770,7 @@ class VentanaInicioSesion:
         """
         print(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
         self.__reset_page(None)
-
+        self.root.title(f"Estadísticas terapia {estadistica.get_id_terapia()}")
         tk.Button(self.root, text="Volver", command=lambda: self.consultas_estadisticas_paciente(paciente)).pack(pady=10)
         figura = Figure(figsize=(10, 8), dpi=100)
         gs = figura.add_gridspec(2, 2)
@@ -1049,6 +1085,6 @@ class VentanaInicioSesion:
         return data or []
 
 if __name__ == "__main__":
-    interfaz = VentanaInicioSesion()
+    interfaz = AplicacionTEA()
     interfaz.comenzar_programa()
 

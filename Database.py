@@ -93,7 +93,7 @@ class DataBase:
 
             return pacientes
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
             return None
 
     def crear_paciente(self, nombre, apellido, edad, num_expediente, terapeuta_asignado, observaciones, telf_contacto):
@@ -112,11 +112,11 @@ class DataBase:
         """
         if ((nombre is None) or (apellido is None) or (num_expediente is None) or
                 (terapeuta_asignado is None)):
-            print("[DB] Error al introducir paciente en la base de datos, uno de los datos es None")
+            self._logger.error("[DB] Error al introducir paciente en la base de datos, uno de los datos es None")
             return False
         try:
             self.ensure_connection()
-            print("Edad: " + edad)
+            self._logger.info("Edad: " + edad)
             if edad is not "":
                 edad = int(edad)
             # Ejecuta la consulta para obtener datos de la tabla Paciente
@@ -126,10 +126,10 @@ class DataBase:
                                    telf_contacto))
             self.connection.commit()
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
             return False
         except ValueError:
-            print("[DB] Error, el formato de la edad no es el correcto")
+            self._logger.error("[DB] Error, el formato de la edad no es el correcto")
             return False
 
         return True
@@ -165,17 +165,17 @@ class DataBase:
             pacientes_data = self.cursor.fetchall()  # Obtiene todos los registros
 
             if pacientes_data:
-                print("[DB] Paciente obtenido con éxito")
+                self._logger.info("[DB] Paciente obtenido con éxito")
                 return Paciente(*pacientes_data[0])
             else:
-                print("[DB] Error en la consulta del paciente")
+                self._logger.error("[DB] Error en la consulta del paciente")
                 return None
 
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
             return None
         except IndexError as err:
-            print(f"[DB] Index error: {err}")
+            self._logger.error(f"[DB] Index error: {err}")
             return None
 
     def obtener_paciente_by_id(self, identificador):
@@ -192,17 +192,17 @@ class DataBase:
             pacientes_data = self.cursor.fetchall()  # Obtiene todos los registros
 
             if pacientes_data:
-                print("[DB] Paciente obtenido con éxito")
+                self._logger.info("[DB] Paciente obtenido con éxito")
                 return Paciente(*pacientes_data[0])
             else:
-                print("[DB] Error en la consulta del paciente")
+                self._logger.error("[DB] Error en la consulta del paciente")
                 return None
 
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
             return None
         except IndexError as err:
-            print(f"[DB] Index error: {err}")
+            self._logger.error(f"[DB] Index error: {err}")
             return None
 
     """ **************************************************************************************
@@ -228,7 +228,7 @@ class DataBase:
 
             return terapeutas
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
             return None
 
     def obtener_terapeuta_by_usuario_y_contrasena(self, usuario, contrasena):
@@ -245,8 +245,8 @@ class DataBase:
                                 (usuario, contrasena))
             terapeutas_data = self.cursor.fetchall()  # Obtiene todos los registros
 
-            print(terapeutas_data)
-            print(terapeutas_data[0])
+            self._logger.info(terapeutas_data)
+            self._logger.info(terapeutas_data[0])
 
             if terapeutas_data:
                 return Terapeuta(*terapeutas_data[0])
@@ -254,7 +254,7 @@ class DataBase:
                 return None
 
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
             return None
         except IndexError:
             return None
@@ -274,8 +274,8 @@ class DataBase:
                                 (nombre, apellido))
             terapeutas_data = self.cursor.fetchall()  # Obtiene todos los registros
 
-            print(terapeutas_data)
-            print(terapeutas_data[0])
+            self._logger.info(terapeutas_data)
+            self._logger.info(terapeutas_data[0])
 
             if terapeutas_data:
                 return Terapeuta(*terapeutas_data[0])
@@ -283,7 +283,7 @@ class DataBase:
                 return None
 
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
             return None
 
     """ **************************************************************************************
@@ -301,7 +301,7 @@ class DataBase:
         if ((estadistica.get_paciente_id() is None) or (estadistica.get_terapeuta_id() is None) or
                 (estadistica.get_horacomienzo() is None) or (estadistica.get_fecha() is None) or
                 (estadistica.get_horafin() is None) or (estadistica.get_tiempototal() is None)):
-            print("[DB] Error al introducir la estadística en la base de datos, uno de los datos Not Null es None")
+            self._logger.error("[DB] Error al introducir la estadística en la base de datos, uno de los datos Not Null es None")
             return False
         try:
             self.ensure_connection()
@@ -324,12 +324,12 @@ class DataBase:
                                    estadistica.get_atenciontotal(), estadistica.get_fecha(),
                                    estadistica.get_horacomienzo(), estadistica.get_horafin(),
                                    estadistica.get_tiempototal(), estadistica.get_observaciones()))
-            print("[DB] Creada la consulta")
+            self._logger.info("[DB] Creada la consulta")
             self.connection.commit()
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla EstadisticasTerapias: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla EstadisticasTerapias: {err}")
             return False
-        print("[DB] Estadístia añadida con éxito")
+        self._logger.info("[DB] Estadístia añadida con éxito")
         return True
 
     def obtener_estadisticas_by_paciente(self, idpaciente):
@@ -354,10 +354,10 @@ class DataBase:
             return estadisticas
 
         except mysql.connector.Error as err:
-            print(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
+            self._logger.error(f"[DB] Error al obtener datos de la tabla Paciente: {err}")
             return None
         except IndexError as err:
-            print(f"[DB] Index error: {err}")
+            self._logger.error(f"[DB] Index error: {err}")
             return None
 
     def cerrar_conexion(self):

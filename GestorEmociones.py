@@ -5,15 +5,22 @@ import numpy as np
 import cv2
 from deepface import DeepFace
 
+from LoggerManager import LoggerManager
+
+
 class GestorEmociones:
     """
     Clase donde vamos a realizar el análisis de las emociones
     """
     def __init__(self):
 
+        # Inicializamos los logs:
+        self._logger = LoggerManager.get_logger()
+
         """*****************
         VARIABLES DE DATOS
         ******************"""
+        self._logger.info("[GESTOR EMOCIONES] Creamos las variables de datos")
         # Mediante esta variable controlaremos cuál es la emoción actual y sabremos si esta ha cambiado
         self._emocionActual = Emociones.NONE.value
         # Mediante esta variable sabremos cuando hemos empezado a detectar una emoción.
@@ -30,6 +37,7 @@ class GestorEmociones:
 
         # Emociones suavizadas
         self._smoothEmotions = None
+        self._logger.info("[GESTOR EMOCIONES] Variables de datos creadas")
 
     def detectar_emocion(self, frame, face , tiempo):
         """
@@ -42,11 +50,13 @@ class GestorEmociones:
             - Dict[str, float]: Diccionario de las emociones analizadas con su probabilidad.
             - (x, y, w, h ): Coordenadas de la cara detectada y recortada
         """
+        self._logger.info("[GESTOR EMOCIONES] Detectamos emoción")
 
         # Vemos si deberíamos de actualizar el tiempo actual
         self.__actualizar_tiempo(tiempo)
 
         if not face:
+            self._logger.info("[GESTOR EMOCIONES] No se ha detectado cara")
             self.__cambiar_emocion(tiempo, Emociones.NONE.value)
             return self._emocionActual, None, None
 
@@ -59,7 +69,7 @@ class GestorEmociones:
 
             analysis = DeepFace.analyze(face_crop, actions=['emotion'], detector_backend='skip',  enforce_detection=False)
 
-
+            self._logger.info("[GESTOR EMOCIONES] Emociones analizadas")
             # Obtenemos el diccionario de las emociones detectadas junto a su %
             emotions = analysis[0]['emotion']
 
@@ -71,10 +81,12 @@ class GestorEmociones:
 
             self.__registrar_emocion(dominant_emotion, tiempo)
 
+            self._logger.info("[GESTOR EMOCIONES] Análisis realizado")
+
             return self._emocionActual, self._smoothEmotions, face
 
         except Exception as e:
-            print(f"[ERROR] en detección de emoción: {e}")
+            self._logger.error(f"[GESTOR EMOCIONES] en detección de emoción: {e}")
             return self._emocionActual, None, None
 
     def suavizar_emociones(self, emotions, alpha=0.5):
@@ -84,6 +96,7 @@ class GestorEmociones:
         @param alpha: Suavizado de 0.5
         @return: None
         """
+        self._logger.info("[GESTOR EMOCIONES] Suavizamos las emociones")
         if self._smoothEmotions is None:
             self._smoothEmotions = emotions
         else:
@@ -91,6 +104,7 @@ class GestorEmociones:
                 k: alpha * emotions[k] + (1 - alpha) * self._smoothEmotions[k]
                 for k in emotions
             }
+        self._logger.info("[GESTOR EMOCIONES] Emociones suavizadas")
 
     def __registrar_emocion(self, emocion, tiempo):
         """
@@ -99,9 +113,11 @@ class GestorEmociones:
         @param tiempo: Segundo actual
         @return:
         """
+        self._logger.info("[GESTOR EMOCIONES] Registramos la emoción")
         # Para el caso de que el segundo actual sea el mismo, entonces solo cambiaremos de emocion si ha aparecido una
         # emocion distinta y esta no es prioritaria (no es NONE).
         if tiempo == self._tiempo and emocion != self._emocionActual and emocion != Emociones.NONE:
+            self._logger.info("[GESTOR EMOCIONES] Emoción distinta detectada")
             self.__cambiar_emocion(tiempo, emocion)
         # Si hemos cambiado de tiempo y la emoción es distinta,entonces cambiamos la emocion actual
         if tiempo != self._tiempo and emocion != self._emocionActual:

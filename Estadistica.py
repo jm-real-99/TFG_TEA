@@ -3,6 +3,8 @@ import numpy as np
 import time
 import json
 
+from LoggerManager import LoggerManager
+
 
 class Estadistica:
     """
@@ -12,6 +14,9 @@ class Estadistica:
                  disgustado, disgustadototal, miedoso, miedosototal, contento, contentototal,
                  triste, tristetotal, sorprendido, sorprendidototal, neutro, neutrototal, atencion, atenciontotal, fecha,
                  horacomienzo, horafin, tiempototal, observaciones):
+        # Inicializamos los logs:
+        self._logger = LoggerManager.get_logger()
+
         self._id_terapia = id_terapia
         self._paciente_id = paciente_id
         self._terapeuta_id = terapeuta_id
@@ -49,7 +54,6 @@ class Estadistica:
         @param hora_comienzo: Hora comienzo de la terapia
         @return: Entidad Estadística creada.
         """
-        print("[ESTADISTICA] Creamos estadística minima")
         return cls(None, paciente_id, terapeuta_id, None, 0,
                    None, 0, None, 0, None, 0,
                    None, 0, None, 0, None, 0, None, 0,fecha,
@@ -218,6 +222,7 @@ class Estadistica:
         @param intervalos_emociones: Diccionario con las emociones expresadas a lo largo de la terapia
         @return: None
         """
+        self._logger.info("[ESTADÍSTICAS] Convertimos las emociones a formato JSON")
         for emo in Emociones:
             emocion = emo.value
             texto = ''
@@ -241,6 +246,7 @@ class Estadistica:
             elif emo == Emociones.NEUTRO:
                 self._neutro = "[" + texto + "]"
             # Ignoramos si el valor es NONE
+        self._logger.info("[ESTADÍSTICAS] Convertidas las emociones a formato JSON exitosamente")
     """
             Como nosotros recogemos los datos como un a matriz, ahora tenemos que convertirlos a JSON
     """
@@ -250,6 +256,7 @@ class Estadistica:
         @param intervalos_atencion: Diccionario con los intervalos de la atención
         @return: None
         """
+        self._logger.info("[ESTADÍSTICAS] Convertimos la atención a formato JSON")
         texto = ''
         for intervalo in intervalos_atencion:
             inicio, final = intervalo
@@ -257,12 +264,14 @@ class Estadistica:
         # Eliminamos los dos últimos carácteres porque serán una coma y un espacio
         texto = texto[:-2]
         self._atencion = "[" + texto + "]"
+        self._logger.info("[ESTADÍSTICAS] Convertida las atención a formato JSON con éxito")
 
     def get_emocion_mas_expresada(self):
         """
         Obtenemos la emoción más expresada
         @return: Emoción más expresada
         """
+        self._logger.info("[ESTADÍSTICAS] Obtenemos la expresión más expresada")
         emociones = [(self._contentototal, Emociones.CONTENTO), (self._disgustadototal, Emociones.DISGUSTADO),
                      (self._enfadadototal, Emociones.ENFADO), (self._tristetotal, Emociones.TRISTE),
                      (self._miedosototal, Emociones.MIEDOSO), (self._sorprendidototal, Emociones.SORPRENDIDO),
@@ -274,6 +283,7 @@ class Estadistica:
         Obtenemos los porcentajes de las emociones
         @return: Array de los porcentajes para cada emoción
         """
+        self._logger.info("[ESTADÍSTICAS] Obtenemos los porcentajes de las emociones")
         return [self._enfadadototal/self._tiempototal , self._disgustadototal/self._tiempototal ,
                 self._miedosototal/self._tiempototal , self._contentototal/self._tiempototal ,
                 self._tristetotal/self._tiempototal , self._sorprendidototal/self._tiempototal ,

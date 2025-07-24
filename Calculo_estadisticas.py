@@ -1,5 +1,6 @@
 from Estadistica import Estadistica
 from Emociones import Emociones
+from LoggerManager import LoggerManager
 
 
 class Calculo_estadisticas():
@@ -7,6 +8,10 @@ class Calculo_estadisticas():
     En esta clase vamos a realizar los cálculos necesarios para obtener las estadísticas generales de todas las terapias
     """
     def __init__(self, estadisticas):
+
+        # Inicializamos los logs:
+        self._logger = LoggerManager.get_logger()
+
         self.estadisticas = estadisticas
         # Primero vamos a mostrar estadísticas generales
         self.num_terapias = 0
@@ -48,13 +53,16 @@ class Calculo_estadisticas():
         self.mejora_inicio_atencion = 0
         self.mejora_tendencia_atencion = 0
         self.emocion_mas_expresada = None
+        self._logger.info("Creadas las estadísticas")
 
     def inicializarDatos(self):
         """
         Creamos las estadísticas los datos con las estadísticas.
         @return: None
         """
+        self._logger.info("Inicializamos los datos de las estadísticas")
         if not self.estadisticas:
+            self._logger.error("No hay estadísticas")
             return None
 
         self.num_terapias = len(self.estadisticas)
@@ -184,6 +192,8 @@ class Calculo_estadisticas():
             incremento.append(mejora_atencion[i+1]-mejora_atencion[i])
 
         self.mejora_tendencia_atencion = sum(incremento) / len(incremento)
+
+        self._logger.info("Calculadas las estadísticas con éxito")
 
     def __calcular_porcentaje(self, numero, total, default=0.0):
         """

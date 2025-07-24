@@ -191,7 +191,7 @@ class AplicacionTEA:
         # Cargamos todos los terapeutas activos
         tk.Label(self.root, text="Terapeuta Asignado *:").pack(pady=2)
         tk.OptionMenu(self.root, terapeuta_asignado_var, *list(self.terapeuta_mapa.values())).pack(pady=10)
-        print(terapeuta_asignado_var.get())
+        self._logger.info(terapeuta_asignado_var.get())
         tk.Label(self.root, text="Observaciones:").pack(pady=2)
         tk.Entry(self.root, textvariable=observaciones_var, font=("Arial", self.CAMPO_INPUT[0]),
                  width=self.CAMPO_INPUT[1]).pack(pady=10)
@@ -224,8 +224,8 @@ class AplicacionTEA:
         @param telf_contacto_var: Teléfono de contato del paciente
         """
 
-        print("Terapeuta asignado: " + terapeuta_asignado_var)
-        print(" Num_Exp: "+num_expediente_var)
+        self._logger.info("Terapeuta asignado: " + terapeuta_asignado_var)
+        self._logger.info(" Num_Exp: "+num_expediente_var)
         try:
             if terapeuta_asignado_var is None:
                 notificacion = self.__mostrar_mensaje_exito(
@@ -248,6 +248,7 @@ class AplicacionTEA:
         except Exception:
             notificacion = self.__mostrar_mensaje_exito(
                 "ERROR: Ha ocurrido algún error gestionando la petición")
+            self._logger.error("Ha ocurrido algún error gestionando la petición")
             self.formulario_crear_paciente(notificacion)
 
 
@@ -764,7 +765,7 @@ class AplicacionTEA:
         os.remove(imagen_path)  # Eliminar imagen temporal
 
         self.__mostrar_mensaje_exito(f"PDF creado con éxito en la ruta {pdf_path}")
-        print(f"[INFO] PDF guardado en: {pdf_path}")
+        self._logger.info(f"[INFO] PDF guardado en: {pdf_path}")
 
     def mostrar_estadisticas_terapia(self, estadistica, paciente):
         """
@@ -772,7 +773,7 @@ class AplicacionTEA:
         @param estadistica: estadísticas de la terapia
         @param paciente: Paciente seleccionado.
         """
-        print(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
+        self._logger.info(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
         self.__reset_page(None)
         self.root.title(f"Estadísticas terapia {estadistica.get_id_terapia()}")
         tk.Button(self.root, text="Volver", command=lambda: self.consultas_estadisticas_paciente(paciente)).pack(pady=10)
@@ -995,7 +996,7 @@ class AplicacionTEA:
         os.remove(imagen_path)  # Eliminar imagen temporal
 
         self.__mostrar_mensaje_exito(f"PDF creado con éxito en la ruta {pdf_path}")
-        print(f"[INFO] PDF guardado en: {pdf_path}")
+        self._logger.info(f"[INFO] PDF guardado en: {pdf_path}")
 
     """ **************************************************************************************
         ****************************** MÉTODOS AUXILIARES ************************************
@@ -1088,7 +1089,7 @@ class AplicacionTEA:
                 parsed = data
                 return json.loads(parsed)
             except json.JSONDecodeError as e:
-                print(f"[ERROR] Al parsear a json los intervalos: {e}")
+                self._logger.error(f"[ERROR] Al parsear a json los intervalos: {e}")
                 return []
         return data or []
 

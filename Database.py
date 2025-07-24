@@ -58,6 +58,19 @@ class DataBase:
         except mysql.connector.Error as err:
             self._logger.error(f"[DB] Error al conectar a la base de datos: {err}")
 
+    def ensure_connection(self):
+        """
+        Comprueba si la conexión sigue activa y la reconecta si está cerrada.
+        """
+        if not self.connection.is_connected():
+            self._logger.warning("[DB] Conexión perdida. Reintentando conexión...")
+            try:
+                self.connection.reconnect(attempts=3, delay=2)
+                self.cursor = self.connection.cursor()
+                self._logger.info("[DB] Reconexión establecida.")
+            except mysql.connector.Error as err:
+                self._logger.error(f"[DB] No se pudo reconectar: {err}")
+
     """ **************************************************************************************
         *********************** MÉTODOS RELACIONADOS CON LOS PACIENTES ***********************
         ************************************************************************************** """
@@ -67,6 +80,7 @@ class DataBase:
         @return: Lista de los pacientes
         """
         try:
+            self.ensure_connection()
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("SELECT * FROM Pacientes")
             pacientes_data = self.cursor.fetchall()  # Obtiene todos los registros
@@ -101,6 +115,7 @@ class DataBase:
             print("[DB] Error al introducir paciente en la base de datos, uno de los datos es None")
             return False
         try:
+            self.ensure_connection()
             print("Edad: " + edad)
             if edad is not "":
                 edad = int(edad)
@@ -131,6 +146,7 @@ class DataBase:
             True si se ha creado con éxito
             False si ha ocurrido algún error
         """
+        self.ensure_connection()
         return self.crear_paciente(paciente.get_nombre(), paciente.get_apellido(), paciente.get_edad(),
                                    paciente.get_num_expediente(), paciente.get_terapeuta_asignado(),
                                    paciente.get_observaciones(), paciente.get_telf_contacto())
@@ -142,6 +158,7 @@ class DataBase:
         @return: Paciente
         """
         try:
+            self.ensure_connection()
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("SELECT * FROM Pacientes WHERE num_expediente  = %s",
                                 [num_expediente])
@@ -168,6 +185,7 @@ class DataBase:
         @return: Paciente
         """
         try:
+            self.ensure_connection()
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("SELECT * FROM Pacientes WHERE id  = %s",
                                 [identificador])
@@ -197,6 +215,7 @@ class DataBase:
         @return:
         """
         try:
+            self.ensure_connection()
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("SELECT * FROM Terapeutas")
             terapeutas_data = self.cursor.fetchall()  # Obtiene todos los registros
@@ -220,6 +239,7 @@ class DataBase:
         @return: Terapeuta
         """
         try:
+            self.ensure_connection()
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("SELECT * FROM Terapeutas WHERE usuario = %s AND contrasena = %s",
                                 (usuario, contrasena))
@@ -248,6 +268,7 @@ class DataBase:
         @return:
         """
         try:
+            self.ensure_connection()
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("SELECT * FROM Terapeutas WHERE nombre = %s AND apellido = %s",
                                 (nombre, apellido))
@@ -283,6 +304,7 @@ class DataBase:
             print("[DB] Error al introducir la estadística en la base de datos, uno de los datos Not Null es None")
             return False
         try:
+            self.ensure_connection()
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("INSERT INTO EstadisticasTerapias (paciente_id, terapeuta_id, enfadado, "
                                 "enfadadototal, disgustado, disgustadototal, miedoso, miedosototal, contento, "
@@ -317,6 +339,7 @@ class DataBase:
         @return: Array de estadisticas
         """
         try:
+            self.ensure_connection()
             # Ejecuta la consulta para obtener datos de la tabla Paciente
             self.cursor.execute("SELECT * FROM EstadisticasTerapias WHERE paciente_id  = %s",
                                 [idpaciente])

@@ -524,20 +524,20 @@ class AplicacionTEA:
         # == Añadimos los campos ==
 
         # Frame principal
-        main_frame = tk.Frame(scroll_frame)
-        main_frame.pack(fill=tk.BOTH, expand=True)
+        content_frame = tk.Frame(scroll_frame)
+        content_frame.pack(fill=tk.BOTH, expand=True)
 
         # Frame para los gráficos
-        frame_graficos = tk.Frame(scroll_frame)
+        frame_graficos = tk.Frame(content_frame)
         frame_graficos.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # Frame para los botones y etiquetas
-        frame_info = tk.Frame(scroll_frame)
+        frame_info = tk.Frame(content_frame)
         frame_info.pack(side=tk.TOP, fill=tk.X, pady=10, expand=True)
 
 
         # Creamos un frame para contener los botones de terapias individuales
-        botones_frame = tk.Frame(scroll_frame)
+        botones_frame = tk.Frame(content_frame)
         botones_frame.pack(side=tk.TOP, fill=tk.X, pady=10, expand=True)
 
         figura = Figure(figsize=(10, 8), dpi=100)
@@ -555,18 +555,18 @@ class AplicacionTEA:
         figura.tight_layout()
 
         # Estadísticas de texto
-        tk.Label(frame_info, text=f"Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones():.2f}").pack(pady=2)
+        tk.Label(frame_info, text=f"Mejora desde el inicio en la expresión de emociones: {calculo_estadisticas.mejora_inicio_expresion_emociones:.2f}").pack(pady=2)
         tk.Label(frame_info,
-                 text=f"Tendencia en la mejora de expresión de emociones: {calculo_estadisticas.mejora_tendencia_expresion_emociones():.2f}").pack(
+                 text=f"Tendencia en la mejora de expresión de emociones: {calculo_estadisticas.mejora_tendencia_expresion_emociones:.2f}").pack(
             pady=2)
         tk.Label(frame_info,
-                 text=f"Mejora desde el inicio en la atención: {calculo_estadisticas.mejora_inicio_atencion():.2f}").pack(
+                 text=f"Mejora desde el inicio en la atención: {calculo_estadisticas.mejora_inicio_atencion:.2f}").pack(
             pady=2)
         tk.Label(frame_info,
-                 text=f"Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion():.2f}").pack(
+                 text=f"Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion:.2f}").pack(
             pady=2)
         tk.Label(frame_info,
-                 text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada().name}").pack(
+                 text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}").pack(
             pady=2)
 
         tk.Button(frame_info, text="Exportar a PDF",
@@ -605,11 +605,15 @@ class AplicacionTEA:
 
         # Creamos un gráfico de tarta
         ax1 = figura.add_subplot(gs[0, 0])  # Gráfico de tarta
-        if all(x == 0.0 for x in valores_emociones_porcentaje):
-            # Crear gráfico de tarta
+        # Filtramos los valores y etiquetas para omitir los ceros
+        valores_filtrados = [v for v in valores_emociones_porcentaje if v > 0]
+        etiquetas_filtradas = [e for v, e in zip(valores_emociones_porcentaje, emociones_etiquetas) if v > 0]
+
+        # Crear gráfico de tarta
+        if not valores_filtrados:
             ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
         else:
-            ax1.pie(valores_emociones_porcentaje, labels=emociones_etiquetas, autopct='%1.1f%%')
+            ax1.pie(valores_filtrados, labels=etiquetas_filtradas, autopct='%1.1f%%')
         ax1.set_title('% expresión global de emociones')
 
     def mostrar_grafico_barra_emociones_general(self, calculo_estadisticas, figura, gs):
@@ -891,11 +895,15 @@ class AplicacionTEA:
                                Emociones.TRISTE.name, Emociones.SORPRENDIDO.name, Emociones.NEUTRO.name]
         emociones_porcentajes = estadistica.get_emociones_porcentajes()
         ax1 = figura.add_subplot(gs[1, :])  # Gráfico de tarta
-        if all(x == 0.0 for x in emociones_porcentajes):
-            # Crear gráfico de tarta
+        # Filtramos los valores y etiquetas para omitir los ceros
+        valores_filtrados = [v for v in emociones_porcentajes if v > 0]
+        etiquetas_filtradas = [e for v, e in zip(emociones_porcentajes, emociones_etiquetas) if v > 0]
+
+        # Crear gráfico de tarta
+        if not valores_filtrados:
             ax1.pie([100], labels=[Emociones.NONE.name], autopct='%1.1f%%')
         else:
-            ax1.pie(emociones_porcentajes, labels=emociones_etiquetas, autopct='%1.1f%%')
+            ax1.pie(valores_filtrados, labels=etiquetas_filtradas, autopct='%1.1f%%')
 
         ax1.set_title('% expresión global de emociones')
 

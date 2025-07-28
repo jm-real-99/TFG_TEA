@@ -327,12 +327,14 @@ class AplicacionTEA:
         self.__reset_page(None)
         self.root.title("Terapia en curso")
         self.end = False  # Nos aseguramos de tener esta bandera en tu clase
-        # Actualizamos las etiquetas porque se habrán eliminado
-        self.label_video = tk.Label(self.root)
-        self.label_video.pack(side=tk.LEFT)
+
 
         btn_parar = tk.Button(self.root, text="Parar Terapia", command= lambda: self.parar_terapia(camara))
         btn_parar.pack(pady=10)
+        
+        # Actualizamos las etiquetas porque se habrán eliminado
+        self.label_video = tk.Label(self.root)
+        self.label_video.pack(side=tk.LEFT)
 
         # Frame para la gráfica
         self.frame_grafica = tk.Frame(self.root)

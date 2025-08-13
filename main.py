@@ -331,7 +331,7 @@ class AplicacionTEA:
 
         btn_parar = tk.Button(self.root, text="Parar Terapia", command= lambda: self.parar_terapia(camara))
         btn_parar.pack(pady=10)
-        
+
         # Actualizamos las etiquetas porque se habrán eliminado
         self.label_video = tk.Label(self.root)
         self.label_video.pack(side=tk.LEFT)
@@ -577,14 +577,17 @@ class AplicacionTEA:
             pady=10)
 
         # Botones por cada terapia individual
-        for estadistica in estadisticas:
+        max_botones_por_fila = 12
+        for i, estadistica in enumerate(estadisticas):
+            fila = i // max_botones_por_fila
+            columna = i % max_botones_por_fila
 
             btn = tk.Button(
                 botones_frame,
                 text=f"Terapia {estadistica.get_fecha()}",
                 command=lambda est=estadistica: self.mostrar_estadisticas_terapia(est, paciente_selected)
             )
-            btn.pack(side=tk.LEFT, padx=5)
+            btn.grid(row=fila, column=columna, padx=5, pady=5, sticky="ew")
 
 
 

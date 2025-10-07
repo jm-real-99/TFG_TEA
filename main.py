@@ -37,8 +37,9 @@ class AplicacionTEA:
     # Variables globales
     VENTANA = (400, 300)
     VENTANA_NOTI = (100, 50)
-    BOTON = (4, 2)
-    CAMPO_INPUT = (14, 40)
+    BOTON = (20, 10)
+    CAMPO_INPUT = (40, 60)
+    TEXT_SIZE = 12
 
     def __init__(self):
         """
@@ -58,6 +59,22 @@ class AplicacionTEA:
 
         self._logger.info("Creamos la ventana")
         self.root = tk.Tk()
+
+        # Estilo global para botones
+        self.root.option_add("*Button.font", ("Arial", self.TEXT_SIZE))
+        self.root.option_add("*Button.padX", self.BOTON[0])
+        self.root.option_add("*Button.padY", self.BOTON[1])
+
+        # Estilo global para labels
+        self.root.option_add("*Label.font", ("Arial", self.TEXT_SIZE))
+
+        # Estilo global para optionMenu
+        self.root.option_add("*Menubutton.font", ("Arial", self.TEXT_SIZE))
+        self.root.option_add("*Menu.font", ("Arial", self.TEXT_SIZE))
+
+        # Pantalla completa
+        self.root.attributes("-fullscreen", True)
+        self.root.bind("<Escape>", lambda e: self.root.attributes("-fullscreen", False))
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         self.root.geometry(f"{screen_width}x{screen_height}")
@@ -85,7 +102,7 @@ class AplicacionTEA:
         Comenzamos iniciando la sesión del terapeuta
         """
         self._logger.info("Comenzamos mostrando la ventana")
-        self.root.minsize(width=self.VENTANA[0], height=self.VENTANA[1])
+        # self.root.minsize(width=self.VENTANA[0], height=self.VENTANA[1])
         self.formulario_inicio_sesion()
         self.root.mainloop()
 
@@ -577,7 +594,7 @@ class AplicacionTEA:
             pady=10)
 
         # Botones por cada terapia individual
-        max_botones_por_fila = 12
+        max_botones_por_fila = 8
         for i, estadistica in enumerate(estadisticas):
             fila = i // max_botones_por_fila
             columna = i % max_botones_por_fila

@@ -9,6 +9,8 @@ from PIL import Image, ImageTk
 from LoggerManager import LoggerManager
 
 import tkinter as tk
+import ttkbootstrap as tb
+
 from datetime import datetime, date
 from Paciente import Paciente
 from Terapeuta import Terapeuta
@@ -58,27 +60,24 @@ class AplicacionTEA:
         self.database = DataBase(base_dir)
 
         self._logger.info("Creamos la ventana")
-        self.root = tk.Tk()
+
+        #Estilos con bootstrap
+        self.root = tb.Window(themename="flatly")
+
+        # Pantalla completa
+        self.root.attributes("-fullscreen", True)
+        self.root.bind("<Escape>", lambda e: self.root.attributes("-fullscreen", False))
+        self._logger.info("Ventana creada")
 
         # Estilo global para botones
         self.root.option_add("*Button.font", ("Arial", self.TEXT_SIZE))
         self.root.option_add("*Button.padX", self.BOTON[0])
         self.root.option_add("*Button.padY", self.BOTON[1])
-
         # Estilo global para labels
         self.root.option_add("*Label.font", ("Arial", self.TEXT_SIZE))
-
         # Estilo global para optionMenu
         self.root.option_add("*Menubutton.font", ("Arial", self.TEXT_SIZE))
         self.root.option_add("*Menu.font", ("Arial", self.TEXT_SIZE))
-
-        # Pantalla completa
-        self.root.attributes("-fullscreen", True)
-        self.root.bind("<Escape>", lambda e: self.root.attributes("-fullscreen", False))
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
-        self.root.geometry(f"{screen_width}x{screen_height}")
-        self._logger.info("Ventana creada")
 
         self.terapeuta = None
         self.paciente_mapa = self.__obtener_mapa_pacientes()

@@ -209,6 +209,42 @@ class DataBase:
         *********************** MÉTODOS RELACIONADOS CON LOS TERAPEUTAS ***********************
         ************************************************************************************** """
 
+    def crear_terapeuta(self, usuario, contrasena, nombre, apellido, correo, admin):
+        """
+        Creamos un nuevo terapeuta por sus atributos
+        @param usuario: Usuario del terapeuta
+        @param contrasena: Contraseña del terapeuta
+        @param nombre: Nombre del terapeuta
+        @param apellido: Apellido del terapeuta
+        @param correo: Correo electrónico del terapeuta
+        @param admin: Booleano que indica si es administrador
+        @return: Booleano
+            True si se ha creado con éxito
+            False si ha ocurrido algún error
+        """
+        if ((usuario is None) or (contrasena is None) or (nombre is None) or
+                (apellido is None) or (correo is None)):
+            self._logger.error("[DB] Error al introducir terapeuta en la base de datos, uno de los datos es None")
+            return False
+
+        try:
+            self.ensure_connection()
+            self._logger.info(f"[DB] Creando terapeuta: {usuario}")
+
+            # Insertamos en la tabla Terapeutas
+            self.cursor.execute(
+                "INSERT INTO Terapeutas (usuario, contrasena, nombre, apellido, correo, admin) "
+                "VALUES (%s, %s, %s, %s, %s, %s);",
+                (usuario, contrasena, nombre, apellido, correo, admin)
+            )
+            self.connection.commit()
+
+        except mysql.connector.Error as err:
+            self._logger.error(f"[DB] Error al insertar terapeuta en la base de datos: {err}")
+            return False
+
+        return True
+
     def obtener_all_terapeutas(self):
         """
         Obtenemos una lista de todos los terapeutas
@@ -258,7 +294,6 @@ class DataBase:
             return None
         except IndexError:
             return None
-
 
     def obtener_terapeuta_by_nombre_y_apellido(self, nombre, apellido):
         """

@@ -159,17 +159,20 @@ class AplicacionTEA:
         self.root.title("Menú principal")
         tk.Button(self.root, text="Dar de alta paciente", command=lambda: self.formulario_crear_paciente(None)).pack(
             pady=10)
+        if self.terapeuta.get_admin():
+            tk.Button(self.root, text="Dar de alta terapeuta",
+                      command=lambda: self.formulario_crear_terapeuta(None)).pack(
+                pady=10)
         tk.Button(self.root, text="Consultar estadísticas", command=self.consultar_estadisticas).pack(
             pady=10)
         tk.Button(self.root, text="Iniciar terapia", command=lambda:self.seleccionar_paciente_terapia(None)).pack(pady=10)
-        # tk.Button(self.root, text="Iniciar terapia", command=self.comenzar_terapia).pack(pady=10)
-
+    
         # Actualiza la ventana principal
         self.root.update_idletasks()
 
-    """
-        
-    """
+    """ **************************************************************************************
+    ****************** MÉTODOS RELACIONADOS CON LA CREACIÓN DE PACIENTES *******************
+    ************************************************************************************** """
 
     def formulario_crear_paciente(self, notificacion):
         """
@@ -269,9 +272,111 @@ class AplicacionTEA:
 
 
     """ **************************************************************************************
-    ****************** MÉTODOS RELACIONADOS CON LA EJECUCIÓN DE LA TERAPIA *******************
+    ****************** MÉTODOS RELACIONADOS CON LA CREACIÓN DE TERAPEUTAS *******************
     ************************************************************************************** """
 
+    def formulario_crear_terapeuta(self, notificacion):
+        """
+        Gestionamos la ventana donde tendremos el formulario de alta de los terapeutas
+        @param notificacion: Notificación a mostrar en caso de que queramos hacerlo
+        """
+        self.__reset_page(notificacion)
+
+        self.root.title("Crear terapeuta")
+        tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
+
+        # Variables del formulario
+        usuario_var = tk.StringVar()
+        contrasena_var = tk.StringVar()
+        nombre_var = tk.StringVar()
+        apellido_var = tk.StringVar()
+        correo_var = tk.StringVar()
+        admin_var = tk.StringVar(value="No")
+
+        # Campos del formulario
+        tk.Label(self.root, text="Usuario *:").pack(pady=2)
+        tk.Entry(self.root, textvariable=usuario_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
+
+        tk.Label(self.root, text="Contraseña *:").pack(pady=2)
+        tk.Entry(self.root, show="*", textvariable=contrasena_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
+
+        tk.Label(self.root, text="Nombre *:").pack(pady=2)
+        tk.Entry(self.root, textvariable=nombre_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
+
+        tk.Label(self.root, text="Apellido *:").pack(pady=2)
+        tk.Entry(self.root, textvariable=apellido_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
+
+        tk.Label(self.root, text="Correo *:").pack(pady=2)
+        tk.Entry(self.root, textvariable=correo_var, font=("Arial", self.CAMPO_INPUT[0]),
+                 width=self.CAMPO_INPUT[1]).pack(pady=10)
+
+        # Selector de rol administrador
+        tk.Label(self.root, text="¿Administrador?:").pack(pady=2)
+        tk.OptionMenu(self.root, admin_var, "Sí", "No").pack(pady=10)
+
+        tk.Label(self.root, text="* Campos obligatorios", font=("Arial", 8)).pack(pady=2)
+
+        # Botón para crear terapeuta
+        tk.Button(
+            self.root,
+            text="Crear Terapeuta",
+            command=lambda: self.crear_terapeuta(
+                usuario_var.get(),
+                contrasena_var.get(),
+                nombre_var.get(),
+                apellido_var.get(),
+                correo_var.get(),
+                admin_var.get()
+            )
+        ).pack(pady=10)
+
+        self.root.update_idletasks()
+
+    def crear_terapeuta(self, usuario, contrasena, nombre, apellido, correo, admin):
+        """
+        Gestionamos la validación y creación del terapeuta en la base de datos
+        @param usuario: Usuario del terapeuta
+        @param contrasena: Contraseña del terapeuta
+        @param nombre: Nombre del terapeuta
+        @param apellido: Apellido del terapeuta
+        @param correo: Correo electrónico del terapeuta
+        @param admin: Rol de administrador ("Sí" o "No")
+        """
+        try:
+            self._logger.info(f"Creando terapeuta: {usuario}")
+
+            # Validación básica
+            if not usuario or not contrasena or not nombre or not apellido or not correo:
+                notificacion = self.__mostrar_mensaje_exito("ERROR: Por favor, rellene todos los campos obligatorios.")
+                self.formulario_crear_terapeuta(notificacion)
+                return
+
+            es_admin = True if admin == "Sí" else False
+
+            # Llamada a la base de datos
+            if self.database.crear_terapeuta(usuario, contrasena, nombre, apellido, correo, es_admin):
+                # Actualizamos el mapa de terapeutas para mantener sincronía
+                terapeuta = self.database.obtener_terapeuta_by_usuario_y_contrasena(usuario,contrasena)
+                self.terapeuta_mapa[f"{terapeuta.get_nombre()} {terapeuta.get_apellido()}"] = terapeuta
+
+                notificacion = self.__mostrar_mensaje_exito(f"Terapeuta '{nombre} {apellido}' creado con éxito.")
+                self.mostrar_main(notificacion)
+            else:
+                notificacion = self.__mostrar_mensaje_exito("ERROR: No se ha podido crear el terapeuta.")
+                self.formulario_crear_terapeuta(notificacion)
+
+        except Exception as e:
+            self._logger.error(f"Error al crear terapeuta: {e}")
+            notificacion = self.__mostrar_mensaje_exito("ERROR: Ha ocurrido un error gestionando la petición.")
+            self.formulario_crear_terapeuta(notificacion)
+
+    """ **************************************************************************************
+        ****************** MÉTODOS RELACIONADOS CON LA EJECUCIÓN DE LA TERAPIA *******************
+        ************************************************************************************** """
     def seleccionar_paciente_terapia(self, notificacion):
         """
         Mostramos los pacientes y las camaras disponibles para hacer la terapia.

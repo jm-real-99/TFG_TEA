@@ -344,9 +344,9 @@ class DataBase:
             self.cursor.execute("INSERT INTO EstadisticasTerapias (paciente_id, terapeuta_id, enfadado, "
                                 "enfadadototal, disgustado, disgustadototal, miedoso, miedosototal, contento, "
                                 "contentototal, triste, tristetotal, sorprendido, sorprendidototal, neutro, "
-                                "neturototal, atencion, atenciontotal, fecha, fechahoracomienzo, fechahorafin, tiempototal, "
+                                "neturototal, atencion, atenciontotal, fecha, fechahoracomienzo, fechahorafin, tiempototal, cambios_bruscos "
                                 "observaciones) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,"
-                                " %s, %s, %s,  %s, %s, %s, %s);"
+                                " %s, %s, %s,  %s, %s, %s, %s, %s);"
                                 , (estadistica.get_paciente_id(), estadistica.get_terapeuta_id(),
                                    estadistica.get_enfadado(), estadistica.get_enfadado_total(),
                                    estadistica.get_disgustado(), estadistica.get_disgustadototal(),
@@ -358,7 +358,8 @@ class DataBase:
                                    estadistica.get_neutrototal(), estadistica.get_atencion(),
                                    estadistica.get_atenciontotal(), estadistica.get_fecha(),
                                    estadistica.get_horacomienzo(), estadistica.get_horafin(),
-                                   estadistica.get_tiempototal(), estadistica.get_observaciones()))
+                                   estadistica.get_tiempototal(), estadistica.get_cambiosbruscos(),
+                                   estadistica.get_observaciones()))
             self._logger.info("[DB] Creada la consulta")
             self.connection.commit()
         except mysql.connector.Error as err:

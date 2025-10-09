@@ -91,11 +91,11 @@ class GestorEmociones:
             self._logger.error(f"[GESTOR EMOCIONES] en detección de emoción: {e}")
             return self._emocionActual, None, None
 
-    def suavizar_emociones(self, emotions, alpha=0.5):
+    def suavizar_emociones(self, emotions, alpha=0.2):
         """
         Suavizado exponencial de las emociones, para evitar cambios bruscos
         @param emotions: Diccionario de las emociones con su probabilidad
-        @param alpha: Suavizado de 0.5
+        @param alpha: Suavizado de 0.2 (suavizado fuerte)
         @return: None
         """
         self._logger.info("[GESTOR EMOCIONES] Suavizamos las emociones")
@@ -146,7 +146,7 @@ class GestorEmociones:
         self._intervalosEmociones[self._emocionActual].append((self._t_inicioEmocion, fin))
         self._tiempoTotalEmocion[self._emocionActual] += (fin - self._t_inicioEmocion) + 1
 
-    def detectar_cambios_bruscos(self, tiempo_estable=3):
+    def detectar_cambios_bruscos(self, tiempo_estable=2):
         """
         Analiza los intervalos de emociones detectadas y detecta cambios bruscos entre emociones estables.
         Un cambio brusco ocurre cuando:
@@ -224,7 +224,7 @@ class GestorEmociones:
         return self._intervalosEmociones
 
     def get_cambiosbruscos(self):
-        return self.get_cambiosbruscos
+        return self._cambiosbruscos
 
     def get_tiempototalemocion(self):
         return self._tiempoTotalEmocion

@@ -187,7 +187,7 @@ class Camara:
         self._estadisticas.set_tristetotal(total_emociones[Emociones.TRISTE.value])
         self._estadisticas.set_sorprendidototal(total_emociones[Emociones.SORPRENDIDO.value])
         self._estadisticas.set_neutrototal(total_emociones[Emociones.NEUTRO.value])
-
+        self._estadisticas.convertir_JSON_cambios(self._gestorEmociones.get_cambiosbruscos())
         self._estadisticas.convertir_JSON_atencion(self._gestorAtencion.get_intervalosatencion())
         self._estadisticas.set_atenciontotal(self._gestorAtencion.get_tiempototalatencion())
 

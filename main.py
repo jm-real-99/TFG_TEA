@@ -166,7 +166,7 @@ class AplicacionTEA:
         tk.Button(self.root, text="Consultar estadísticas", command=self.consultar_estadisticas).pack(
             pady=10)
         tk.Button(self.root, text="Iniciar terapia", command=lambda:self.seleccionar_paciente_terapia(None)).pack(pady=10)
-    
+
         # Actualiza la ventana principal
         self.root.update_idletasks()
 

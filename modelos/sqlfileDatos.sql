@@ -65,6 +65,7 @@ CREATE TABLE EstadisticasTerapias (
     fechahoracomienzo TIME NOT NULL,
     fechahorafin TIME NOT NULL,
     tiempototal INT NOT NULL,
+    cambios_bruscos TEXT,
     observaciones TEXT,
     FOREIGN KEY (paciente_id) REFERENCES Pacientes(paciente_id),
     FOREIGN KEY (terapeuta_id) REFERENCES Terapeutas(terapeuta_id)

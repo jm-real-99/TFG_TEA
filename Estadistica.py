@@ -13,7 +13,7 @@ class Estadistica:
     def __init__(self, id_terapia, paciente_id, terapeuta_id, enfadado, enfadadototal,
                  disgustado, disgustadototal, miedoso, miedosototal, contento, contentototal,
                  triste, tristetotal, sorprendido, sorprendidototal, neutro, neutrototal, atencion, atenciontotal, fecha,
-                 horacomienzo, horafin, tiempototal, observaciones):
+                 horacomienzo, horafin, tiempototal, cambiosbruscos, observaciones):
         # Inicializamos los logs:
         self._logger = LoggerManager.get_logger()
 
@@ -40,6 +40,7 @@ class Estadistica:
         self._horacomienzo = horacomienzo
         self._horafin = horafin
         self._tiempototal = tiempototal
+        self._cambiosbruscos = cambiosbruscos
         self._observaciones = observaciones
 
     @classmethod
@@ -57,7 +58,7 @@ class Estadistica:
         return cls(None, paciente_id, terapeuta_id, None, 0,
                    None, 0, None, 0, None, 0,
                    None, 0, None, 0, None, 0, None, 0,fecha,
-                   hora_comienzo, None, 0, "")
+                   hora_comienzo, None, 0, None, "")
 
 
     """ **************************************************************************************
@@ -132,6 +133,9 @@ class Estadistica:
 
     def get_tiempototal(self):
         return self._tiempototal
+
+    def get_cambiosbruscos(self):
+        return self._cambiosbruscos
 
     def get_observaciones(self):
         return self._observaciones
@@ -209,6 +213,9 @@ class Estadistica:
     def set_tiempototal(self, value):
         self._tiempototal = value
 
+    def set_cambiosbruscos(self, cambios):
+        self._cambiosbruscos = cambios
+
     def set_observaciones(self, value):
         self._observaciones = value
 
@@ -265,6 +272,15 @@ class Estadistica:
         texto = texto[:-2]
         self._atencion = "[" + texto + "]"
         self._logger.info("[ESTADÍSTICAS] Convertida las atención a formato JSON con éxito")
+
+    def convertir_JSON_cambios(self, cambiosbruscos):
+        """
+        Convertimos el array de los cambios bruscos a un json para almacenarlo en bd
+        @param cambiosbruscos: Array de los segundos donde han ocurrido los cambios bruscos
+        @return: None
+        """
+        self._cambiosbruscos = json.dumps(cambiosbruscos)
+
 
     def get_emocion_mas_expresada(self):
         """

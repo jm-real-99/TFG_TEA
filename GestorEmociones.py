@@ -31,9 +31,11 @@ class GestorEmociones:
         # Diccionario clave-valor donde se almacenará una dupla (Ti,Tf) donde Ti es el segundo inicial del intervalo
         # dónde se ha mostrado la emoción y Tf el final. Esto se guardará en la emoción correspondiente.
         self._intervalosEmociones = {emotion.value: [] for emotion in Emociones}
-        # Diccionario clave-valor donde almacenaremos el tiempo total quie se expresa la emoción a lo largo de la
+        # Diccionario clave-valor donde almacenaremos el tiempo total que se expresa la emoción a lo largo de la
         # terapia, esto nos permitirá ahorrar tiempo de cómputo a la hora de calcular las estadísticas.
         self._tiempoTotalEmocion = {emotion.value: 0 for emotion in Emociones}
+
+        self._cambiosbruscos = []
 
         # Emociones suavizadas
         self._smoothEmotions = None
@@ -144,6 +146,54 @@ class GestorEmociones:
         self._intervalosEmociones[self._emocionActual].append((self._t_inicioEmocion, fin))
         self._tiempoTotalEmocion[self._emocionActual] += (fin - self._t_inicioEmocion) + 1
 
+    def detectar_cambios_bruscos(self, tiempo_estable=3):
+        """
+        Analiza los intervalos de emociones detectadas y detecta cambios bruscos entre emociones estables.
+        Un cambio brusco ocurre cuando:
+            - Una emoción se mantiene estable (>= tiempo_estable segundos)
+            - Cambia a otra emoción también estable
+            - Ambas emociones son distintas y no son 'NONE'
+        Guarda los segundos donde ocurre el cambio en self._cambiosbruscos
+        """
+        self._logger.info("[GESTOR EMOCIONES] Detectamos cambios bruscos de emociones")
+
+        # Clasificación emocional
+        positivas = {Emociones.CONTENTO.value}
+        negativas = {Emociones.ENFADO.value, Emociones.DISGUSTADO.value,
+                     Emociones.TRISTE.value, Emociones.MIEDOSO.value}
+
+        # Generamos una lista temporal ordenada [(inicio, fin, emocion)]
+        intervalos = []
+        for emocion, lista in self._intervalosEmociones.items():
+            for (inicio, fin) in lista:
+                intervalos.append((inicio, fin, emocion))
+
+        # Ordenamos cronológicamente
+        intervalos.sort(key=lambda x: x[0])
+
+        cambios = []
+
+        for i in range(1, len(intervalos)):
+            ini_ant, fin_ant, emo_ant = intervalos[i - 1]
+            ini_act, fin_act, emo_act = intervalos[i]
+
+            dur_ant = fin_ant - ini_ant
+            dur_act = fin_act - ini_act
+
+            # Solo consideramos emociones estables (duración mínima)
+            if dur_ant >= tiempo_estable and dur_act >= tiempo_estable:
+                # Si ambas emociones son opuestas, entonces hay un cambio brusco
+                if ((emo_ant in positivas and emo_act in negativas) or
+                    (emo_ant in negativas and emo_act in positivas)):
+                    # Guardamos el segundo donde se produce el cambio
+                    cambios.append(ini_act)
+                    self._logger.info(f"[CAMBIO BRUSCO] {emo_ant} → {emo_act} en el segundo {ini_act}")
+
+        self._cambiosbruscos = cambios
+        self._logger.info(f"[GESTOR EMOCIONES] Cambios bruscos detectados: {cambios}")
+
+        return cambios
+
     def __actualizar_tiempo(self, tiempo):
         """
         Actualizamos el segundo actual
@@ -160,6 +210,8 @@ class GestorEmociones:
         @return: None
         """
         self.__add_emotion_interval(tiempo)
+        # Finalmente vamos a revisar todos los intervalos para ver si detectamos algún cambio brusco
+        self.detectar_cambios_bruscos()
 
     """*****************************************
     ***********GETTERS AND SETTERS**************
@@ -170,6 +222,9 @@ class GestorEmociones:
 
     def get_intervalosemociones(self):
         return self._intervalosEmociones
+
+    def get_cambiosbruscos(self):
+        return self.get_cambiosbruscos
 
     def get_tiempototalemocion(self):
         return self._tiempoTotalEmocion

@@ -902,32 +902,51 @@ class AplicacionTEA:
         self._logger.info(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
         self.__reset_page(None)
         self.root.title(f"Estadísticas terapia {estadistica.get_id_terapia()}")
-        tk.Button(self.root, text="Volver", command=lambda: self.consultas_estadisticas_paciente(paciente)).pack(pady=10)
+
+        # Añadimos un scroll para que todo encaje
+        tk_canvas = tk.Canvas(self.root)
+        scrollbar = tk.Scrollbar(self.root, orient="vertical", command=tk_canvas.yview)
+        scroll_frame = tk.Frame(tk_canvas)
+
+        scroll_window = tk_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+
+        tk_canvas.bind("<Configure>", lambda event: tk_canvas.itemconfig(scroll_window, width=event.width))
+        scroll_frame.bind(
+            "<Configure>",
+            lambda e: tk_canvas.configure(scrollregion=tk_canvas.bbox("all"))
+        )
+
+        tk_canvas.configure(yscrollcommand=scrollbar.set)
+        tk_canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        # ============
+
+        tk.Button(scroll_frame, text="Volver", command=lambda: self.consultas_estadisticas_paciente(paciente)).pack(pady=10)
         figura = Figure(figsize=(10, 8), dpi=100)
         gs = figura.add_gridspec(2, 2)
         self.mostrar_grafico_emociones_tiempo(estadistica, figura,gs)
         self.mostrar_grafico_atencion_tiempo(estadistica,figura,gs)
         self.mostrar_grafica_emociones_tarta(estadistica,figura,gs)
 
-        tk.Label(self.root,
+        tk.Label(scroll_frame,
                  text=f"Fecha terapia: {estadistica.get_fecha()}").pack(pady=2)
-        tk.Label(self.root,
+        tk.Label(scroll_frame,
                  text=f"Hora comienzo: {estadistica.get_horacomienzo()}").pack(pady=2)
-        tk.Label(self.root,
+        tk.Label(scroll_frame,
                  text=f"Tiempo total terapia:  {estadistica.get_tiempototal()/60} min").pack(pady=2)
-        tk.Label(self.root,
+        tk.Label(scroll_frame,
                  text=f"Emoción más expresada:  {estadistica.get_emocion_mas_expresada().name}").pack(pady=2)
-        tk.Label(self.root,
+        tk.Label(scroll_frame,
                  text=f"Observaciones:  {estadistica.get_observaciones()}").pack(pady=2)
 
-        tk.Button(self.root, text="Exportar a PDF", command=lambda: self.exportar_estadistica_pdf(estadistica,paciente)).pack(
+        tk.Button(scroll_frame, text="Exportar a PDF", command=lambda: self.exportar_estadistica_pdf(estadistica,paciente)).pack(
             pady=10)
 
         # Ajustar layout automáticamente para evitar superposición
         figura.tight_layout()
 
         # Crear el lienzo de Tkinter con la figura
-        canvas = FigureCanvasTkAgg(figura, master=self.root)
+        canvas = FigureCanvasTkAgg(figura, master=scroll_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
@@ -980,6 +999,26 @@ class AplicacionTEA:
 
         ax.set_xlim(0, estadistica.get_tiempototal())
         ax.grid(True)
+
+        # Ahora añadimos los cambios bruscos
+        try:
+            # Obtenemos y parseamos el JSON de cambios bruscos
+            cambios_bruscos = estadistica.get_cambiosbruscos()
+            if isinstance(cambios_bruscos, str):
+                cambios_bruscos = json.loads(cambios_bruscos)
+
+            if cambios_bruscos:
+                for cambio in cambios_bruscos:
+                    ax.axvline(x=cambio, color='red', linestyle='--', linewidth=1.5, alpha=0.7)
+
+                # Leyenda
+                from matplotlib.lines import Line2D
+                linea_cambio = Line2D([0], [0], color='red', linestyle='--', linewidth=1.5,
+                                      label='Cambios bruscos de emociones')
+
+                ax.legend(handles=[linea_cambio], loc='upper right', fontsize=8, frameon=False)
+        except Exception as e:
+            self._logger.error(f"[GRAFICO] Error al mostrar cambios bruscos: {e}")
 
     def mostrar_grafico_atencion_tiempo(self, estadistica, figura, gs):
         """

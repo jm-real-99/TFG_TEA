@@ -13,7 +13,7 @@ class Estadistica:
     def __init__(self, id_terapia, paciente_id, terapeuta_id, enfadado, enfadadototal,
                  disgustado, disgustadototal, miedoso, miedosototal, contento, contentototal,
                  triste, tristetotal, sorprendido, sorprendidototal, neutro, neutrototal, atencion, atenciontotal, fecha,
-                 horacomienzo, horafin, tiempototal, cambiosbruscos, observaciones):
+                 horacomienzo, horafin, tiempototal,observaciones, cambiosbruscos ):
         # Inicializamos los logs:
         self._logger = LoggerManager.get_logger()
 
@@ -58,7 +58,7 @@ class Estadistica:
         return cls(None, paciente_id, terapeuta_id, None, 0,
                    None, 0, None, 0, None, 0,
                    None, 0, None, 0, None, 0, None, 0,fecha,
-                   hora_comienzo, None, 0, None, "")
+                   hora_comienzo, None, 0, "",None )
 
 
     """ **************************************************************************************

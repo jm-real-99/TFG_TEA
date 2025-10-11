@@ -91,7 +91,7 @@ class GestorEmociones:
             self._logger.error(f"[GESTOR EMOCIONES] en detección de emoción: {e}")
             return self._emocionActual, None, None
 
-    def suavizar_emociones(self, emotions, alpha=0.2):
+    def suavizar_emociones(self, emotions, alpha=0.35):
         """
         Suavizado exponencial de las emociones, para evitar cambios bruscos
         @param emotions: Diccionario de las emociones con su probabilidad

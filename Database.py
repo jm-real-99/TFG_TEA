@@ -344,7 +344,7 @@ class DataBase:
             self.cursor.execute("INSERT INTO EstadisticasTerapias (paciente_id, terapeuta_id, enfadado, "
                                 "enfadadototal, disgustado, disgustadototal, miedoso, miedosototal, contento, "
                                 "contentototal, triste, tristetotal, sorprendido, sorprendidototal, neutro, "
-                                "neturototal, atencion, atenciontotal, fecha, fechahoracomienzo, fechahorafin, tiempototal, cambios_bruscos "
+                                "neturototal, atencion, atenciontotal, fecha, fechahoracomienzo, fechahorafin, tiempototal, cambios_bruscos, "
                                 "observaciones) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,"
                                 " %s, %s, %s,  %s, %s, %s, %s, %s);"
                                 , (estadistica.get_paciente_id(), estadistica.get_terapeuta_id(),
@@ -363,7 +363,7 @@ class DataBase:
             self._logger.info("[DB] Creada la consulta")
             self.connection.commit()
         except mysql.connector.Error as err:
-            self._logger.error(f"[DB] Error al obtener datos de la tabla EstadisticasTerapias: {err}")
+            self._logger.error(f"[DB] Error al añadir datos de la tabla EstadisticasTerapias: {err}")
             return False
         self._logger.info("[DB] Estadístia añadida con éxito")
         return True

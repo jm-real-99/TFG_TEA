@@ -111,6 +111,8 @@ class AplicacionTEA:
         """
         self._logger.info("Formulario inicio de sesión")
         self.root.title("Inicio de Sesión")
+
+        tk.Frame(self.root, height=80).pack()
         # Creamos un frame central con padding
         frame = tk.Frame(self.root, padx=20, pady=20)
         frame.pack(expand=True, fill="both")
@@ -157,6 +159,7 @@ class AplicacionTEA:
         """
         self.__reset_page(notificacion)
         self.root.title("Menú principal")
+        tk.Frame(self.root, height=80).pack()
         tk.Button(self.root, text="Dar de alta paciente", command=lambda: self.formulario_crear_paciente(None)).pack(
             pady=10)
         if self.terapeuta.get_admin():
@@ -182,6 +185,7 @@ class AplicacionTEA:
         self.__reset_page(notificacion)
 
         self.root.title("Crear paciente")
+        tk.Frame(self.root, height=80).pack()
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
 
         nombre_var = tk.StringVar()
@@ -283,6 +287,8 @@ class AplicacionTEA:
         self.__reset_page(notificacion)
 
         self.root.title("Crear terapeuta")
+        tk.Frame(self.root, height=80).pack()
+
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
 
         # Variables del formulario
@@ -385,6 +391,7 @@ class AplicacionTEA:
         self.__reset_page(notificacion)
 
         self.root.title("Iniciar terapia")
+        tk.Frame(self.root, height=80).pack()
 
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
         # Cargamos todos los pacientes activos
@@ -549,6 +556,8 @@ class AplicacionTEA:
         """
         self.__reset_page(None)
         self.root.title("Terapia finalizada. Añadir observaciones")
+        tk.Frame(self.root, height=80).pack()
+
         tk.Label(self.root, text="Introduce tus observaciones:", font=("Arial", 12)).pack(pady=10)
 
         # Campo de texto grande
@@ -590,6 +599,8 @@ class AplicacionTEA:
         self.__reset_page(None)
 
         self.root.title("Seleccionar paciente estadísticas")
+        tk.Frame(self.root, height=80).pack()
+
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
 
         # Cargamos todos los terapeutas activos
@@ -611,8 +622,10 @@ class AplicacionTEA:
         self.__reset_page(None)
 
         self.root.title(f"Estadísticas generales paciente {paciente_selected}")
-        tk.Label(self.root, text=paciente_selected).pack(pady=2)
 
+        tk.Frame(self.root, height=40).pack()
+
+        tk.Label(self.root, text=paciente_selected).pack(pady=2)
         tk.Button(self.root, text="Volver", command=lambda: self.mostrar_main(None)).pack(pady=10)
 
         paciente = self.paciente_mapa[paciente_selected]
@@ -902,8 +915,9 @@ class AplicacionTEA:
         self._logger.info(f"Mostrando estadísticas para la terapia con ID: {estadistica.get_id_terapia()}")
         self.__reset_page(None)
         self.root.title(f"Estadísticas terapia {estadistica.get_id_terapia()}")
+        tk.Frame(self.root, height=40).pack()
 
-        # Añadimos un scroll para que todo encaje
+        # Añadimos scroll
         tk_canvas = tk.Canvas(self.root)
         scrollbar = tk.Scrollbar(self.root, orient="vertical", command=tk_canvas.yview)
         scroll_frame = tk.Frame(tk_canvas)

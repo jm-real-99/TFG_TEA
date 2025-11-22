@@ -10,7 +10,6 @@ from datetime import datetime
 
 from GestorAtencion import GestorAtencion
 from GestorEmociones import GestorEmociones
-from Estadistica import Estadistica
 from concurrent.futures import ThreadPoolExecutor
 
 

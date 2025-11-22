@@ -1,8 +1,4 @@
-import dlib
-
 from Emociones import Emociones
-import numpy as np
-import cv2
 from deepface import DeepFace
 
 from LoggerManager import LoggerManager

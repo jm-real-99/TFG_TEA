@@ -11,13 +11,20 @@ El objetivo principal de este trabajo de fin de grado es aplicar los conocimient
 
 ### ORGANIZACIÓN 
 En este repositorio podremos encontrar el código relacionado con mi trabajo de fin de grado.
-Como se puede ver está dividido en distintos módulos: 
-- **camera-core**: Servicio que se encargará de analizar los comportamientos del niño con el fin de complementar las analíticas y ver si hay un progreso también en **la atención o imitación de gestos**.
-- **interactive-app**: Servicio con el que jugará el niño. Mediante los juegos propuestos podremos ir tomando las métricas que se irán guardando en la base de datos para ver si hay un **progreso en el reconocimiento de emociones**.
-- **monitoring-app**: Servicio donde podremos ir siguiendo el seguimiento del paciente. Esto se hará mediante la consulta en BD y obteniendo los datos, que los modelizará para que el asistente pueda ver el progreso.
-- **persistence-api**: Gracias a esta API podremos realizar la conexión con la base de datos mysql de una manera homogénea en los distintos proyectos.
-
-Para información más detallada, consultar los README.md de cada proyecto. 
+Como se puede ver está dividido en distintos ficheros que corresponden a clases: 
+- **main.py**: Script donde contenemos la clase de la interfaz gráfica.
+- **Camara.py**: Script con la clase correspondiente a la terapia, obtiene la imagen de la webcam y la distribuye a los gestores correspondientes.
+- **GestorEmociones.py**: Script con la clase que gestiona el análisis de las emociones dado un frame.
+- **GestorAtencion.py**: Script con la clase que gestiona el análisis de la atención dado un frame, se apoya en GazeTraking.
+- **Calculo_estadisticas.py**: Script que contiene la clase correspondiente al calculo de las estadísticas dados los datos recabados por la terapia
+- **Database.py**: Script con la clase interfaz de la base de datos.
+- **Emociones.py**: Enum con las emociones que vamos a obtener.
+- **Estadistica.py**: Script que contiene la clase correspondiente a las estadísticas que almacenamos en BD
+- **LoggerManager.py**: Script con el gestor de Logs.
+- **Paciente.py**: Entidad paciente.
+- **Terapeuta.py**: Entidad terapeuta.
+- 
+Para información más detallada, consultar la memoria del trabajo.
 
 La organización de este proyecto se está llevando mediante la herramienta de figma. Se puede consultar en el siguiente enlace: [Board Figma](https://www.figma.com/file/zuwWNhBL8BXATAkKylHJ8S/TFG-ROBOTICA?type=whiteboard&t=pxDveDdwZCL8EPoZ-1). 
 

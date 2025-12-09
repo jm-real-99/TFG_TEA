@@ -12,11 +12,11 @@ El objetivo principal de este trabajo de fin de grado es aplicar los conocimient
 ### ORGANIZACIÓN 
 En este repositorio podremos encontrar el código relacionado con mi trabajo de fin de grado.
 Como se puede ver está dividido en distintos ficheros que corresponden a clases: 
-- **main.py**: Script donde contenemos la clase de la interfaz gráfica.
+- **Main.py**: Script donde contenemos la clase de la interfaz gráfica.
 - **Camara.py**: Script con la clase correspondiente a la terapia, obtiene la imagen de la webcam y la distribuye a los gestores correspondientes.
 - **GestorEmociones.py**: Script con la clase que gestiona el análisis de las emociones dado un frame.
 - **GestorAtencion.py**: Script con la clase que gestiona el análisis de la atención dado un frame, se apoya en GazeTraking.
-- **Calculo_estadisticas.py**: Script que contiene la clase correspondiente al calculo de las estadísticas dados los datos recabados por la terapia
+- **CalculoEstadisticas.py**: Script que contiene la clase correspondiente al calculo de las estadísticas dados los datos recabados por la terapia
 - **Database.py**: Script con la clase interfaz de la base de datos.
 - **Emociones.py**: Enum con las emociones que vamos a obtener.
 - **Estadistica.py**: Script que contiene la clase correspondiente a las estadísticas que almacenamos en BD

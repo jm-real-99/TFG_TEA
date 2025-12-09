@@ -17,7 +17,7 @@ from Terapeuta import Terapeuta
 from Database import DataBase
 from Estadistica import Estadistica
 
-from Calculo_estadisticas import Calculo_estadisticas
+from CalculoEstadisticas import Calculo_estadisticas
 from pygrabber.dshow_graph import FilterGraph
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt

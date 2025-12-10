@@ -1,4 +1,3 @@
-from Estadistica import Estadistica
 from Emociones import Emociones
 from LoggerManager import LoggerManager
 

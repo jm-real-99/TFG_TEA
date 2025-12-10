@@ -1,7 +1,8 @@
 from Emociones import Emociones
+from LoggerManager import LoggerManager
+
 from deepface import DeepFace
 
-from LoggerManager import LoggerManager
 
 
 class GestorEmociones:

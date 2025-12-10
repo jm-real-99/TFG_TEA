@@ -1,16 +1,14 @@
 import cv2
 import dlib
-
-from LoggerManager import LoggerManager
-
-from Emociones import Emociones
 import numpy as np
 import time
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 
+from Emociones import Emociones
+from LoggerManager import LoggerManager
 from GestorAtencion import GestorAtencion
 from GestorEmociones import GestorEmociones
-from concurrent.futures import ThreadPoolExecutor
 
 
 class Camara:

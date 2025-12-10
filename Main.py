@@ -1,29 +1,26 @@
 import json
-import time
-from Emociones import Emociones
-from Camara import Camara
 import cv2
 from PIL import Image, ImageTk
 
 
-from LoggerManager import LoggerManager
 
 import tkinter as tk
 import ttkbootstrap as tb
 
+
+from Emociones import Emociones
+from Camara import Camara
+from LoggerManager import LoggerManager
 from datetime import datetime, date
-from Paciente import Paciente
-from Terapeuta import Terapeuta
 from Database import DataBase
 from Estadistica import Estadistica
-
 from CalculoEstadisticas import Calculo_estadisticas
+
 from pygrabber.dshow_graph import FilterGraph
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
-
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas as pdf_canvas
 from reportlab.lib.utils import ImageReader

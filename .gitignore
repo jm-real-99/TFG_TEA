@@ -8,3 +8,4 @@
 config.properties
 *.iml
 *.pyc
+logs/

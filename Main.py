@@ -699,9 +699,10 @@ class AplicacionTEA:
         tk.Label(frame_info,
                  text=f"Tendencia en la mejora de atención: {calculo_estadisticas.mejora_tendencia_atencion:.2f}").pack(
             pady=2)
-        tk.Label(frame_info,
-                 text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}").pack(
-            pady=2)
+        if calculo_estadisticas.emocion_mas_expresada:
+            tk.Label(frame_info,
+                    text=f"Expresión más expresada: {calculo_estadisticas.emocion_mas_expresada.name}").pack(
+                pady=2)
 
         tk.Button(frame_info, text="Exportar a PDF",
                   command=lambda: self.exportar_estadisticas_generales_pdf(estadisticas, calculo_estadisticas, paciente_selected)).pack(
@@ -944,7 +945,7 @@ class AplicacionTEA:
         tk.Label(scroll_frame,
                  text=f"Hora comienzo: {estadistica.get_horacomienzo()}").pack(pady=2)
         tk.Label(scroll_frame,
-                 text=f"Tiempo total terapia:  {estadistica.get_tiempototal()/60} min").pack(pady=2)
+                 text=f"Duración total: {estadistica.get_tiempototal() / 60:.2f} min").pack(pady=2)
         tk.Label(scroll_frame,
                  text=f"Emoción más expresada:  {estadistica.get_emocion_mas_expresada().name}").pack(pady=2)
         tk.Label(scroll_frame,
@@ -1139,7 +1140,7 @@ class AplicacionTEA:
         draw_line(f"Fecha: {estadistica.get_fecha()}")
         draw_line(f"Hora de inicio: {estadistica.get_horacomienzo()}")
         draw_line(f"Duración total: {estadistica.get_tiempototal() / 60:.2f} min")
-        draw_line(f"Emoción más expresada: {estadistica.get_emocion_mas_expresada()}", spacing=25)
+        draw_line(f"Emoción más expresada: {estadistica.get_emocion_mas_expresada().name}", spacing=25)
 
         # Observaciones
         draw_line("Observaciones:", "Helvetica-Bold", 12, 18)

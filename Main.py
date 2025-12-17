@@ -451,7 +451,7 @@ class AplicacionTEA:
 
         self.__reset_page(None)
         self.root.title("Terapia en curso")
-        self.end = False  # Nos aseguramos de tener esta bandera en tu clase
+        self.end = False
 
 
         btn_parar = tk.Button(self.root, text="Parar Terapia", command= lambda: self.parar_terapia(camara))
